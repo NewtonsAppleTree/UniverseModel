@@ -21,3 +21,7 @@ Replay 需要代码/模型/输入完整，Reanalysis 需要原始输出与计数
 ## 验证
 
 重点是中断写入、缺失 blob、哈希不符、不支持的 schema、dirty 源码遗漏和保留策略删除。验证可恢复的来源链，不仅检查文件存在。清单不能把 incomplete 运行标成 succeeded；更正历史解释产生新分析版本。
+
+## 复现输入补充
+
+运行身份还包含初始化方式/状态引用、ROI、到达过程、随机子流、成本覆盖清单及验证范围。执行成功、功能未验证与部分成本估计可以同时存在，必须分别保存；参考[实验有效性](../../docs/methods/experiment_validity.md)和[模型组合](../../docs/architecture/model_composition.md)。

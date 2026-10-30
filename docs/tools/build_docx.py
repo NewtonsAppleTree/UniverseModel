@@ -148,6 +148,10 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
         raise ValueError(f"Unsupported table width: {columns}")
     if rows[0][0] == "阶段":
         widths = (1.3, 6.2, 9.5)
+    elif rows[0][0] == "优先级":
+        widths = (1.8, 9.2, 6.0)
+    elif rows[0][0] == "专题":
+        widths = (2.8, 8.4, 5.8)
     elif not reference and rows[0][0] == "对象":
         widths = (4.3, 5.7, 7.0)
     elif not reference and rows[0][0] == "关系":
@@ -193,7 +197,7 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
             paragraph = cell.paragraphs[0]
             paragraph.style = "Table Body"
             inline(paragraph, value)
-            if rows[0][0] == "阶段" and column_index == 0:
+            if rows[0][0] in ("阶段", "优先级") and column_index == 0:
                 paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             if index == 0:
                 paragraph.paragraph_format.keep_with_next = True

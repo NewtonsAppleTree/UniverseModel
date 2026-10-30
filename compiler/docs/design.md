@@ -40,3 +40,7 @@
 ## 验证与保存
 
 单 pass 使用独立参考或 IR 解释器比较；完整 lowering 同时检查数值、数据位置和副作用。验证不只比较最终数组，还检查非法容量、缺失搬运、数据提前使用等反例。保存输入哈希、最终计划、关键优化决策和编译版本；调试 IR 可按需保留。
+
+## 能力与工作量补充
+
+目标能力按操作、shape、layout、精度和格式联合判断；CPU fallback、量化转换及 padding 必须进入执行计划或已声明融合操作。静态生命周期需要容纳实际异步租约，不能在 source_consumed 前复用区域。见[模型组合](../../docs/architecture/model_composition.md)、[数值语义](../../docs/methods/workload_and_numeric_semantics.md)与[生命周期规范](../../docs/interfaces/resource_lifecycle.md)。

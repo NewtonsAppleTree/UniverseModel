@@ -94,3 +94,5 @@ NIC 属于节点；集群只连接和引用 NIC 端口。成本供应方不负�
 顶层边界见本文；跨模块语义见 docs/interfaces/contracts.md；保存与复现见 docs/interfaces/artifacts.md；公式、工作流与优化见 docs/methods；场景与第一性原理见 docs/architecture/scenarios.md 和 first_principles.md。
 
 新增功能按“问题与假设 → 契约及参数定义 → 模块实现 → 验证证据 → 文档与示例”推进。先判断现有资源、关系或策略是否能组合表达，只有出现新的状态所有者或稳定职责时才增加顶层模块。
+
+本轮补充审视见 docs/architecture/design_review.md：区分接口冻结前的 P0、对应场景报告前的 P1，以及由决策敏感性触发的 P2。专题覆盖请求/缓冲生命周期、模型组合、完整工作量、实验有效性与物理可行性；这些能力继续归属现有 13 个模块。

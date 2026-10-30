@@ -11,6 +11,7 @@
 3. [分场景推演](docs/architecture/scenarios.md)：单芯片、CIM、3D、HBF、异构与集群。
 4. [公共契约](docs/interfaces/contracts.md)与[产物规范](docs/interfaces/artifacts.md)：交换什么、如何保存和复现。
 5. [参数与数学方法](docs/methods/parameters_and_math.md)、[工作流](docs/methods/workflows.md)、[优化方法](docs/methods/optimization.md)。
+6. [架构补充审视](docs/architecture/design_review.md)：17 项易遗漏问题、P0/P1/P2 优先级与六个专题。
 
 参数如何修改和可视化，见 [configuration 设计](configuration/docs/design.md)与 [ui 设计](ui/docs/design.md)。先共享参数定义、派生与校验规则，再实现文本/CLI 和表单、拓扑、映射、时间线。
 
@@ -60,6 +61,7 @@ python tools/check_structure.py
 - [工程设计 Word](docs/UniverseModel_Design.docx)：顶层架构、公共契约、验证门槛。
 - [架构参数手册 Word](docs/UniverseModel_Architecture_Parameters.docx)：结构、英文术语与参数来源。
 - [异构与集群规划 Word](docs/UniverseModel_Heterogeneous_Cluster_Plan.docx)：异构、封装、HBF 与集群。
+- [架构补充审视 Word](docs/UniverseModel_Architecture_Review.docx)：跨模块细节、模型覆盖、实验条件与实施取舍。
 - [完整文档索引与构建方法](docs/README.md)。
 
 Markdown 是正文维护源。第一轮执行实现从一个 GEMM/MatVec、独立参考、小型数字引擎、SRAM 和显式搬运开始，再验证争用、重叠与参数变化；阶段门槛见[验证规范](docs/architecture/validation.md)。

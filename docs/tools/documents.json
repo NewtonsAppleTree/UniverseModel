@@ -17,6 +17,14 @@
     "title": "芯片架构结构参数与设计方法",
     "subtitle": "UniverseModel 中英文术语 参数来源 CIM 与异构建模"
   },
+  "review": {
+    "sources": [
+      "docs/architecture/design_review.md"
+    ],
+    "filename": "UniverseModel_Architecture_Review.docx",
+    "title": "UniverseModel 架构补充审视",
+    "subtitle": "跨模块语义 模型覆盖 实验依据 实施优先级"
+  },
   "scaling": {
     "sources": [
       "docs/architecture/heterogeneous_cluster_plan.md"

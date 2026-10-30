@@ -36,3 +36,7 @@ M06 给出割集负载下界，M13 给出特定 ring AllReduce 理想基线，M1
 ## 验证与保存
 
 验证两点传输、共享链路、双工、incast、多组并发、缺失参与者和路径不可达；检查总注入量、每链路字节与到达量的口径。保存拓扑、路由规则、rank/group 映射、链路计数和 collective 计划，才能解释扩展曲线。
+
+## 完成与负载补充
+
+本地 send 完成不能代替远端可见或 collective 完成；缺失参与者与暂时拥塞分别诊断，见[生命周期规范](../../docs/interfaces/resource_lifecycle.md)。固定通信轨迹只支持相应条件下的比较，动态策略改变负载时需闭环生成；故障域与共享设施的相关失效仅在可靠性研究时启用，见[实验有效性](../../docs/methods/experiment_validity.md)与[物理可行性](../../docs/architecture/physical_feasibility.md)。

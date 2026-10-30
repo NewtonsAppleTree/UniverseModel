@@ -23,3 +23,7 @@ JSON/YAML 是存储形式，不是完整契约。校验分三层：语法/类型
 先定义最小闭环实际需要的对象，再扩展可选能力。重大语义变化升级主版本，兼容迁移保留旧输入和转换记录。公共契约避免包含具体 Python/C++ 对象或私有 IR，便于未来替换语言和序列化方式。
 
 验证使用合法/非法最小对象、版本迁移往返和引用检查；序列化往返必须保持语义身份。保存 schema 版本、规范化规则版本与迁移链。边界稳定的收益是模型和编译器可以分别演进，不是为所有未来场景预先堆字段。
+
+## 本轮补充
+
+条件能力需同时表达 shape/布局/精度等前提，错误分类区分不支持、不可行和缺少成本依据。accepted、source_consumed、destination_visible 及取消过程见[生命周期规范](../../docs/interfaces/resource_lifecycle.md)；模型覆盖不能仅由一个 fidelity_level 代替，见[组合规则](../../docs/architecture/model_composition.md)。

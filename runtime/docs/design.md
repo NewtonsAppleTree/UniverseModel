@@ -27,3 +27,7 @@ collective 先核对 group/sequence/dtype/reduction，再选择 ring/tree/分层
 ## 验证与保存
 
 验证 stream 顺序、背压、取消、重试、缺失参与者和无未来信息。相同输入与策略版本应能复现；随机策略独立记录种子。保存动态决策、队列等待原因、追加操作及调度成本口径。
+
+## 异步操作与服务负载补充
+
+cancel_requested、源缓冲释放、目标可见及用户请求的终态分别维护；在途工作按能力拒绝取消或安全排空，不能假定撤销历史效果，见[生命周期规范](../../docs/interfaces/resource_lifecycle.md)。动态 batching/admission 需要保存实际到达与接纳时刻，未完成请求参与统计，见[实验有效性](../../docs/methods/experiment_validity.md)。
