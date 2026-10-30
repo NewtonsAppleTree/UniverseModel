@@ -1,0 +1,14 @@
+# Local build products and caches
+/.build/
+/build/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+~$*.docx
+
+# Generated compiler and experiment outputs
+/compiler/temp/*
+!/compiler/temp/.gitkeep
+/data/runs/*
+!/data/runs/.gitkeep
