@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "status": "scaffold",
+  "modules": [
+    {
+      "id": "contracts",
+      "title": "公共契约",
+      "status": "scaffold",
+      "path": "contracts",
+      "design": "contracts/docs/design.md",
+      "allowed_dependencies": [],
+      "subdirectories": [
+        "hardware",
+        "workload",
+        "plan",
+        "events",
+        "results",
+        "units",
+        "versions"
+      ],
+      "principle": "语义与单位必须一致，版本变化必须可识别。"
+    },
+    {
+      "id": "configuration",
+      "title": "参数配置",
+      "status": "scaffold",
+      "path": "configuration",
+      "design": "configuration/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "definitions",
+        "resolution",
+        "validation",
+        "migration"
+      ],
+      "principle": "一次实验必须具有唯一、完整、可追溯的配置解释。"
+    },
+    {
+      "id": "costmodel",
+      "title": "成本与特征化",
+      "status": "scaffold",
+      "path": "costmodel",
+      "design": "costmodel/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "interfaces",
+        "providers/analytical",
+        "providers/tabulated",
+        "providers/external",
+        "uncertainty"
+      ],
+      "principle": "成本是结构、动作和工作条件的函数，估计必须带适用范围。"
+    },
+    {
+      "id": "chipmodel",
+      "title": "芯片与封装",
+      "status": "scaffold",
+      "path": "chipmodel",
+      "design": "chipmodel/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "costmodel"
+      ],
+      "subdirectories": [
+        "compute/cpu",
+        "compute/gpu",
+        "compute/npu",
+        "compute/cim/arrays",
+        "compute/cim/encoding",
+        "compute/cim/periphery",
+        "memory/sram",
+        "memory/dram",
+        "memory/flash",
+        "memory/controllers",
+        "interconnect/noc",
+        "interconnect/d2d",
+        "control",
+        "composition/tile",
+        "composition/die",
+        "composition/package",
+        "packaging/geometry",
+        "packaging/thermal",
+        "registry"
+      ],
+      "principle": "有限资源上的状态变化决定可实现的计算和数据移动。"
+    },
+    {
+      "id": "systemmodel",
+      "title": "板卡与节点",
+      "status": "scaffold",
+      "path": "systemmodel",
+      "design": "systemmodel/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "chipmodel",
+        "costmodel"
+      ],
+      "subdirectories": [
+        "composition/board",
+        "composition/node",
+        "io/pcie",
+        "io/cxl",
+        "io/dma",
+        "io/nic",
+        "memory",
+        "topology"
+      ],
+      "principle": "设备性能必须经过真实主机、地址空间和共享 I/O 路径才能形成系统性能。"
+    },
+    {
+      "id": "clustermodel",
+      "title": "集群与网络",
+      "status": "scaffold",
+      "path": "clustermodel",
+      "design": "clustermodel/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "systemmodel",
+        "costmodel"
+      ],
+      "subdirectories": [
+        "composition/cluster",
+        "composition/groups",
+        "fabric/links",
+        "fabric/switches",
+        "fabric/routing",
+        "topology"
+      ],
+      "principle": "集群扩展受通信割集、注入能力和共享路径限制。"
+    },
+    {
+      "id": "workloads",
+      "title": "工作负载与参考",
+      "status": "scaffold",
+      "path": "workloads",
+      "design": "workloads/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "kernels",
+        "graphs",
+        "reference",
+        "profiles",
+        "datasets"
+      ],
+      "principle": "工作语义和代表性输入定义需要完成什么，并提供独立正确性基准。"
+    },
+    {
+      "id": "compiler",
+      "title": "编译与映射",
+      "status": "scaffold",
+      "path": "compiler",
+      "design": "compiler/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "costmodel"
+      ],
+      "subdirectories": [
+        "src/ir",
+        "src/globalsplit",
+        "src/globalsolver",
+        "src/tiling",
+        "src/memplan",
+        "src/sched",
+        "src/lowering",
+        "src/interpret",
+        "src/export",
+        "src/pipeline",
+        "src/lba",
+        "include",
+        "python",
+        "tests",
+        "tools",
+        "scripts",
+        "3rdparty",
+        "temp"
+      ],
+      "principle": "任何资源映射和优化都必须保持工作负载语义并满足硬件约束。"
+    },
+    {
+      "id": "runtime",
+      "title": "运行时策略",
+      "status": "scaffold",
+      "path": "runtime",
+      "design": "runtime/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "dispatch",
+        "streams",
+        "communication/p2p",
+        "communication/collectives",
+        "policies"
+      ],
+      "principle": "策略只能基于已发生的信息发出合法操作，提交与完成必须分开。"
+    },
+    {
+      "id": "simulator",
+      "title": "仿真执行",
+      "status": "scaffold",
+      "path": "simulator",
+      "design": "simulator/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "engine/events",
+        "engine/time",
+        "adapters",
+        "stats",
+        "trace",
+        "snapshots"
+      ],
+      "principle": "保持因果顺序、资源守恒和确定的时间语义。"
+    },
+    {
+      "id": "artifacts",
+      "title": "产物与来源",
+      "status": "scaffold",
+      "path": "artifacts",
+      "design": "artifacts/docs/design.md",
+      "allowed_dependencies": [
+        "contracts"
+      ],
+      "subdirectories": [
+        "manifest",
+        "codecs",
+        "storage",
+        "provenance"
+      ],
+      "principle": "每个结果必须能够追溯到产生它的输入、版本和执行过程。"
+    },
+    {
+      "id": "evaluation",
+      "title": "实验与优化",
+      "status": "scaffold",
+      "path": "evaluation",
+      "design": "evaluation/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "configuration",
+        "costmodel",
+        "chipmodel",
+        "systemmodel",
+        "clustermodel",
+        "workloads",
+        "compiler",
+        "runtime",
+        "simulator",
+        "artifacts"
+      ],
+      "subdirectories": [
+        "experiments/runner",
+        "experiments/sweeps",
+        "analysis",
+        "optimization",
+        "calibration"
+      ],
+      "principle": "在约束和不确定性下比较可复现的端到端结果。"
+    },
+    {
+      "id": "ui",
+      "title": "参数与结果界面",
+      "status": "scaffold",
+      "path": "ui",
+      "design": "ui/docs/design.md",
+      "allowed_dependencies": [
+        "contracts",
+        "configuration",
+        "evaluation"
+      ],
+      "subdirectories": [
+        "forms",
+        "views/topology",
+        "views/package",
+        "views/mapping",
+        "views/timeline",
+        "services"
+      ],
+      "principle": "让用户准确理解并修改同一份模型定义，不产生另一套参数真相。"
+    }
+  ]
+}

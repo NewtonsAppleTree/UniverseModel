@@ -1,0 +1,263 @@
+{
+  "schema_version": "illustrative-topology/v1",
+  "status": "structural_example_only",
+  "executable": false,
+  "description": "CPU/GPU 与双 Die 逻辑+CIM 堆叠、板级 HBF 的示意关系，不代表产品或可实现规格。",
+  "instances": [
+    {
+      "id": "cluster0",
+      "kind": "cluster",
+      "parent": null
+    },
+    {
+      "id": "node0",
+      "kind": "node",
+      "parent": "cluster0"
+    },
+    {
+      "id": "board0",
+      "kind": "board",
+      "parent": "node0"
+    },
+    {
+      "id": "host.pkg",
+      "kind": "package",
+      "parent": "board0"
+    },
+    {
+      "id": "host.die",
+      "kind": "die",
+      "parent": "host.pkg"
+    },
+    {
+      "id": "host.cpu",
+      "kind": "engine",
+      "parent": "host.die",
+      "engine_kind": "cpu",
+      "compute_mechanism": "digital"
+    },
+    {
+      "id": "gpu.pkg",
+      "kind": "package",
+      "parent": "board0"
+    },
+    {
+      "id": "gpu.die",
+      "kind": "die",
+      "parent": "gpu.pkg"
+    },
+    {
+      "id": "gpu.sm",
+      "kind": "engine",
+      "parent": "gpu.die",
+      "engine_kind": "gpu",
+      "compute_mechanism": "digital"
+    },
+    {
+      "id": "accel.pkg",
+      "kind": "package",
+      "parent": "board0"
+    },
+    {
+      "id": "accel.logic_die",
+      "kind": "die",
+      "parent": "accel.pkg"
+    },
+    {
+      "id": "accel.npu",
+      "kind": "engine",
+      "parent": "accel.logic_die",
+      "engine_kind": "npu",
+      "compute_mechanism": "digital"
+    },
+    {
+      "id": "accel.cim_die",
+      "kind": "die",
+      "parent": "accel.pkg"
+    },
+    {
+      "id": "accel.cim_tile",
+      "kind": "tile",
+      "parent": "accel.cim_die"
+    },
+    {
+      "id": "accel.cim_array",
+      "kind": "engine",
+      "parent": "accel.cim_tile",
+      "engine_kind": "cim",
+      "compute_mechanism": "analog_cim",
+      "array_layers": null
+    },
+    {
+      "id": "hbf.pkg",
+      "kind": "package",
+      "parent": "board0"
+    },
+    {
+      "id": "hbf.die",
+      "kind": "die",
+      "parent": "hbf.pkg"
+    },
+    {
+      "id": "hbf.storage",
+      "kind": "memory",
+      "parent": "hbf.die",
+      "technology": "flash",
+      "role": "hbf",
+      "access_granularity_bytes": null
+    },
+    {
+      "id": "node0.nic",
+      "kind": "nic",
+      "parent": "node0"
+    }
+  ],
+  "ports": [
+    {
+      "id": "host.io",
+      "owner": "host.pkg"
+    },
+    {
+      "id": "gpu.host",
+      "owner": "gpu.pkg"
+    },
+    {
+      "id": "accel.host",
+      "owner": "accel.pkg"
+    },
+    {
+      "id": "accel.vertical.logic",
+      "owner": "accel.logic_die"
+    },
+    {
+      "id": "accel.vertical.cim",
+      "owner": "accel.cim_die"
+    },
+    {
+      "id": "accel.tier",
+      "owner": "accel.logic_die"
+    },
+    {
+      "id": "hbf.out",
+      "owner": "hbf.pkg"
+    },
+    {
+      "id": "nic.host",
+      "owner": "node0.nic"
+    }
+  ],
+  "connections": [
+    {
+      "id": "link0",
+      "endpoints": [
+        "host.io",
+        "gpu.host"
+      ],
+      "technology": "node_io_unspecified",
+      "payload_bandwidth_bytes_per_second": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "link1",
+      "endpoints": [
+        "host.io",
+        "accel.host"
+      ],
+      "technology": "node_io_unspecified",
+      "payload_bandwidth_bytes_per_second": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "link2",
+      "endpoints": [
+        "accel.vertical.logic",
+        "accel.vertical.cim"
+      ],
+      "technology": "vertical_3d_unspecified",
+      "payload_bandwidth_bytes_per_second": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "link3",
+      "endpoints": [
+        "hbf.out",
+        "accel.tier"
+      ],
+      "technology": "d2d_unspecified",
+      "payload_bandwidth_bytes_per_second": null,
+      "latency_seconds": null
+    },
+    {
+      "id": "link4",
+      "endpoints": [
+        "host.io",
+        "nic.host"
+      ],
+      "technology": "node_io_unspecified",
+      "payload_bandwidth_bytes_per_second": null,
+      "latency_seconds": null
+    }
+  ],
+  "device_views": [
+    {
+      "id": "cpu_device",
+      "members": [
+        "host.die"
+      ]
+    },
+    {
+      "id": "gpu_device",
+      "members": [
+        "gpu.die"
+      ]
+    },
+    {
+      "id": "duo_cim_device",
+      "members": [
+        "accel.logic_die",
+        "accel.cim_die"
+      ]
+    }
+  ],
+  "stacks": [
+    {
+      "id": "logic_cim_stack",
+      "package": "accel.pkg",
+      "kind": "logic_plus_cim",
+      "dies_bottom_to_top": [
+        "accel.logic_die",
+        "accel.cim_die"
+      ]
+    }
+  ],
+  "ranks": [
+    {
+      "id": "rank0",
+      "device_view": "gpu_device"
+    },
+    {
+      "id": "rank1",
+      "device_view": "duo_cim_device"
+    }
+  ],
+  "groups": [
+    {
+      "id": "example_group",
+      "ranks": [
+        "rank0",
+        "rank1"
+      ]
+    }
+  ],
+  "thermal": {
+    "mode": "off",
+    "reason": "No calibrated geometry or RC parameters supplied"
+  },
+  "omissions": [
+    "完整端口/路由/地址与一致性语义",
+    "容量、时钟与真实成本",
+    "控制器、外围与buffer细化",
+    "工作负载与可执行计划",
+    "跨节点fabric"
+  ]
+}

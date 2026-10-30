@@ -1,0 +1,28 @@
+{
+  "design": {
+    "sources": [
+      "docs/architecture/design.md",
+      "docs/interfaces/contracts.md",
+      "docs/architecture/validation.md"
+    ],
+    "filename": "UniverseModel_Design.docx",
+    "title": "UniverseModel 芯片到集群架构设计",
+    "subtitle": "模块边界 信息契约 验证与实施门槛"
+  },
+  "parameters": {
+    "sources": [
+      "docs/architecture/architecture_parameters.md"
+    ],
+    "filename": "UniverseModel_Architecture_Parameters.docx",
+    "title": "芯片架构结构参数与设计方法",
+    "subtitle": "UniverseModel 中英文术语 参数来源 CIM 与异构建模"
+  },
+  "scaling": {
+    "sources": [
+      "docs/architecture/heterogeneous_cluster_plan.md"
+    ],
+    "filename": "UniverseModel_Heterogeneous_Cluster_Plan.docx",
+    "title": "异构芯片封装与集群建模规划",
+    "subtitle": "CPU GPU NPU CIM 三维集成 HBF 多卡与多机"
+  }
+}

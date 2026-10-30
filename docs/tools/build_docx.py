@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -17,32 +18,12 @@ from docx.shared import Cm, Inches, Pt, RGBColor
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCES = (
-    ROOT / "docs/architecture/design.md",
-    ROOT / "docs/interfaces/contracts.md",
-    ROOT / "docs/architecture/validation.md",
-)
-PARAMETER_SOURCE = ROOT / "docs/architecture/architecture_parameters.md"
-SCALING_SOURCE = ROOT / "docs/architecture/heterogeneous_cluster_plan.md"
 PROFILES = {
-    "design": (
-        SOURCES,
-        "UniverseModel_Design.docx",
-        "UniverseModel 芯片架构建模工程设计",
-        "工程结构 接口约定 验证方法",
-    ),
-    "parameters": (
-        (PARAMETER_SOURCE,),
-        "UniverseModel_Architecture_Parameters.docx",
-        "芯片架构结构参数与设计方法",
-        "UniverseModel 中英文术语 参数来源 CIM 与异构建模",
-    ),
-    "scaling": (
-        (SCALING_SOURCE,),
-        "UniverseModel_Heterogeneous_Cluster_Plan.docx",
-        "异构芯片封装与集群建模规划",
-        "CPU GPU NPU CIM 三维集成 HBF 多卡与多机",
-    ),
+    name: (tuple(ROOT / source for source in profile["sources"]),
+           profile["filename"], profile["title"], profile["subtitle"])
+    for name, profile in json.loads(
+        (ROOT / "docs/tools/documents.json").read_text(encoding="utf-8")
+    ).items()
 }
 FONT = "Microsoft YaHei"
 BLACK = RGBColor(0, 0, 0)
@@ -167,6 +148,10 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
         raise ValueError(f"Unsupported table width: {columns}")
     if rows[0][0] == "阶段":
         widths = (1.3, 6.2, 9.5)
+    elif not reference and rows[0][0] == "对象":
+        widths = (4.3, 5.7, 7.0)
+    elif not reference and rows[0][0] == "关系":
+        widths = (4.2, 5.6, 7.2)
     elif reference and columns == 3:
         widths = (4.6, 6.4, 6.0)
 
@@ -242,7 +227,10 @@ def append_markdown(document, content: str, section_number: int,
                 if section_number > 1:
                     paragraph.paragraph_format.page_break_before = True
         elif line.startswith("## "):
-            paragraph = document.add_paragraph(line[3:], "Heading 1" if reference else "Heading 2")
+            heading = line[3:]
+            if not reference:
+                heading = re.sub(r"^(\d+)\s", rf"{section_number}.\1 ", heading)
+            paragraph = document.add_paragraph(heading, "Heading 1" if reference else "Heading 2")
             if line[3:] in page_break_titles:
                 paragraph.paragraph_format.page_break_before = True
         elif line.startswith("### "):

@@ -2,11 +2,11 @@
 
 UniverseModel 扩展为能够组合 CPU、GPU、NPU、CIM 和 3D CIM 的多层架构建模平台。芯片内多核、封装内多裸片、节点内多卡和集群内多机分别表达，通过统一资源、端口、数据引用和时间语义连接。当前工作仍以架构定义、功能模型、映射和性能评估为主，RTL 用于后续关键模块校准。
 
-本规划中的 HBF 指 High Bandwidth Flash；duo die 按双裸片 Dual-Die 处理。新增模块及接口均为后续实现方案；本文不代表这些模型已经实现。
+本规划中的 HBF 指 High Bandwidth Flash；duo die 按双裸片 Dual-Die 处理。相关模块目录与设计文档现已建立，执行接口和模型仍待实现。当前模块边界以 docs/architecture/design.md 和 modules.json 为准。
 
 ## 1 模块边界与设计判断
 
-建议增加 systemmodel 和 clustermodel，并将 chipmodel 的组合范围明确到封装。多核放在 chipmodel 内；板卡、节点和集群按各自管理的资源与共享瓶颈建模。这样可以在单芯片模型成熟后复用它，也可以用粗粒度设备模型先开展系统实验。
+工程已增加 systemmodel 和 clustermodel 的结构，将 chipmodel 的组合范围明确到封装。多核放在 chipmodel 内；板卡、节点和集群按各自管理的资源与共享瓶颈建模。这样可以在单芯片模型成熟后复用它，也可以用粗粒度设备模型先开展系统实验。
 
 | 模块 | 建模范围 | 核心职责 |
 | --- | --- | --- |
@@ -192,7 +192,7 @@ Rank 是通信参与者标识；Rank 到进程、设备和资源的映射显式�
 
 支持同构模板复用与按实例覆盖。例如集群可有 GPU 节点和 CIM 节点两种类型，也可以在一个节点中混合 GPU 卡和 CIM 卡。型号、介质、精度及封装模板不绑定数量固定的全局字段。
 
-建议的配置位置为 config/hardware/components、chips、systems、clusters，以及独立 config/costs。它们是按职责组织的配置文件目录；组件模板与实例引用关系才决定实际架构。
+配置目录为 config/hardware/components、chips、systems、clusters，以及独立 config/costs。它们是按职责组织的配置文件目录；组件模板与实例引用关系才决定实际架构。
 
 配置按默认值、类型模板、平台变体和实验覆盖解析，保存完整快照及哈希。改变底层结构后，重新校验所有使用该模板的实例、成本模型和执行计划。单实例覆盖需要明确目标 ID，不能悄悄改变全部同类型设备。
 
@@ -241,19 +241,19 @@ TensorRef 至少标明所有者和地址空间。软件统一地址不等于物�
 
 ## 9 实施顺序与验收
 
-先固定接口和最小可执行路径，再扩大物理范围。各层支持摘要模型，因此单卡系统实验与详细 CIM 研究可以共享接口并独立推进。
+先固定接口和最小可执行路径，再扩大物理范围。下表 S1–S7 是异构扩展的工作分解；总体实现门槛使用 docs/architecture/validation.md 中的 A–F，两者分别编号。各层支持摘要模型，单卡系统实验与详细 CIM 研究可共享接口并独立推进。
 
 | 阶段 | 实现范围 | 完成条件 |
 | --- | --- | --- |
-| A | 参数字典、实例图、端口、能力与成本接口 | 单芯片配置有效，模板展开及引用唯一 |
-| B | 数字基线和 CIM 单芯片、多核与共享存储 | 功能正确；端口争用与流水线可手算 |
-| C | Dual-Die、局部 3D 堆叠、3D CIM 和 HBF 模型 | 跨层与装载路径明确；热及介质简化条件可追踪 |
-| D | 单节点 CPU 加多类设备、多卡互连 | 共享 PCIe / 内存瓶颈可重现，数据可见性正确 |
-| E | 两节点、NIC、交换网络和点对点传输 | 网络竞争与完成时间符合基准案例 |
-| F | 集合通信与混合并行映射 | Rank、操作序列、功能结果与时间线一致 |
-| G | 规模探索与关键成本校准 | 多方案比较可复现，模型误差与敏感性可解释 |
+| S1 | 参数字典、实例图、端口、能力与成本接口 | 单芯片配置有效，模板展开及引用唯一 |
+| S2 | 数字基线和 CIM 单芯片、多核与共享存储 | 功能正确；端口争用与流水线可手算 |
+| S3 | Dual-Die、局部 3D 堆叠、3D CIM 和 HBF 模型 | 跨层与装载路径明确；热及介质简化条件可追踪 |
+| S4 | 单节点 CPU 加多类设备、多卡互连 | 共享 PCIe / 内存瓶颈可重现，数据可见性正确 |
+| S5 | 两节点、NIC、交换网络和点对点传输 | 网络竞争与完成时间符合基准案例 |
+| S6 | 集合通信与混合并行映射 | Rank、操作序列、功能结果与时间线一致 |
+| S7 | 规模探索与关键成本校准 | 多方案比较可复现，模型误差与敏感性可解释 |
 
-阶段 C 的 3D CIM 电路细化和阶段 D 的节点组合可以在接口固定后分别推进，不要求先具备完整晶体管级模型。首个集群闭环采用 2 节点，每节点控制 CPU 加 2 个加速设备，以小规模点对点和 AllReduce 验证通信。设备类型可从两个相同设备逐步替换为 GPU 与 CIM；生产规模数量通过配置扩展。
+S3 的 3D CIM 电路细化和 S4 的节点组合可以在接口固定后分别推进，不要求先具备完整晶体管级模型。首个集群闭环采用 2 节点，每节点控制 CPU 加 2 个加速设备，以小规模点对点和 AllReduce 验证通信。设备类型可从两个相同设备逐步替换为 GPU 与 CIM；生产规模数量通过配置扩展。
 
 ### 9.1 最小验证集合
 
@@ -272,9 +272,9 @@ Strong Scaling 固定总工作量，Weak Scaling 随资源增加工作量。异�
 
 芯片功耗、板卡功耗、节点功耗和设施功耗分别划界。共享交换机不能按每个通信参与者重复计入整机功耗；采用 PUE 时注明 IT 功耗边界，避免将已包含的冷却成本再乘一次。
 
-## 10 建议的目录演进
+## 10 目录与实现位置
 
-以下是后续实现位置；现有 chipmodel/compute、memory、interconnect、control 保留。目录是代码职责划分，实际资源组成由配置决定。
+以下目录已建立，作为后续执行模型的实现位置；原有 chipmodel/compute、memory、interconnect、control 保留。目录是代码职责划分，实际资源组成由配置决定。
 
 ```text
 chipmodel/
@@ -285,21 +285,24 @@ chipmodel/
   composition/      Tile Die Package 组合
   packaging/        裸片位置 堆叠 物理连接 热参数
 systemmodel/
-  composition/      Board Card Socket Node
+  composition/      Board Card Node
   io/               PCIe CXL DMA NIC 与地址路径
 clustermodel/
-  composition/      Cluster Rack Pod 与分组
+  composition/      Cluster 与资源分组
   fabric/           交换机 跨节点链路 路由与争用
 runtime/
   dispatch/         软件队列 派发与动态策略
   communication/    集合通信算法与分块
 contracts/          公共类型与格式
-configuration/      参数字典 解析 校验与快照
+configuration/      参数字典 解析 校验与冻结
+costmodel/          条件成本 特征化与不确定性
+artifacts/          清单 序列化 存储与来源
+ui/                 参数表单 拓扑 映射与时序视图
 ```
 
 NIC 的硬件状态由实例所属的 systemmodel 维护，clustermodel 引用其端口；需要细化 NIC 内部时再组合 chipmodel 资源。同一个物理组件只有一份状态。公共端口和事件定义放在 contracts，具体时序适配仍由对应模型负责。
 
-现有 compiler/src/globalsplit、globalsolver、tiling、memplan、sched、lowering 和 export 按阶段扩展跨设备支持，不立即复制一套集群编译器。现有 simulator 和 evaluation 继续承担统一执行、实验管理与结果分析。新目录在相应阶段有实际实现时建立。
+现有 compiler/src/globalsplit、globalsolver、tiling、memplan、sched、lowering 和 export 按阶段扩展跨设备支持，不立即复制一套集群编译器。现有 simulator 和 evaluation 继续承担统一执行、实验管理与结果分析。主模块的 README.md 与 docs/design.md 说明子目录、状态、输入输出和验证责任；本次建立结构，不代表已完成执行实现。
 
 ## 11 参考资料
 
