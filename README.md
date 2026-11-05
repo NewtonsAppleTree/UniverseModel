@@ -6,6 +6,8 @@
 
 ## 先读哪些文档
 
+**总入口：[项目总览](docs/PROJECT_OVERVIEW.md)。** 按软件与物理层级说明全部目录、13 个模块的输入处理输出、数据格式、完整实验链，以及不同工作应调用哪些模块。先读这份，再按需要查下面的规范。
+
 1. [顶层架构](docs/architecture/design.md)：模块边界、状态归属和完整信息链。
 2. [第一性原理](docs/architecture/first_principles.md)：整个项目与各模块最核心的问题。
 3. [分场景推演](docs/architecture/scenarios.md)：单芯片、CIM、3D、HBF、异构与集群。
@@ -58,6 +60,7 @@ python tools/check_structure.py
 
 ## Word 与后续开发
 
+- [项目总览 Word](docs/UniverseModel_Project_Overview.docx)：一份读清目录、模块、数据和任务路线。
 - [工程设计 Word](docs/UniverseModel_Design.docx)：顶层架构、公共契约、验证门槛。
 - [架构参数手册 Word](docs/UniverseModel_Architecture_Parameters.docx)：结构、英文术语与参数来源。
 - [异构与集群规划 Word](docs/UniverseModel_Heterogeneous_Cluster_Plan.docx)：异构、封装、HBF 与集群。

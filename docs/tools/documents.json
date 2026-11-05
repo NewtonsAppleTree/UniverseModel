@@ -1,4 +1,12 @@
 {
+  "overview": {
+    "sources": [
+      "docs/PROJECT_OVERVIEW.md"
+    ],
+    "filename": "UniverseModel_Project_Overview.docx",
+    "title": "UniverseModel 项目总览",
+    "subtitle": "模块层级 输入输出 数据格式与任务路线"
+  },
   "design": {
     "sources": [
       "docs/architecture/design.md",

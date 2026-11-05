@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit
 
 from docx import Document
 from docx.enum.style import WD_STYLE_TYPE
@@ -14,6 +16,7 @@ from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.shared import Cm, Inches, Pt, RGBColor
 
 
@@ -41,9 +44,10 @@ def set_font(style, size: float, *, bold: bool = False) -> None:
         fonts.set(qn(f"w:{attr}"), FONT)
 
 
-def inline(paragraph, text: str) -> None:
+def inline(paragraph, text: str, *, source_dir: Path | None = None,
+           output_dir: Path | None = None) -> None:
     """Handle the inline code and emphasis used in the source documents."""
-    for part in re.split(r"(`[^`]+`|\*\*[^*]+\*\*)", text):
+    for part in re.split(r"(`[^`]+`|\*\*[^*]+\*\*|\[[^\]\n]+\]\([^)\n]+\))", text):
         if not part:
             continue
         if part.startswith("`") and part.endswith("`"):
@@ -54,6 +58,30 @@ def inline(paragraph, text: str) -> None:
             )
         elif part.startswith("**") and part.endswith("**"):
             paragraph.add_run(part[2:-2]).bold = True
+        elif match := re.fullmatch(r"\[([^\]]+)\]\(([^)]+)\)", part):
+            label, target = match.groups()
+            parsed = urlsplit(target)
+            if not parsed.scheme and parsed.path and source_dir and output_dir:
+                resolved = (source_dir / unquote(parsed.path)).resolve()
+                target = quote(Path(os.path.relpath(resolved, output_dir)).as_posix(), safe="/")
+                if parsed.fragment:
+                    target += "#" + parsed.fragment
+            hyperlink = OxmlElement("w:hyperlink")
+            hyperlink.set(qn("r:id"), paragraph.part.relate_to(target, RT.HYPERLINK, is_external=True))
+            run = OxmlElement("w:r")
+            props = OxmlElement("w:rPr")
+            color = OxmlElement("w:color")
+            color.set(qn("w:val"), "000000")
+            props.append(color)
+            underline = OxmlElement("w:u")
+            underline.set(qn("w:val"), "single")
+            props.append(underline)
+            run.append(props)
+            text_node = OxmlElement("w:t")
+            text_node.text = label
+            run.append(text_node)
+            hyperlink.append(run)
+            paragraph._p.append(hyperlink)
         else:
             paragraph.add_run(part)
 
@@ -131,7 +159,9 @@ def configure(document) -> None:
     footer._p.append(field)
 
 
-def add_table(document, lines: list[str], *, reference: bool = False) -> None:
+def add_table(document, lines: list[str], *, reference: bool = False,
+              source_dir: Path | None = None,
+              output_dir: Path | None = None) -> None:
     rows = []
     for line in lines:
         cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
@@ -152,6 +182,18 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
         widths = (1.8, 9.2, 6.0)
     elif rows[0][0] == "专题":
         widths = (2.8, 8.4, 5.8)
+    elif rows[0][0] == "单元" and columns == 4:
+        widths = (3.0, 4.3, 4.8, 4.9)
+    elif rows[0][0] == "步骤" and columns == 4:
+        widths = (2.1, 4.7, 5.8, 4.4)
+    elif rows[0][0] == "信息对象":
+        widths = (4.2, 8.2, 4.6)
+    elif rows[0][0] == "主模块":
+        widths = (2.8, 11.2, 3.0)
+    elif rows[0][0] == "想完成的工作":
+        widths = (4.0, 8.0, 5.0)
+    elif rows[0][0] == "保存位置":
+        widths = (5.0, 5.7, 6.3)
     elif not reference and rows[0][0] == "对象":
         widths = (4.3, 5.7, 7.0)
     elif not reference and rows[0][0] == "关系":
@@ -196,7 +238,7 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
             cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
             paragraph = cell.paragraphs[0]
             paragraph.style = "Table Body"
-            inline(paragraph, value)
+            inline(paragraph, value, source_dir=source_dir, output_dir=output_dir)
             if rows[0][0] in ("阶段", "优先级") and column_index == 0:
                 paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             if index == 0:
@@ -215,7 +257,9 @@ def add_table(document, lines: list[str], *, reference: bool = False) -> None:
 
 def append_markdown(document, content: str, section_number: int,
                     *, reference: bool = False,
-                    page_break_titles: tuple[str, ...] = ()) -> None:
+                    page_break_titles: tuple[str, ...] = (),
+                    source_dir: Path | None = None,
+                    output_dir: Path | None = None) -> None:
     lines = content.splitlines()
     index = 0
     while index < len(lines):
@@ -244,7 +288,8 @@ def append_markdown(document, content: str, section_number: int,
             while index < len(lines) and lines[index].strip().startswith("|"):
                 table_lines.append(lines[index])
                 index += 1
-            add_table(document, table_lines, reference=reference)
+            add_table(document, table_lines, reference=reference,
+                      source_dir=source_dir, output_dir=output_dir)
             continue
         elif line.startswith("```"):
             index += 1
@@ -253,13 +298,14 @@ def append_markdown(document, content: str, section_number: int,
                 index += 1
         elif re.match(r"^\d+\.\s", line):
             paragraph = document.add_paragraph(style="List Number")
-            inline(paragraph, re.sub(r"^\d+\.\s+", "", line))
+            inline(paragraph, re.sub(r"^\d+\.\s+", "", line),
+                   source_dir=source_dir, output_dir=output_dir)
         elif line.startswith("- "):
             paragraph = document.add_paragraph(style="List Bullet")
-            inline(paragraph, line[2:])
+            inline(paragraph, line[2:], source_dir=source_dir, output_dir=output_dir)
         else:
             paragraph = document.add_paragraph()
-            inline(paragraph, line)
+            inline(paragraph, line, source_dir=source_dir, output_dir=output_dir)
         index += 1
 
 
@@ -286,7 +332,9 @@ def main() -> None:
     document.add_paragraph(subtitle, "Subtitle")
     for number, content in enumerate(contents, start=1):
         append_markdown(document, content, number, reference=reference,
-                        page_break_titles=("11 参考资料",) if args.document == "scaling" else ())
+                        page_break_titles=("11 参考资料",) if args.document == "scaling" else (),
+                        source_dir=sources[number - 1].parent,
+                        output_dir=args.output.resolve().parent)
 
     document.core_properties.title = title
     document.core_properties.subject = subtitle

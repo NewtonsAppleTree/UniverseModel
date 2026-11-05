@@ -1,9 +1,14 @@
 # 文档索引与维护
 
+**先读 [PROJECT_OVERVIEW.md 项目总览](PROJECT_OVERVIEW.md)。** 这是整体项目的总入口，集中说明每个目录属于哪层、负责什么、输入输出及格式、完成不同工作需要哪些模块，以及当前实现状态。[Word 阅读版](UniverseModel_Project_Overview.docx)与它使用同一正文。
+
+总览用于建立整体认识；下面的文档用于查询具体规范。
+
 ## 阅读与权威范围
 
 | 层次 | 文档 | 回答的问题 |
 | --- | --- | --- |
+| 总入口 | [项目总览](PROJECT_OVERVIEW.md) | 从目录和输入输出理解整条工作链 |
 | 顶层 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md) | 模块怎样分工和装配 |
 | 语义 | [公共契约](interfaces/contracts.md)、[产物规范](interfaces/artifacts.md) | 信息交换、状态和复现 |
 | 方法 | [参数与公式](methods/parameters_and_math.md)、[工作流](methods/workflows.md)、[优化](methods/optimization.md) | 怎样计算、比较和改进 |
@@ -32,6 +37,7 @@
 
 | 输出 | 维护源 |
 | --- | --- |
+| [UniverseModel_Project_Overview.docx](UniverseModel_Project_Overview.docx) | PROJECT_OVERVIEW.md |
 | [UniverseModel_Design.docx](UniverseModel_Design.docx) | architecture/design.md、interfaces/contracts.md、architecture/validation.md |
 | [UniverseModel_Architecture_Parameters.docx](UniverseModel_Architecture_Parameters.docx) | architecture/architecture_parameters.md |
 | [UniverseModel_Heterogeneous_Cluster_Plan.docx](UniverseModel_Heterogeneous_Cluster_Plan.docx) | architecture/heterogeneous_cluster_plan.md |
@@ -44,6 +50,7 @@
 使用含 python-docx 的环境，依赖范围见 [requirements.txt](tools/requirements.txt)。根目录执行：
 
 ```text
+python docs/tools/build_docx.py --document overview
 python docs/tools/build_docx.py --document design
 python docs/tools/build_docx.py --document parameters
 python docs/tools/build_docx.py --document scaling
