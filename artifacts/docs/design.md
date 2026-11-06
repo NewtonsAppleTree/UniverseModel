@@ -2,6 +2,8 @@
 
 ## 核心与边界
 
+本地小数据 bundle 接口见[storage](../storage/UNITS.md)：不可覆盖的新目录、最终 manifest 标记、版本/字节/哈希/身份校验。当前保存一个自包含 run.json；大数组引用、轨迹、恢复与后端按下述设计扩展。
+
 最重要的是结果能追溯到完整输入和执行依据。artifacts 只依赖 contracts，负责 codecs、storage、manifest 和 provenance；不计算硬件性能、不决定参考结果是否通过。
 
 输入是各模块生成的版本化对象、文件/内容引用和状态变更；输出是可校验产物引用与运行清单。语义由生产模块负责，序列化和保存一致性由本模块负责。具体规范见[实验产物](../../docs/interfaces/artifacts.md)。

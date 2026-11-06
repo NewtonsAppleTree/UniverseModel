@@ -1,7 +1,8 @@
-"""检查 chipmodel 注释与目录文档；由代码生成 UNITS.md 参数/接口表。"""
+"""检查已实现模块的注释与目录文档；由代码生成 UNITS.md 参数/接口表。"""
 
 import argparse
 import ast
+import json
 from io import StringIO
 from pathlib import Path
 import re
@@ -9,7 +10,6 @@ import tokenize
 
 
 ROOT = Path(__file__).resolve().parents[1]  # 仓库根目录。
-MODEL_ROOT = ROOT / "chipmodel"  # 当前纳入强制检查的模块。
 START = "<!-- model-fields:start -->"  # 自动维护区起始标记。
 END = "<!-- model-fields:end -->"  # 自动维护区结束标记。
 
@@ -94,12 +94,31 @@ def generated_section(directory: Path) -> tuple[str, list[str]]:
     return "\n".join(sections).rstrip(), errors
 
 
-# 遍历 chipmodel 的每个模块目录，检查手写说明存在并核对自动字段表是否与源码一致。
+# chipmodel 全目录及其他已实现 Python 的目录/祖先纳入检查；空骨架按实现时加入。
+def model_directories() -> list[Path]:
+    directories = set()
+    manifest = json.loads((ROOT / "docs/architecture/modules.json").read_text(encoding="utf-8"))
+    for module in manifest["modules"]:
+        base = ROOT / module["path"]
+        if module["id"] == "chipmodel":
+            directories.add(base)
+            directories.update(path for path in base.rglob("*") if path.is_dir()
+                               and not any(part.startswith(".") or part == "__pycache__" for part in path.relative_to(base).parts))
+        else:
+            for source in base.rglob("*.py"):
+                if any(part.startswith(".") or part == "__pycache__" for part in source.relative_to(base).parts):
+                    continue
+                directory = source.parent
+                while directory != base.parent:
+                    directories.add(directory)
+                    directory = directory.parent
+    return sorted(directories)
+
+
+# 遍历已纳入实现的模块目录，核对前置/字段注释与自动字段表的单一维护定义。
 def check(*, write_docs: bool = False) -> list[str]:
     errors = []
-    directories = [MODEL_ROOT] + sorted(p for p in MODEL_ROOT.rglob("*") if p.is_dir()
-                                       and not any(part.startswith(".") or part == "__pycache__"
-                                                   for part in p.relative_to(MODEL_ROOT).parts))
+    directories = model_directories()
     for directory in directories:
         document = directory / "UNITS.md"
         if not document.exists():
@@ -131,7 +150,7 @@ def main() -> int:
     for error in errors:
         print(f"ERROR: {error}")
     if not errors:
-        print("OK: chipmodel definition notes, field notes, per-directory UNITS.md and source-derived tables.")
+        print(f"OK: {len(model_directories())} implemented module directories; definition/field notes and source-derived UNITS.md.")
     return bool(errors)
 
 

@@ -2,6 +2,8 @@
 
 ## 核心与状态
 
+现有严格 JSON → 冻结 dataclass 接口见[resolution](../resolution/UNITS.md)。当前覆盖默认值、文件和显式调用覆盖，派生公式继续由 producer 维护；下面的模板、来源链、迁移与 UI 元数据是扩展设计。
+
 最重要的是一次实验只有一套明确的有效参数。configuration 依赖 contracts，负责参数定义、解析、派生、约束和迁移；config 目录仅存文件。编辑草稿可变，`ResolvedConfig` 一旦交给实验就不可变，修改生成新 revision。
 
 `definitions` 定义字段及元数据，`resolution` 处理模板/实例与覆盖，`validation` 处理局部及跨字段约束，`migration` 转换历史版本。硬件能力约束通过公共描述传入，不反向导入 chipmodel。

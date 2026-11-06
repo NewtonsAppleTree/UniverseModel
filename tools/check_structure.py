@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import ast
 import json
 import re
 import sys
@@ -71,6 +72,33 @@ def check_modules() -> int:
                 f"{name}: duplicate dependency")
     check_dag({key: value["allowed_dependencies"] for key, value in modules.items()}, "module dependencies")
     return len(modules)
+
+
+# Check actual Python imports against the same module DAG; namespace packages need no __init__.py.
+def check_python_dependencies() -> int:
+    modules = index_unique(read_json("docs/architecture/modules.json")["modules"], "module imports")
+    source_count = 0
+    for name, module in modules.items():
+        for path in (ROOT / module["path"]).rglob("*.py"):
+            if any(part.startswith(".") or part == "__pycache__" for part in path.relative_to(ROOT).parts):
+                continue
+            source_count += 1
+            try:
+                tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            except SyntaxError as exc:
+                ERRORS.append(f"{path.relative_to(ROOT)}: {exc}")
+                continue
+            for node in ast.walk(tree):
+                imported = []
+                if isinstance(node, ast.Import):
+                    imported = [alias.name.split(".")[0] for alias in node.names]
+                elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                    imported = [node.module.split(".")[0]]
+                for dependency in imported:
+                    if dependency in modules and dependency != name:
+                        require(dependency in module["allowed_dependencies"],
+                                f"{path.relative_to(ROOT)}:{node.lineno}: forbidden dependency {name} -> {dependency}")
+    return source_count
 
 
 def check_markdown() -> int:
@@ -160,6 +188,7 @@ def check_docx_sources() -> int:
 def main() -> int:
     try:
         module_count = check_modules()
+        python_count = check_python_dependencies()
         markdown_count = check_markdown()
         check_example()
         document_count = check_docx_sources()
@@ -169,7 +198,7 @@ def main() -> int:
         for error in ERRORS:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print(f"OK: {module_count} modules, dependency DAG, {markdown_count} Markdown files, "
+    print(f"OK: {module_count} modules, dependency DAG, allowed imports in {python_count} Python files, {markdown_count} Markdown files, "
           f"structural example, {document_count} DOCX source hashes.")
     print("Scope: scaffold consistency only; no functional or performance claims.")
     return 0

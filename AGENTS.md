@@ -11,3 +11,10 @@
 - 新设计先用根目录 [ARCHITECTURE_PARAMETERS.md](ARCHITECTURE_PARAMETERS.md) 筛选相关参数、单位、关系和来源；它是查阅清单，不要求实现全部候选项。实际字段仍由代码与各目录 UNITS.md 维护，新增或修正参数关系时同步清单。
 - 只对有独立行为的类型建类；同质 cell 用数组，组合层引用资源，避免为目录或技术型号生成空类。
 - 更新代码时同步模块文档、必要的独立验证和 STATUS。运行 `python tools/check_model_rules.py` 与 `python tools/check_structure.py`；业务模型另运行对应测试。
+
+## 通用工程接口
+
+- 按 [ENGINEERING_FRAMEWORK.md](ENGINEERING_FRAMEWORK.md) 接入：各模块保留专业 Params/Input/Output；通用层负责参数解析、运行记录、单位和产物。独立调用可绕过完整实验链。
+- 公共契约只依赖标准库；configuration/artifacts 不反向导入硬件。实际 Python import 必须满足 [modules.json](docs/architecture/modules.json)，结构检查会核对。
+- 配置不承载可执行字符串、动态 import 或任意公式。派生公式留在生产模块；未知物理成本用明确未知状态，host wall time 不进入目标性能指标。
+- 新增实际 Python 实现时为该目录及模块祖先维护 UNITS.md；规则检查保留 chipmodel 全目录检查，并自动覆盖其他主模块的实现目录。空骨架按需求实现，不生成无行为类。

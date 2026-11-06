@@ -4,6 +4,8 @@
 
 实现进度统一见[实现状态](../docs/STATUS.md)；本页说明职责与目录。
 
+注入函数的单次运行入口见 [UNITS.md](UNITS.md)；所有模块的接入与状态归属见[工程框架](../ENGINEERING_FRAMEWORK.md)。
+
 ## 阅读入口
 
 - [模块设计](docs/design.md)

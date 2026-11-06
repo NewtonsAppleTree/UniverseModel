@@ -2,6 +2,8 @@
 
 ## 核心与边界
 
+当前公共工程对象入口见[UNITS](../UNITS.md)：ExperimentSpec、Metric、RunRecord 与 canonical JSON/单位词汇。它们是完整硬件/计划/事件契约中的独立小边界；各模块仍使用专业 payload，接入设计见[工程框架](../../ENGINEERING_FRAMEWORK.md)。
+
 最重要的是不同模块对“同一对象、同一单位、同一次完成”理解一致。contracts 定义公共值对象、资源能力与端口协议，不组织实验，不包含硬件状态或编译优化逻辑；无业务依赖。
 
 `hardware` 管资源/端口/关系，`workload` 管语义与数据引用，`plan` 管放置/执行/通信计划，`events` 管请求及通知，`results` 管结果，`units` 管量纲，`versions` 管兼容性。结构格式校验在本模块；具体芯片能否支持某配置由对应硬件能力约束判断。

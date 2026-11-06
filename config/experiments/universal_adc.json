@@ -1,0 +1,15 @@
+{
+  "schema_version": "universal-adc-example/v1",
+  "configuration": {
+    "clock": {"domain_id": "adc", "frequency_hz": 1000000000},
+    "adc": {
+      "resolution_bits": 10,
+      "lane_count": 4,
+      "conversion_cycles": 2,
+      "initiation_interval_cycles": 2,
+      "input_min_v": -0.5,
+      "input_max_v": 0.5
+    }
+  },
+  "inputs": {"voltages_v": [-0.5, -0.25, 0, 0.25, 0.5]}
+}

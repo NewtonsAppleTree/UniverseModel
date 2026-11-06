@@ -15,3 +15,11 @@ python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
 结构检查另行运行 `python tools/check_structure.py`；它不代替数值或时序验证。
 
 代码/参数文档规则另行运行 `python tools/check_model_rules.py`。更新字段后可用 `--write-docs` 刷新各目录 UNITS.md 的生成区；默认只检查，不修改文件。
+
+通用工程边界在 [test_framework.py](integration/test_framework.py) 验证：严格配置/覆盖、冻结嵌套值、规范化哈希、独立 ADC/DMA 接入、重复调用隔离、失败/未知指标、模式/单位、保存往返与损坏/不完整产物，以及依赖/注释检查的非法样例。单独运行：
+
+```text
+python -m unittest discover -s tests/integration -p "test_*.py" -v
+```
+
+它验证工程接口，不代替硬件的数值或时序校核。结构检查还核对主模块 Python import，允许依赖以 modules.json 为单一维护定义。

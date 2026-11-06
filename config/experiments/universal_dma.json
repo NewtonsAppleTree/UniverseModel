@@ -1,0 +1,13 @@
+{
+  "schema_version": "universal-dma-example/v1",
+  "configuration": {
+    "clock": {"domain_id": "dma", "frequency_hz": 1000000000},
+    "dma": {
+      "bytes_per_cycle": 8,
+      "max_burst_bytes": 16,
+      "startup_cycles": 1,
+      "burst_overhead_cycles": 0
+    }
+  },
+  "inputs": {"payload_bytes": 72}
+}

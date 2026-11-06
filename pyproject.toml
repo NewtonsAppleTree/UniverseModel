@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "UniverseModel"
+version = "0.1.0"
+description = "Composable chip and AI architecture models with explicit experiment boundaries"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+namespaces = true
+include = ["contracts*", "configuration*", "costmodel*", "chipmodel*", "systemmodel*", "clustermodel*", "workloads*", "compiler*", "runtime*", "simulator*", "artifacts*", "evaluation*", "ui*"]
+exclude = ["*.docs*", "compiler.temp*", "compiler.3rdparty*", "compiler.tests*"]

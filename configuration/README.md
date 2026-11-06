@@ -4,6 +4,8 @@
 
 实现进度统一见[实现状态](../docs/STATUS.md)；本页说明职责与目录。
 
+冻结 dataclass 的 JSON/显式覆盖解析入口见 [UNITS.md](UNITS.md)；通用接入见[工程框架](../ENGINEERING_FRAMEWORK.md)。
+
 ## 阅读入口
 
 - [模块设计](docs/design.md)

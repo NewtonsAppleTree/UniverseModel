@@ -2,7 +2,9 @@
 
 先读 [项目总览](PROJECT_OVERVIEW.md)了解模块、输入输出和任务路线；查看 [实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
-只使用部分模块、搭建组件台架或设计硬件接口时，从[可组合组件与局部仿真规划](architecture/composable_simulation.md)进入。本轮优先 CIM array + DAC/ADC + 缓冲；公共事件接口与配置样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
+通用工程接口、各模块接入与实现顺序从[ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)进入。当前先完善可独立使用的工程框架；CIM array + DAC/ADC + 缓冲台架保留为后续验收。
+
+搭建组件台架或设计硬件接口时，再查[可组合组件与局部仿真规划](architecture/composable_simulation.md)；其公共事件接口与 BenchSpec 样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 
 ## 目录分工
 

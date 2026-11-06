@@ -4,6 +4,8 @@
 
 实现进度统一见[实现状态](../docs/STATUS.md)；本页说明职责与目录。
 
+小数据运行的本地保存/校验入口见 [UNITS.md](UNITS.md)；通用产物边界见[工程框架](../ENGINEERING_FRAMEWORK.md)。
+
 ## 阅读入口
 
 - [模块设计](docs/design.md)

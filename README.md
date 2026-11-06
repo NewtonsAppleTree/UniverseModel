@@ -8,6 +8,8 @@
 
 仓库开发约定见 [AGENTS.md](AGENTS.md)。chipmodel 的系统关系、各子模块 Unit 与参数入口见 [UNITS.md](chipmodel/UNITS.md)，包含第一性约束、专业术语、单位、公式和覆盖范围。
 
+**通用工程入口：[ENGINEERING_FRAMEWORK.md](ENGINEERING_FRAMEWORK.md)。** 说明各模块的输入输出、状态归属与接入顺序；现在可选择独立模型，解析 JSON/显式覆盖，记录并保存一次运行。
+
 ## 先读哪些文档
 
 **总入口：[项目总览](docs/PROJECT_OVERVIEW.md)。** 按软件与物理层级说明全部目录、13 个模块的输入处理输出、数据格式、完整实验链，以及不同工作应调用哪些模块。先读这份，再按需要查下面的规范。
@@ -49,7 +51,7 @@
 config/       硬件、成本、编译、运行、仿真与实验配置文件
 data/         输入、校准来源和运行产物
 tests/        契约、模型、系统与集成验证归属
-example/      独立 ADC 示例、结构示例与工作流预留
+example/      通用配置/运行示例、独立模型示例、结构示例
 docs/         顶层架构、契约、方法、决策和 Word 文档
 tools/        结构一致性等开发工具
 ```
@@ -62,11 +64,16 @@ tools/        结构一致性等开发工具
 python tools/check_structure.py
 python tools/check_model_rules.py
 python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+python -m unittest discover -s tests/integration -p "test_*.py" -v
 python -m example.adc_demo
 python -m example.chipmodel_demo
+python -m example.universal_demo --case adc
+python -m example.universal_demo --case dma --set inputs.payload_bytes=64
 ```
 
-结构检查覆盖目录、依赖、文档链接和 Word 源哈希；模型规则检查覆盖定义/字段注释与各目录参数文档。测试和示例验证局部模型及系统约束，使用方法见 [Unit 总入口](chipmodel/UNITS.md)。分析下界不等于实际运行时间，这些检查也不证明电路可实现性或成本精度。
+结构检查覆盖目录、实际 Python 模块依赖、文档链接和 Word 源哈希；模型规则检查覆盖已实现模块的定义/字段注释与参数文档。测试和示例验证局部模型及工程约束，使用方法见 [Unit 总入口](chipmodel/UNITS.md)。分析下界不等于实际运行时间，这些检查也不证明电路可实现性或成本精度。
+
+跨目录导入代码可选择 `python -m pip install -e .`；包定义见 [pyproject.toml](pyproject.toml)。示例与配置从仓库根目录运行；通用示例支持 `--config`、`--set`、`--output` 与显式 `--source-revision`。
 
 ## 文档维护与后续开发
 

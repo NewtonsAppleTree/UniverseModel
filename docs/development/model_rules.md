@@ -1,6 +1,6 @@
 # 所有模块的模型代码与文档规则
 
-这是一项全仓库约定，不限于 ADC。先对 chipmodel 的全部目录和 Python 定义执行；其他主模块首次实现或修改时采用同一规则。规则约束表达与验证方式，不要求所有 Unit 具有相同硬件机制。
+这是一项全仓库约定，不限于 ADC。对 chipmodel 的全部目录，以及其他主模块实际 Python 实现目录和模块祖先执行。空骨架在首次实现时纳入；规则约束表达与验证方式，不要求所有 Unit 具有相同硬件机制。
 
 ## 从系统关系到代码
 
@@ -71,4 +71,4 @@ class ClockDomain:
 
 参考 [gem5 参数定义](https://github.com/gem5/gem5/blob/stable/src/mem/DRAMInterface.py)的类型/量纲与描述相邻、[Ramulator2](https://github.com/CMU-SAFARI/ramulator2)的组件边界与时序约束、[Timeloop](https://github.com/NVlabs/timeloop)的架构/工作量分析，以及 [DNN+NeuroSim](https://github.com/neurosim/DNN_NeuroSim_V1.4)的器件/外围与校准边界。论文来源见 [Unit 设计参考](../../chipmodel/docs/unit_model_design.md)。前置注释和 UNITS.md 是本项目约定，不能从论文等级推导代码正确性。
 
-`tools/check_model_rules.py` 检查 chipmodel 每个定义前的注释、声明字段旁的注释、字段文档覆盖和目录 UNITS.md。它只验证规则的结构落实；公式、术语与物理假设仍需审阅和独立测试。
+`tools/check_model_rules.py` 检查上述实现范围内每个定义前的注释、声明字段旁的注释、字段文档覆盖和目录 UNITS.md。它只验证规则的结构落实；公式、术语与物理假设仍需审阅和独立测试。通用接入与模块状态归属见[工程框架](../../ENGINEERING_FRAMEWORK.md)；结构工具另核对实际 Python import 是否满足模块依赖清单。
