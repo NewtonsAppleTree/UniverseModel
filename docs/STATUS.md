@@ -19,6 +19,7 @@
 | 仓库开发规则与参数文档 | 根目录/模块 AGENTS.md、统一规则、chipmodel 全部 27 个目录的 UNITS.md；字段/接口表从代码生成并检查同步 | [规则](development/model_rules.md)、[总入口](../chipmodel/UNITS.md)、[检查工具](../tools/check_model_rules.py) |
 | 顶层设计参数查阅 | 已整理计算/存储/互连、物理条件与 AI 工作量的候选参数、单位、公式和来源边界；不新增模型能力 | [参数清单](../ARCHITECTURE_PARAMETERS.md)，含 DDR/HBM/Flash、CIM 与原材料修正 |
 | 训练/推理场景架构 | trainingArch/inferArch 已有 README 与 UNITS 参数入口，复用 13 个基础模块；未实现独立分析器、调度器或执行器 | [训练](../trainingArch/README.md)、[推理](../inferArch/README.md) |
+| 张量区域与编译规约设计 | 已有维度/ROI/存储/partial 契约提案、切块与归并推导、手册统计和修订例；未实现 ROI schema、tiling pass 或 attention kernel | [区域契约](interfaces/tensor_regions.md)、[编译设计](../compiler/docs/tiling_and_reduction.md)、[审阅统计](reference/layout_roi_review.md) |
 | 异构结构示例 | 可检查引用；不可作为执行配置 | [示例说明](../example/specs/README.md)、[结构 JSON](../example/specs/heterogeneous_topology.json) |
 | 配置与 UI | 解析器、表单和运行入口未实现 | [配置设计](../configuration/docs/design.md)、[UI 设计](../ui/docs/design.md) |
 | 编译与未实现硬件机制 | 编译器仍是骨架；全部候选 Unit 并未穷尽实现，细化 CPU/GPU、协议/一致性、PHY 等仍需按研究问题加入 | [单元覆盖清单](../chipmodel/docs/component_inventory.md)、[Unit 类与参数设计](../chipmodel/docs/unit_model_design.md) |

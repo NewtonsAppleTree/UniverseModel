@@ -7,6 +7,9 @@
 ## 阅读入口
 
 - [模块设计](docs/design.md)
+- [分析职责与参数入口](UNITS.md)
+- [张量区域、切块与规约](docs/tiling_and_reduction.md)：需求传播、尾块、split-K、GQA/attention 状态和输出投影走查
+- [外部 layout_roi 手册审阅](../docs/reference/layout_roi_review.md)：内容统计、逐项修正与实现核查边界
 - [顶层架构](../docs/architecture/design.md)
 - [公共契约](../docs/interfaces/contracts.md)
 - [参数与数学方法](../docs/methods/parameters_and_math.md)

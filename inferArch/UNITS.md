@@ -5,6 +5,7 @@
 | 候选分析职责（非已实现 Unit） | 输入参数与单位 | 输出与关键关系 |
 | --- | --- | --- |
 | 阶段工作量 | prompt/context/output [token]、batch [request]、各算子 shape/dtype | prefill/decode 的 FLOP/op、各存储与链路边界 B；不能仅由阶段名断定瓶颈 |
+| Attention 分区与输出投影 | S_q/S_kv [token]、query/KV heads、group/head ROI、partial dtype [bit] | query 与 key 位置分别推导；局部 head attention 后的 Linear O 可能需 K 部分和，context 切分需 softmax 状态归并；见[编译设计](../compiler/docs/tiling_and_reduction.md) |
 | KV 容量与流量 | 各层 KV heads [个]、K/V 维度 [element]、精度 [bit]、有效长度 [token]、布局 | 有效 B、分配 B、read/write/transfer B；按 KV heads 统计，分页/元数据/复制分别计算 |
 | 请求与指标窗口 | 到达、首/后续/末 token 时间戳 [s]、输出数 [token]、质量/SLO | TTFT、ITL；N_out>1 时 TPOT=(t_last−t_first)/(N_out−1)；单 token 输出不定义 TPOT |
 | 推理效率 | 完成输出 token、时间 [s]、能量 [J]、成本 [货币] | token/s、满足 SLO 的 goodput、J/output-token、成本/10⁶ token；明确 prefill、空闲、主机和网络边界 |

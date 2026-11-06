@@ -52,10 +52,12 @@
 | --- | --- | --- |
 | 设：操作类型 Operator、张量形状 Tensor Shape | 枚举；element/axis | GEMM A[M,K]×B[K,N]：工作量 MNK MAC；若一乘一加计 2 op，则为 2MNK op。偏置、激活、归约等另计 |
 | 设：批量 Batch、序列长度 Sequence Length、并发 Concurrency | sample、token、request | 分开记录 microbatch/global batch、有效长度/填充长度、到达分布；并发请求数不等于一次 kernel 的 batch |
+| 设：模型宽、query/KV head 数、S_q/S_kv | element、head、token position | H_model 与 n_q·d 分开；均匀 GQA 要求 n_q 可被 n_kv 整除。query 长度与 KV 上下文长度独立，decode 常见 S_q=1；见[张量维度契约](docs/interfaces/tensor_regions.md) |
 | 设：数值格式 Numeric Format、操作数/累加器/输出精度 | 格式；bit/element | FP16/BF16/FP8/FP4/INT8/INT4 等须指定格式；指数、尾数、符号、累加精度和支持操作不能仅由 bit 数推断 |
 | 设：量化 Quantization、舍入 Rounding、溢出 Overflow | scale、zero-point；枚举 | 仿射量化 x≈scale·(q−zero_point)；scale 的量纲随 x。声明 per-tensor/channel/group、饱和/回绕、NaN/Inf/subnormal 规则 |
 | 设/观：稀疏结构 Sparsity、非零数 nnz | 比例、element、block shape | 稀疏率=1−nnz/N；有效工作和流量还受索引/元数据、负载不均、跳零能力影响。不能统一乘一个稀疏率 |
 | 设：布局 Layout、步长 Stride、对齐 Alignment、分块 Tile | B/stride、B、element/axis | 地址=base+Σ index_i·stride_i；声明 stride 是 B 还是 element。边缘 tile、padding、swizzle 会改变物理访问 |
+| 设/推：逻辑 ROI、有效尾块、partial reduction | element index/extent、partition、bit/accumulator | ROI 是逻辑半开区间，不直接表示连续字节；reshape 的区域像可能不连续。split-K、context 与梯度采用不同归并，详见[切块与规约](compiler/docs/tiling_and_reduction.md) |
 | 推/观：工作集 Working Set、活跃数据 Live Data | B | 紧密打包 N 个 b-bit 元素需 ceil(Nb/8) B；实际按各对象的行/块对齐后求和，再加 scale/index/metadata |
 | 推/观：数据流 Dataflow、复用 Reuse、流量 Traffic | 策略、次、B/边界 | WS/OS/RS 表示某层数据驻留与循环映射；复用因子必须绑定张量和层级。Row-stationary 不能直接等同于 DRAM row-buffer 命中 |
 | 设：依赖 DAG、状态生命周期 Lifetime、同步点 | task、s；关系 | 定义谁生产/消费/释放数据，输出何时可见；训练保存激活、CIM 权重驻留与 KV 追加均会改变峰值容量 |

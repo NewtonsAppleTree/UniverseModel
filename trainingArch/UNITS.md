@@ -5,6 +5,7 @@
 | 候选分析职责（非已实现 Unit） | 输入参数与单位 | 输出与关键关系 |
 | --- | --- | --- |
 | 训练工作量 | 各算子 shape [element]、dtype [bit/element]、microbatch [sample]、累积次数 [次] | forward/backward/update 的 FLOP/op 与 B/step；不使用一个固定倍数替代所有算子 |
+| 反向与分区归并 | M/N/K [extent]、token/microbatch 分区、partial dtype [bit]、保存/重计算策略 | dX 收缩原 N，dW 收缩原 M；token 分块需梯度累加，dtype/顺序/dropout 状态明确；见[编译设计](../compiler/docs/tiling_and_reduction.md) |
 | 显存账本 | 参数 [个]、各对象精度 [bit]、分片/复制、生命周期 [s/阶段]、分配粒度 [B] | 每 rank 的 live/allocated B 与峰值；峰值为同一时刻活跃对象之和的最大值 |
 | 并行与通信 | DP/TP/PP/EP/CP group [rank]、tensor bytes [B]、拓扑、调度依赖 | 每 rank 和每链路的 B/collective、通信步骤、受依赖与共享资源约束的重叠 |
 | 训练指标 | 有用模型 FLOPs、执行窗口 [s]、精度对应峰值 [FLOP/s]、能量 [J] | MFU=有用模型 FLOPs/(时间×峰值)；重计算 FLOPs 另记；step/s、有效 token/s、J/step |

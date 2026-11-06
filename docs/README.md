@@ -40,6 +40,7 @@ docs/
 | 怎样设计指令 是否需要 RTL | [指令与仿真精度](architecture/instruction_and_fidelity.md) |
 | 模块边界和代码依赖 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md)、[模块清单](architecture/modules.json) |
 | 模块交换什么信息 | [公共契约](interfaces/contracts.md)、[数据生命周期](interfaces/resource_lifecycle.md) |
+| 张量维度、ROI、切块与规约如何设计 | [张量区域契约](interfaces/tensor_regions.md)、[编译器切块设计](../compiler/docs/tiling_and_reduction.md)、[layout_roi 审阅统计](reference/layout_roi_review.md) |
 | 数据如何保存与复现 | [产物规范](interfaces/artifacts.md) |
 | 参数怎样计算和修改 | [参数与公式](methods/parameters_and_math.md)、[工作流](methods/workflows.md) |
 | 模型怎样组合及验证 | [模型组合](architecture/model_composition.md)、[验证门槛](architecture/validation.md)、[手算案例](methods/design_tradeoff_examples.md) |

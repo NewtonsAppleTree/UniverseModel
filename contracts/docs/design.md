@@ -14,6 +14,8 @@
 
 独立组件拟增加 ComponentSpec、PortSpec、BenchSpec、StimulusSpec 及结果范围，详见[组件接口提案](../../docs/interfaces/component_protocols.md)。统一身份、单位和生命周期，compute/memory/transfer/sampled_signal 等有效载荷按协议区分。现行 ExecutionPlan 生产者字段的迁移要求见[局部仿真规划](../../docs/architecture/composable_simulation.md)，新对象不能被当作已存在的 schema。
 
+张量的语义轴、逻辑 ROI、存储 view 和 partial result 的最小关系另见[张量区域契约提案](../../docs/interfaces/tensor_regions.md)。axis 编号不能代替语义，ROI 不能代替物理地址，partial shape 相同也不足以允许归并；具体 tiling 策略由 compiler 维护。
+
 ## 参数与检查方法
 
 本模块的关键配置是 `schema_version`、单位体系、时间表示、ID 命名空间和兼容表。量纲推导属于可验证约束，例如 `bytes / (bytes/second) = second`；不能凭字段都叫 bandwidth 就允许 bit/s 与 B/cycle 混算。

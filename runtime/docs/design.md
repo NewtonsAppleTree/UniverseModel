@@ -18,6 +18,8 @@
 
 collective 先核对 group/sequence/dtype/reduction，再选择 ring/tree/分层算法，展开为 P2P 与局部规约。网络与节点资源实际决定完成时间。集合通信语义、分片规则和算法选择分别保存。
 
+split-K、head 分片后的输出投影、attention split-context 和梯度归并接收 compiler 的显式 partial/merge 计划。区间集合覆盖完整不代表数值已规约；runtime 跟踪贡献完成/可见与后继依赖，实际 add 或 m/l/u 状态归并由已计量的计算资源执行。规则见[张量区域契约](../../docs/interfaces/tensor_regions.md)和[切块设计](../../compiler/docs/tiling_and_reduction.md)。
+
 ## 参数逻辑与优化
 
 增加 in-flight 可隐藏等待，但增加队列、buffer 活跃量和排队延迟；通过 M07/M09 检查稳定性与容量。增大通信 chunk 可降低启动开销，也可能减少重叠并造成尾部等待；M13 仅提供理想算法基线。

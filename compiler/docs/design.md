@@ -29,6 +29,8 @@
 
 主要参数为 tile shape、dataflow、布局、融合边界、张量分片、rank 放置、buffer allocation、双缓冲、调度优先级和允许的动态空间。资源数和频率由硬件提供，compiler 不拥有另一套硬件参数。
 
+张量维度、逻辑 ROI 与存储视图的公共语义见[区域契约](../../docs/interfaces/tensor_regions.md)；输出需求反推、reshape/concat、尾块、split-K/context 和输出投影的关系见[切块与规约设计](tiling_and_reduction.md)。范围覆盖、数值规约和完成依赖分别表达；某轴在一个算子上并行，不代表它在下游仍是并行轴。参数入口见 [UNITS](../UNITS.md)。
+
 ## 数学方法与逻辑链
 
 用 M09 检查活跃容量，用 M05/M06 估计算术强度和资源下界；将放置变量、容量/连通/操作支持约束建成整数约束，可在小问题上用 ILP/CP-SAT，在大空间采用启发式和分层搜索。解析成本用于筛选，不直接当作实际时序。
