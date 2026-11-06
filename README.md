@@ -4,6 +4,10 @@
 
 实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
+**设计查阅：[芯片架构与 AI 训练/推理参数清单](ARCHITECTURE_PARAMETERS.md)。** 按计算、存储、互连及物理条件筛选参数，列明中英文术语、单位、公式、模块归属和来源；包括 DDR/HBM/Flash、CIM 外围与训练/推理资源账本。
+
+仓库开发约定见 [AGENTS.md](AGENTS.md)。chipmodel 的系统关系、各子模块 Unit 与参数入口见 [UNITS.md](chipmodel/UNITS.md)，包含第一性约束、专业术语、单位、公式和覆盖范围。
+
 ## 先读哪些文档
 
 **总入口：[项目总览](docs/PROJECT_OVERVIEW.md)。** 按软件与物理层级说明全部目录、13 个模块的输入处理输出、数据格式、完整实验链，以及不同工作应调用哪些模块。先读这份，再按需要查下面的规范。
@@ -17,7 +21,7 @@
 
 参数如何修改和可视化，见 [configuration 设计](configuration/docs/design.md)与 [ui 设计](ui/docs/design.md)。先共享参数定义、派生与校验规则，再实现文本/CLI 和表单、拓扑、映射、时间线。
 
-## 模块导航
+## 基础模块导航
 
 | 模块 | 职责 | 设计入口 |
 | --- | --- | --- |
@@ -37,26 +41,32 @@
 
 每个模块的 README 列出子目录，docs/design.md 说明职责、参数、依赖、输入输出、场景与验证。完整结构清单见 [modules.json](docs/architecture/modules.json)，关系图见[架构图](docs/architecture/diagrams.md)。目录是职责划分，实际硬件实例由未来配置决定。
 
+训练与推理另有场景架构入口：[trainingArch](trainingArch/README.md) 聚焦训练阶段、显存、并行与通信，[inferArch](inferArch/README.md) 聚焦 prefill/decode、KV cache、延迟与吞吐。当前为文档入口，复用上述 13 个基础模块；各自的 UNITS.md 导航到相关参数，不另建重复的硬件模型。
+
 ## 支撑目录
 
 ```text
 config/       硬件、成本、编译、运行、仿真与实验配置文件
 data/         输入、校准来源和运行产物
 tests/        契约、模型、系统与集成验证归属
-example/      结构示例与未来完整工作流示例
+example/      独立 ADC 示例、结构示例与工作流预留
 docs/         顶层架构、契约、方法、决策和 Word 文档
 tools/        结构一致性等开发工具
 ```
 
-## 当前可运行的检查
+## 当前可运行的示例与检查
 
 在仓库根目录使用 Python 3.10 或更高版本，无需安装业务依赖：
 
 ```text
 python tools/check_structure.py
+python tools/check_model_rules.py
+python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+python -m example.adc_demo
+python -m example.chipmodel_demo
 ```
 
-检查目录/文档、模块依赖 DAG、Markdown 本地文件链接、结构示例引用和维护中的 DOCX 源哈希。它不执行芯片仿真、不证明硬件配置可实现，也不替代功能与性能验证。
+结构检查覆盖目录、依赖、文档链接和 Word 源哈希；模型规则检查覆盖定义/字段注释与各目录参数文档。测试和示例验证局部模型及系统约束，使用方法见 [Unit 总入口](chipmodel/UNITS.md)。分析下界不等于实际运行时间，这些检查也不证明电路可实现性或成本精度。
 
 ## 文档维护与后续开发
 

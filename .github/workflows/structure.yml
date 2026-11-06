@@ -1,4 +1,4 @@
-name: Structure and documentation
+name: Structure, model rules and chipmodel
 
 on:
   push:
@@ -13,3 +13,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python tools/check_structure.py
+      - run: python tools/check_model_rules.py
+      - run: python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+      - run: python -m example.adc_demo
+      - run: python -m example.chipmodel_demo

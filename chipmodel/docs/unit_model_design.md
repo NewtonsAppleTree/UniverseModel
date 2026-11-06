@@ -2,7 +2,7 @@
 
 本文把[单元覆盖清单](component_inventory.md)落实为可讨论的代码组织：语言选择、类与实例、参数和公式、单位、状态、接口及调用顺序。首批对象仍是 CIM array、DAC/ADC、采样保持、数字累加和缓冲。
 
-这是实现前设计。文中的 Python 示例只展示数据建模和纯推导，不是已经可导入的项目 API；实际进度见 [STATUS](../../docs/STATUS.md)。公共消息沿用[组件接口提案](../../docs/interfaces/component_protocols.md)，不另造一套完成与可见性语义。
+本文规定各 Unit 的共同设计方式；系统推导见[系统级设计](system_model_design.md)，所有子模块的代码与参数从 [UNITS.md](../UNITS.md) 进入。[全仓库规则](../../docs/development/model_rules.md)要求每个 class/def 前有用途/公式说明，每个字段旁有专业含义与单位。实际进度见 [STATUS](../../docs/STATUS.md)；公共事件消息仍沿用[组件接口提案](../../docs/interfaces/component_protocols.md)。
 
 ## 1 Python 与 C++ 的分工
 
@@ -79,56 +79,37 @@ frozen dataclass 只防止直接改属性，不会自动冻结嵌套 list、dict
 
 首批优先普通 Python 函数，复杂表格插值作为成本 provider。需要用户编辑表达式时，只允许带单位检查的受限表达式；不使用任意 eval。也不必为了几条简单公式引入完整符号计算框架。
 
-### 一个明确但有限的 Python 示例
+### 字段与公式的写法
 
-以下示例只表示固定时钟、均匀 offset-binary 电压 ADC bank 的参数推导。它与既有 CIM 手算例中的带符号等效列和 ADC 是不同 profile，不能直接替换而忽略编码与量纲。
+参数、派生值、结果和内部状态在声明处紧跟短注释，统一写“专业含义 + 单位 + 必要区别”；派生字段再写公式。每个 class/def 前必须有简短 `#` 说明（在装饰器前），覆盖用途与公式或不变量；docstring 可补充输入输出和假设，不能代替前置注释。较长论证放各目录 UNITS.md。例如 resolution 与 ENOB、latency 与 II 要明确区分，不能只翻译字段名称。
+
+物理量在字段名使用 `_v`、`_s`、`_hz` 等后缀；计数写清是 lane、sample、byte 还是 request。布尔量说明成立条件。公式中的 N、P、L、II、f 在首次出现处定义。必填设计量不提供未经说明的默认值；单位字符串和 NumPy 类型适配留在输入边界。
+
+### 可直接运行的 ADC 例子
+
+完整字段、注释和公式维护在 [adc.py](../compute/cim/periphery/adc.py)，本页只展示调用，避免复制一份会过时的类定义。
 
 ```python
-from dataclasses import dataclass
-from math import isfinite
+from dataclasses import replace
+from chipmodel.compute.cim.periphery.adc import AdcParams, IdealAdc
 
-
-@dataclass(frozen=True, slots=True)
-class AdcParams:
-    resolution_bits: int
-    lane_count: int
-    conversion_cycles: int
-    initiation_interval_cycles: int
-    input_min_v: float
-    input_max_v: float
-
-
-@dataclass(frozen=True, slots=True)
-class AdcDerived:
-    code_count: int
-    quantization_step_v: float
-    conversion_time_s: float
-    ideal_conversions_per_s: float
-
-
-def derive_adc(p: AdcParams, *, frequency_hz: float) -> AdcDerived:
-    counts = (p.resolution_bits, p.lane_count, p.conversion_cycles,
-              p.initiation_interval_cycles)
-    if any(type(value) is not int or value <= 0 for value in counts):
-        raise ValueError("bits, lanes and cycle counts must be positive integers")
-    if not all(isfinite(value) for value in
-               (p.input_min_v, p.input_max_v, frequency_hz)):
-        raise ValueError("range and frequency must be finite")
-    if frequency_hz <= 0 or p.input_max_v <= p.input_min_v:
-        raise ValueError("invalid frequency or voltage range")
-    count = 1 << p.resolution_bits
-    return AdcDerived(
-        code_count=count,
-        quantization_step_v=(p.input_max_v - p.input_min_v) / count,
-        conversion_time_s=p.conversion_cycles / frequency_hz,
-        ideal_conversions_per_s=(p.lane_count * frequency_hz
-                                / p.initiation_interval_cycles),
-    )
+params = AdcParams(
+    resolution_bits=10,  # Nominal resolution [bit]。
+    lane_count=4,  # 并行转换通道 [lane]。
+    conversion_cycles=2,  # Conversion latency L [cycle]。
+    initiation_interval_cycles=2,  # 每 lane 的 II [cycle]。
+    input_min_v=0.0,  # 输入下限 [V]。
+    input_max_v=1.0,  # 输入上限 [V]。
+)
+adc = IdealAdc(params=params, frequency_hz=1e9)  # 固定转换时钟 [Hz]。
+sample = adc.convert(0.5)  # 已采样电压 [V] → code=512，无越限。
+batch = adc.estimate_batch(16)  # 16 samples → 理想完成时间 8 cycles / 8 ns。
+wider = replace(adc, params=replace(params, lane_count=8))  # 重算派生量；原实例保留。
 ```
 
-例如 10 bit、4 lanes、L=2 cycles、II=2 cycles、输入范围 0–1 V、固定 1 GHz：码数为 1024，码阶约 0.9765625 mV，服务延迟 2 ns，理想转换吞吐 2×10^9 conversions/s。实际吞吐还受采样、内部在途容量、输出缓冲与消费者限制。
+该配置的 K=1024、LSB=0.9765625 mV、单样本延迟 2 ns、bank 稳态上限 2×10^9 conversion/s。L/II 与频率是示例假设，不能从 bits 推导真实电路时序。调用顺序、数值边界、解析公式和覆盖限制见 [ADC 模型说明](adc_model.md)，完整运行入口见 [adc_demo.py](../../example/adc_demo.py)。
 
-这里的 L/II 是显式假设，不能从 bits 推导出真实电路转换时间。实际模型还需限制支持的位数/范围，声明量化区间、舍入、上下界与饱和规则，并考虑误差和校准。类型提示本身不执行运行时校验。
+这是均匀 offset-binary 电压 ADC；既有 CIM 手算例使用带符号、无量纲等效列和 ADC。连接二者需要明确量纲、缩放与编码适配。
 
 ## 5 单位约定
 
@@ -228,19 +209,25 @@ buffer 是存储和策略的组合，ping-pong 也可能仅是两个区域的所
 
 ## 10 还需考虑的问题
 
-| 问题 | 实现约束或验证 |
-| --- | --- |
-| 对象隔离 | 两次实验不共享可变默认值、随机状态或数组；共享硬件由实例图显式引用 |
-| 数值边界 | dtype、位宽、符号、布局、舍入、饱和、NaN/无穷、越界与别名有明确规则 |
-| 输入相关行为 | 稀疏、压缩、饱和、路由需要真实数据或明确分布，不能永远固定工作量 |
-| 确定性 | 相同版本/初态/种子可复现，随机子流按对象和用途区分；读指标不消耗随机数 |
-| 所有权与取消 | 源租约、输出容量、重复请求、部分完成、取消、复位旧事件均能诊断 |
-| 计费与观测 | 摘要/明细不重复算，trace 关闭不改变结果；真实硬件性能计数器开销单独建模 |
-| 缓存与修改 | 改数值规则、结构、成本或初态后使相关结果失效，不能只依据文件名复用 |
-| 快照 | 需恢复事件、组件、数据、随机和外部模型状态；仅 pickle 一个 Unit 不保证完整恢复 |
-| 版本与外部接口 | 参数与协议变化可识别，未知行为字段明确报错；绑定后的对象布局不成为公共协议 |
-| 验证独立性 | 功能参考与目标模型不共享全部算法；手算服务、争用、边界和吞吐分别验证 |
-| 性能与精度 | 宿主加速保持数据可见性和争用语义；Python/C++、事件/周期与模型覆盖分别记录 |
+这部分约束所有模块的代码和实验解释。下表列出共同约束及本轮基础实现的例子；事件模型和完整硬件/AI 执行链仍须独立验证。系统层的完整清单见[全局规则](../../docs/development/model_rules.md)。
+
+| 问题 | 本次已落实 | 后续扩展与验收 |
+| --- | --- | --- |
+| 对象隔离与配置更新 | 冻结的标量配置与结果；`replace` 重新校验并推导，原实例不变 | 有状态 Unit 独占数组/队列；共享硬件通过实例图引用，不能隐式复制 |
+| 数值边界与单位 | ADC/DAC 编码和端点、array 电流/跨阻、bit/byte/MT/s、cache 地址位和 TMA stride 显式；拒绝非法标量与范围 | dtype、端序、实际状态别名及其他编码由适配器明确；等效列和不能直接当 volt |
+| 输入相关行为 | 每个真实电压产生码值与越限标志；样本数仅用于理想时序 | 稀疏、压缩、噪声和数据相关延迟须消费真实数据或明确分布；不能由固定利用率代替 |
+| 确定性与随机性 | 无随机状态；重复转换与读取属性不改变结果 | 制造差异、编程误差、读噪声采用不同随机子流；记录种子、算法与流位置，明确跨版本复现范围 |
+| 源与目标所有权 | 返回独立的不可变结果；功能调用不占用模拟缓冲 | sample/hold 有效期、source_consumed、有限输出容量、背压、取消和复位世代必须通过事件验证 |
+| 时钟与资源容量 | 固定 ClockDomain；L/II 独立；GPU 驻留/存储容量单独校验；组合层用带初始 credit 的供给包络推导下界 | CDC、DVFS、同 tick 排序；在途/输出槽不足和真实共享争用必须由相应模型计算 |
+| 计费与观测 | 无全局累计计数；组合选择拒绝同一口径下的摘要/后代重叠计费；逻辑 MAC、cell 动作、ADC 次数、协议/线路量分开 | 更细的阶段/时间窗口/能量归属仍需成本覆盖清单；trace 开关不改变执行 |
+| 缓存与参数来源 | 每个新实例重新推导；不复用跨实验结果缓存 | 成本/数值模型版本、初态、输入数据、配置及校准条件都进入缓存身份；设计假设与测量值分开 |
+| 快照与恢复 | 当前无事件或随机状态，可由显式配置重建 | 恢复需覆盖事件、数据、资源、随机和外部模型；pickle 一个 Unit 不等于完整快照 |
+| 版本、错误与外部 ABI | `model_id` 标明语义版本；类型错误为 TypeError，域错误为 ValueError 并携带字段名 | JSON/schema、单位解析、注册工厂和跨语言 ABI 再统一；不能把 Python 私有布局直接当公共协议 |
+| 独立验证 | 手算阈值/容量/DDR 带宽/突发、CIM 功能链、热 RC、布局、资源包络、依赖环和实例隔离 | 再加入真实争用、背压、完整数值路径与外部校准；功能通过不代表物理成本准确 |
+| 性能与模型精度 | 初始化推导一次；不创建每 lane/cell 对象；精确量化保护阈值边界 | 大批量路径经测量后向量化或移到 C++，保留边界参考；事件聚合需保持因果与可见性 |
+| 物理适用域与不确定性 | 分辨率不冒充 ENOB；L/II 是给定假设；不输出缺乏依据的能量/面积 | PVT、输入负载、带宽、settling、SNR/SNDR、INL/DNL、校准与误差相关性需要来源和适用范围 |
+
+不要现在就给每个 Unit 填满上述字段：某模型没有状态、噪声或成本时，应明确覆盖边界。只有研究问题需要相应机制、并且能提供验证依据时，再引入字段与实现。
 
 ## 11 文件放置与首批实现范围
 
@@ -248,6 +235,17 @@ buffer 是存储和策略的组合，ping-pong 也可能仅是两个区域的所
 
 类型专用参数的公开字段与元数据应只有一个维护定义。首批可以用 dataclass 加字段描述和显式校验函数，后续由同一描述生成 CLI/UI/文件 schema；不要分别为界面、JSON 和模型手写三套默认值。跨组件约束由装配阶段校验，特定模型的能力约束由模型注册描述提供，避免 configuration 反向依赖硬件实现。
 
-建议先做 ADC bank + sample/hold + 有限输出接收端，验证一组请求的采样有效期、背压和转换数；再接上理想 array/DAC、累加、buffer/control，形成已有 CIM MatVec 夹具。DDR、完整 CPU/GPU 和所有候选 Unit 暂不作为这条路径的前置实现。
+本次以极简参数/公式和必要功能参考覆盖所有子模块，具体入口见各目录 UNITS.md；没有为每个器件名称生成类。CIM 已有 array/DAC/ADC、位权累加和静态 buffer/保持约束；下一步只有在研究结论需要时再加入有限资源事件、源租约、背压和完整 MatVec 夹具。DDR 命令调度、完整 CPU/GPU ISA 仍不作为局部研究的前置实现。
 
 第一批交付应包含可运行小例子、明确参数表、独立数值参考、单请求/并发/背压时序与错误诊断。没有必要先为清单中的每个名称生成空类，或者同时维护一份 Python 和一份 C++ 实现。
+
+## 12 参考做法与来源
+
+参考重点是参数语义、模型边界和验证依据。下面资料支持这些工程做法；本项目的字段旁注释格式是本地约定，论文并不规定 Python dataclass 的写法。链接内容于 2026-11-06 核对，分支内容可能继续变化。
+
+| 来源 | 采用的做法 | 在本项目中的落实 |
+| --- | --- | --- |
+| [gem5 DRAMInterface.py](https://github.com/gem5/gem5/blob/stable/src/mem/DRAMInterface.py) | Param.Latency/Voltage/Current 与参数描述相邻，tRCD/tCL/tRP 等时序分别定义 | 字段旁注明专业含义、单位、范围；L/II 分开；类型提示之外执行校验 |
+| [Ramulator2](https://github.com/CMU-SAFARI/ramulator2)，*Ramulator 2.0: A Modern, Modular, and Extensible DRAM Simulator*，IEEE Computer Architecture Letters，2023 | 接口与实现分离；结构/时序 preset 可覆盖；未知参数与时序约束需要验证 | 行为模型和参数组合；局部调用不要求完整系统；暂不为一个 ADC 引入大型工厂框架 |
+| [Timeloop](https://github.com/NVlabs/timeloop)，ISPASS 2019；其 Sparseloop 扩展见项目引用的 MICRO 2022 论文 | 使用显式架构与工作量做分析预测；稀疏行为需要专门的统计模型 | `estimate_batch` 明确无争用假设；输入相关误差与实际吞吐需要额外模型，不能只给峰值 |
+| [DNN+NeuroSim](https://github.com/neurosim/DNN_NeuroSim_V1.4)，*DNN+NeuroSim: An End-to-End Benchmarking Framework for Compute-in-Memory Accelerators with Versatile Device Technologies*，IEDM，2019；*NeuroSim simulator for compute-in-memory hardware accelerator: validation and benchmark*，2021 | 器件、外围、技术节点与验证条件影响 CIM 结果；功能与硬件成本有不同依据 | 物理特征值留给有来源的 costmodel/profile；理想 ADC 不凭分辨率生成延迟、能量或面积 |

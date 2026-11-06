@@ -4,6 +4,7 @@
 
 | 文档 | 用途 |
 | --- | --- |
+| [顶层架构参数清单](../../ARCHITECTURE_PARAMETERS.md) | 新设计的参数筛选入口：术语、单位、关系、适用条件、来源与纠错 |
 | [结构参数手册](architecture_parameters.md) | 中英文名词、参数族、公开工具和来源 |
 | [异构芯片封装与集群参考](heterogeneous_cluster_plan.md) | CPU/GPU/NPU/CIM、3D、HBF、双裸片和多机的设计情景 |
 | [硬件组件目录](hardware_component_catalog.md) | 计算、CIM 外围、存储、搬运、控制、互连的输入输出、技术指标与建议归属 |

@@ -2,7 +2,7 @@
 
 先读 [项目总览](PROJECT_OVERVIEW.md)了解模块、输入输出和任务路线；查看 [实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
-只使用部分模块、搭建组件台架或设计硬件接口时，从[可组合组件与局部仿真规划](architecture/composable_simulation.md)进入。本轮优先 CIM array + DAC/ADC + 缓冲；接口与配置样例仍为设计提案，未实现为可调用 API。
+只使用部分模块、搭建组件台架或设计硬件接口时，从[可组合组件与局部仿真规划](architecture/composable_simulation.md)进入。本轮优先 CIM array + DAC/ADC + 缓冲；公共事件接口与配置样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 
 ## 目录分工
 
@@ -27,11 +27,16 @@ docs/
 | --- | --- |
 | 项目整体怎样运转 | [项目总览](PROJECT_OVERVIEW.md) |
 | 现在能运行什么 | [实现状态](STATUS.md) |
+| 设计时该选哪些参数、单位与公式 | 根目录[芯片架构与 AI 参数清单](../ARCHITECTURE_PARAMETERS.md)：计算、存储、互连、物理条件与训练/推理资源账本 |
+| 训练与推理场景从哪里进入 | [trainingArch](../trainingArch/README.md)、[inferArch](../inferArch/README.md)：各自的阶段、资源账本与参数入口 |
 | 怎样跳过完整链条只运行局部组件 | [可组合仿真规划](architecture/composable_simulation.md) |
 | 组件输入输出和端口怎样配置 | [组件接口提案](interfaces/component_protocols.md) |
 | ADC、DMA、缓存、存储与互连放在哪里 | [硬件组件目录](reference/hardware_component_catalog.md) |
 | chipmodel 每个目录还应包含哪些单元 | [逐目录覆盖清单](../chipmodel/docs/component_inventory.md)，包括 DDR/LPDDR/GDDR、控制器/PHY 与处理器内部单元 |
 | Unit 用什么语言 怎样写类和参数 | [Unit 类与参数设计](../chipmodel/docs/unit_model_design.md)：参数、派生值、状态、单位、接口与使用顺序 |
+| 所有模块的代码/注释/文档规则 | [统一模型规则](development/model_rules.md)、[仓库 AGENTS.md](../AGENTS.md) |
+| 芯片和 AI 训练/推理怎样系统化建模 | [chipmodel 系统级设计](../chipmodel/docs/system_model_design.md)、[各子模块参数入口](../chipmodel/UNITS.md) |
+| 怎样只运行 ADC 并修改参数 | [ADC 模型与用法](../chipmodel/docs/adc_model.md)：字段注释、公式、输入输出、理想时序与数值边界 |
 | 怎样设计指令 是否需要 RTL | [指令与仿真精度](architecture/instruction_and_fidelity.md) |
 | 模块边界和代码依赖 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md)、[模块清单](architecture/modules.json) |
 | 模块交换什么信息 | [公共契约](interfaces/contracts.md)、[数据生命周期](interfaces/resource_lifecycle.md) |
@@ -55,6 +60,7 @@ docs/
 | 功能新增、部分可用或验证结果变化 | [STATUS.md](STATUS.md)：支持范围、核对日期、代码基线和验证入口；总览与模块 README 引用它 |
 | 模块职责、目录或允许依赖变化 | [架构设计](architecture/design.md)、[模块清单](architecture/modules.json)、[依赖图](architecture/diagrams.md)及受影响的模块设计；总览同步导航 |
 | 公共字段、单位或生命周期变化 | [公共契约](interfaces/contracts.md)及对应接口专题；模块设计引用共同定义 |
+| 候选参数、物理关系或来源解释变化 | 根目录[参数清单](../ARCHITECTURE_PARAMETERS.md)；实际字段仍由代码和各目录 UNITS.md 维护，不在清单复制配置 schema |
 | 算法、成本或实验条件变化 | 对应 methods 文档及模块设计；改变已有决策时在 [decisions](decisions/README.md)记录替代关系 |
 | 文档移动、改名或归档 | 本索引、所有引用及 [Word 构建清单](tools/documents.json)；归档索引注明来源与现行规范入口 |
 

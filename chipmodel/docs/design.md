@@ -4,6 +4,8 @@
 
 最重要的是数据与计算能否在有限资源上合法发生。chipmodel 依赖 contracts、costmodel，拥有芯片与封装内部的资源状态；只包含软件模型。Core/Tile/Die/Package 通过组合建立实例，不能由目录数量推定硬件数量。
 
+系统级的第一性推导与训练/推理需求见[系统级设计](system_model_design.md)，各目录的参数、术语和接口从 [UNITS.md](../UNITS.md) 进入。当前先提供局部参数/公式与功能参考，不把分析下界解释成事件仿真结果。
+
 | 子系统 | 关键参数 | 独占状态 |
 | --- | --- | --- |
 | compute/cpu | 核数、ISA/操作能力、issue width、缓存/执行摘要 | 发射与执行资源；细模型可含流水线 |
@@ -27,7 +29,7 @@ CPU/GPU 可先用能力与服务摘要模型，研究微架构时再细化。摘
 
 传输必须经过有效端口及路径，声明内存读、链路、目标写阶段的计时边界。地址域与一致性是能力，不能因为两个资源同属一个 Package 就视为共享一致内存。
 
-局部台架应允许直接创建单组件或子图，并注入初态、输入源、接收端、时钟与成本服务，不要求完整 Die/Package 或 compiler/runtime。首批 CIM array、DAC、采样保持、ADC、累加和缓冲的专用字段见[组件接口提案](../../docs/interfaces/component_protocols.md)，全部候选组件及目录归属见[硬件组件目录](../../docs/reference/hardware_component_catalog.md)。这些入口尚待实现。
+局部台架应允许直接创建单组件或子图，并注入初态、输入源、接收端、时钟与成本服务，不要求完整 Die/Package 或 compiler/runtime。首批 CIM array、DAC、采样保持、ADC、累加和缓冲的专用字段见[组件接口提案](../../docs/interfaces/component_protocols.md)，全部候选组件及目录归属见[硬件组件目录](../../docs/reference/hardware_component_catalog.md)。公共事件入口尚待实现；ADC 的纯功能与无争用分析用法见[模型说明](adc_model.md)，实际支持范围以 STATUS 为准。
 
 ## CIM 与 3D CIM 的特有链条
 

@@ -2,7 +2,7 @@
 
 本文规划怎样只使用需要的软件模块和硬件组件完成一次研究。核心要求是：单组件、局部数据路径和完整系统使用同一套语义，调用方可以控制输入、初态、边界条件、模型精度与输出。完整实验链是一种装配方式。
 
-本文及关联接口是设计提案，尚无可执行 API。现状见 [STATUS](../STATUS.md)；公共字段冻结前需完成第 10 节的契约修订。本文不要求把所有候选组件一次实现。
+本文及关联公共事件接口是设计提案，尚未形成可执行台架；独立 ADC 功能与分析入口见[模型说明](../../chipmodel/docs/adc_model.md)。现状见 [STATUS](../STATUS.md)；公共字段冻结前需完成第 10 节的契约修订。本文不要求把所有候选组件一次实现。
 
 配套文档：[组件接口](../interfaces/component_protocols.md)、[硬件组件目录](../reference/hardware_component_catalog.md)、[指令与仿真精度](instruction_and_fidelity.md)。
 

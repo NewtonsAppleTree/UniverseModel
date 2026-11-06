@@ -6,8 +6,13 @@
 
 ## 阅读入口
 
+- [顶层参数清单](../ARCHITECTURE_PARAMETERS.md)：按研究路径选参数，查单位、公式、适用条件与来源
+- [系统级设计](docs/system_model_design.md)：第一性原理、训练/推理需求、资源关系与分析边界
+- [所有子模块的 Unit 与参数](UNITS.md)：逐目录专业术语、单位、关系、关键参数和独立接口
+- [本模块开发规则](AGENTS.md)：继承全仓库规则，保持模型与实现简洁
 - [模块设计](docs/design.md)
 - [Unit 类与参数设计](docs/unit_model_design.md)：Python/C++ 分工、类和状态、公式、单位、接口与调用顺序
+- [ADC 模型与用法](docs/adc_model.md)：独立输入电压量化、参数推导、理想批次时间与运行示例
 - [子系统与单元覆盖清单](docs/component_inventory.md)：按八个子目录展开 CPU/GPU 内部、DDR/PHY、控制、互连、物理与管理单元
 - [硬件组件目录](../docs/reference/hardware_component_catalog.md)：输入输出、技术指标和存储子系统参数
 - [顶层架构](../docs/architecture/design.md)
