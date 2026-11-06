@@ -136,6 +136,6 @@ CIM 随机误差需多次采样并报告分布；硬件误差与训练/量化补
 
 先从目标负载获取工作量与访问需求，再从规格获取结构上限，从基准测量或事件模型获取持续行为，从电路/存储/系统工具取得局部成本，最后用独立数据校准。每条来源记录文档版本、页/表/链接、工作条件、转换步骤和适用范围。
 
-公开典型结构可参考 NVDLA 的计算/存储数据通路、Timeloop/ZigZag 的映射空间、Accelergy 的动作成本、CACTI 的存储结构、NeuroSim 的 CIM 外围、Ramulator 的存储时序。它们回答不同问题，组合前必须统一口径。资料链接见[结构参数手册](../architecture/architecture_parameters.md)与[异构规划](../architecture/heterogeneous_cluster_plan.md)。
+公开典型结构可参考 NVDLA 的计算/存储数据通路、Timeloop/ZigZag 的映射空间、Accelergy 的动作成本、CACTI 的存储结构、NeuroSim 的 CIM 外围、Ramulator 的存储时序。它们回答不同问题，组合前必须统一口径。资料链接见[结构参数手册](../reference/architecture_parameters.md)与[异构规划](../reference/heterogeneous_cluster_plan.md)。
 
 没有数据时保留符号和范围，先找出结论是否依赖它；若排序对某个未知参数不敏感，可以继续粗模型探索。若高度敏感，则补充依据比增加模型细节更有价值。

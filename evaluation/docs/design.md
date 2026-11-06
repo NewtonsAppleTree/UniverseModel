@@ -4,6 +4,8 @@
 
 最重要的是在同一问题、约束和证据标准下比较方案。evaluation 是组合入口，可依赖除 ui 外的全部主模块，负责装配和运行编排；不成为硬件或策略状态的第二所有者。
 
+evaluation 应支持局部实验与纯分析入口：选择的组件、边界、输入和观察即可构成 bench；分析已有结果不自动触发配置重建、编译或仿真。用户也可绕过本模块直接装配模型。首批 CIM 台架与阶段验收见[可组合仿真规划](../../docs/architecture/composable_simulation.md)。
+
 `experiments/runner` 运行单次实验，`sweeps` 生成候选，`analysis` 计算指标与归因，`optimization` 搜索，`calibration` 用观测更新成本/模型依据。校准产生新版本，不原地改变已经运行的模型。
 
 ## 输入输出与比较单元

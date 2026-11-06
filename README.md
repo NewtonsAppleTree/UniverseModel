@@ -2,7 +2,7 @@
 
 芯片到集群的架构建模工程，覆盖架构定义、工作负载映射、功能验证、性能与成本评估。支持规划 CPU、GPU、NPU、CIM、3D CIM、双裸片、HBM/HBF、异构节点和多机多卡。`chipmodel` 放软件模型，当前不包含 RTL。
 
-**当前状态：架构与工程骨架阶段。** 已建立 13 个主模块、子目录、模块设计、公共契约、方法文档和可运行的结构检查工具；编译、硬件执行、仿真、实验运行和图形界面尚未实现。结构示例不是可执行硬件配置。
+实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
 ## 先读哪些文档
 
@@ -13,7 +13,7 @@
 3. [分场景推演](docs/architecture/scenarios.md)：单芯片、CIM、3D、HBF、异构与集群。
 4. [公共契约](docs/interfaces/contracts.md)与[产物规范](docs/interfaces/artifacts.md)：交换什么、如何保存和复现。
 5. [参数与数学方法](docs/methods/parameters_and_math.md)、[工作流](docs/methods/workflows.md)、[优化方法](docs/methods/optimization.md)。
-6. [架构补充审视](docs/architecture/design_review.md)：17 项易遗漏问题、P0/P1/P2 优先级与六个专题。
+6. [完整文档索引](docs/README.md)：当前规范、专题参考、历史记录与 Word 阅读版。
 
 参数如何修改和可视化，见 [configuration 设计](configuration/docs/design.md)与 [ui 设计](ui/docs/design.md)。先共享参数定义、派生与校验规则，再实现文本/CLI 和表单、拓扑、映射、时间线。
 
@@ -58,13 +58,8 @@ python tools/check_structure.py
 
 检查目录/文档、模块依赖 DAG、Markdown 本地文件链接、结构示例引用和维护中的 DOCX 源哈希。它不执行芯片仿真、不证明硬件配置可实现，也不替代功能与性能验证。
 
-## Word 与后续开发
+## 文档维护与后续开发
 
-- [项目总览 Word](docs/UniverseModel_Project_Overview.docx)：一份读清目录、模块、数据和任务路线。
-- [工程设计 Word](docs/UniverseModel_Design.docx)：顶层架构、公共契约、验证门槛。
-- [架构参数手册 Word](docs/UniverseModel_Architecture_Parameters.docx)：结构、英文术语与参数来源。
-- [异构与集群规划 Word](docs/UniverseModel_Heterogeneous_Cluster_Plan.docx)：异构、封装、HBF 与集群。
-- [架构补充审视 Word](docs/UniverseModel_Architecture_Review.docx)：跨模块细节、模型覆盖、实验条件与实施取舍。
-- [完整文档索引与构建方法](docs/README.md)。
+Markdown 是正文维护源；Word 阅读版集中在 docs/exports，参数与异构手册在 docs/reference，历史审视在 docs/archive。阅读与构建入口统一见[文档索引](docs/README.md)。
 
-Markdown 是正文维护源。第一轮执行实现从一个 GEMM/MatVec、独立参考、小型数字引擎、SRAM 和显式搬运开始，再验证争用、重叠与参数变化；阶段门槛见[验证规范](docs/architecture/validation.md)。
+开发顺序与当前缺口见[实现状态](docs/STATUS.md)，阶段门槛见[验证规范](docs/architecture/validation.md)。

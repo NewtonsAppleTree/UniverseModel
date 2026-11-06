@@ -2,7 +2,7 @@
 
 ## 核心与边界
 
-最重要的是用户能看清自己改了什么、为什么影响结果。ui 依赖 contracts、configuration、evaluation，读取统一定义生成编辑界面；不得另写一套默认值、派生公式或硬件容量规则。当前是界面设计，没有可运行前端。
+最重要的是用户能看清自己改了什么、为什么影响结果。ui 依赖 contracts、configuration、evaluation，读取统一定义生成编辑界面；不得另写一套默认值、派生公式或硬件容量规则。前端及后端的实现进度见[实现状态](../../docs/STATUS.md)。
 
 `forms` 管 schema 驱动表单，`views/topology` 管物理/连接视图，`package` 管 Die/堆叠/热视图，`mapping` 管任务及数据放置，`timeline` 管执行与等待，`services` 调用配置和实验接口。
 

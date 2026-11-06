@@ -1,11 +1,9 @@
 {
   "schema_version": 1,
-  "status": "scaffold",
   "modules": [
     {
       "id": "contracts",
       "title": "公共契约",
-      "status": "scaffold",
       "path": "contracts",
       "design": "contracts/docs/design.md",
       "allowed_dependencies": [],
@@ -23,7 +21,6 @@
     {
       "id": "configuration",
       "title": "参数配置",
-      "status": "scaffold",
       "path": "configuration",
       "design": "configuration/docs/design.md",
       "allowed_dependencies": [
@@ -40,7 +37,6 @@
     {
       "id": "costmodel",
       "title": "成本与特征化",
-      "status": "scaffold",
       "path": "costmodel",
       "design": "costmodel/docs/design.md",
       "allowed_dependencies": [
@@ -58,7 +54,6 @@
     {
       "id": "chipmodel",
       "title": "芯片与封装",
-      "status": "scaffold",
       "path": "chipmodel",
       "design": "chipmodel/docs/design.md",
       "allowed_dependencies": [
@@ -91,7 +86,6 @@
     {
       "id": "systemmodel",
       "title": "板卡与节点",
-      "status": "scaffold",
       "path": "systemmodel",
       "design": "systemmodel/docs/design.md",
       "allowed_dependencies": [
@@ -114,7 +108,6 @@
     {
       "id": "clustermodel",
       "title": "集群与网络",
-      "status": "scaffold",
       "path": "clustermodel",
       "design": "clustermodel/docs/design.md",
       "allowed_dependencies": [
@@ -135,7 +128,6 @@
     {
       "id": "workloads",
       "title": "工作负载与参考",
-      "status": "scaffold",
       "path": "workloads",
       "design": "workloads/docs/design.md",
       "allowed_dependencies": [
@@ -153,7 +145,6 @@
     {
       "id": "compiler",
       "title": "编译与映射",
-      "status": "scaffold",
       "path": "compiler",
       "design": "compiler/docs/design.md",
       "allowed_dependencies": [
@@ -185,7 +176,6 @@
     {
       "id": "runtime",
       "title": "运行时策略",
-      "status": "scaffold",
       "path": "runtime",
       "design": "runtime/docs/design.md",
       "allowed_dependencies": [
@@ -203,7 +193,6 @@
     {
       "id": "simulator",
       "title": "仿真执行",
-      "status": "scaffold",
       "path": "simulator",
       "design": "simulator/docs/design.md",
       "allowed_dependencies": [
@@ -222,7 +211,6 @@
     {
       "id": "artifacts",
       "title": "产物与来源",
-      "status": "scaffold",
       "path": "artifacts",
       "design": "artifacts/docs/design.md",
       "allowed_dependencies": [
@@ -239,7 +227,6 @@
     {
       "id": "evaluation",
       "title": "实验与优化",
-      "status": "scaffold",
       "path": "evaluation",
       "design": "evaluation/docs/design.md",
       "allowed_dependencies": [
@@ -267,7 +254,6 @@
     {
       "id": "ui",
       "title": "参数与结果界面",
-      "status": "scaffold",
       "path": "ui",
       "design": "ui/docs/design.md",
       "allowed_dependencies": [

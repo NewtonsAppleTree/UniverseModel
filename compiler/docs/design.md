@@ -21,6 +21,8 @@
 
 这不是固定一次通过顺序。切块、存储规划、放置及成本评估可能迭代；每个 pass 声明输入能力、修改内容及失效的分析结果，避免隐式共享可变全局状态。
 
+每个 pass 应有独立入口，输入已经满足前置条件时可跳过其他阶段；输出包含新 IR/分析和失效清单。跨模块使用公共计划，跨版本导入私有 IR 则声明其快照版本。局部硬件请求可完全不经过 compiler；手写或导入的计划不伪造 compiler_version，生产者字段修订见[局部仿真规划](../../docs/architecture/composable_simulation.md)。
+
 ## 输入输出与参数
 
 输入包括 WorkloadSpec、HardwareSpec、CostProfile、精度约束和映射策略。输出 PlacementPlan、ExecutionPlan 与可选静态 CommunicationPlan，保存 pass 版本、搜索预算、候选摘要和选择原因。
@@ -44,3 +46,5 @@
 ## 能力与工作量补充
 
 目标能力按操作、shape、layout、精度和格式联合判断；CPU fallback、量化转换及 padding 必须进入执行计划或已声明融合操作。静态生命周期需要容纳实际异步租约，不能在 source_consumed 前复用区域。见[模型组合](../../docs/architecture/model_composition.md)、[数值语义](../../docs/methods/workload_and_numeric_semantics.md)与[生命周期规范](../../docs/interfaces/resource_lifecycle.md)。
+
+设备 ISA、宏命令与内部微操作的分层及 lowering 归属见[指令设计提案](../../docs/architecture/instruction_and_fidelity.md)。组件模型的内部阶段不必全部变成软件可见指令。

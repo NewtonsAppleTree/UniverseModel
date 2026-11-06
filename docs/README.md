@@ -1,63 +1,91 @@
-# 文档索引与维护
+# 文档入口
 
-**先读 [PROJECT_OVERVIEW.md 项目总览](PROJECT_OVERVIEW.md)。** 这是整体项目的总入口，集中说明每个目录属于哪层、负责什么、输入输出及格式、完成不同工作需要哪些模块，以及当前实现状态。[Word 阅读版](UniverseModel_Project_Overview.docx)与它使用同一正文。
+先读 [项目总览](PROJECT_OVERVIEW.md)了解模块、输入输出和任务路线；查看 [实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
-总览用于建立整体认识；下面的文档用于查询具体规范。
+只使用部分模块、搭建组件台架或设计硬件接口时，从[可组合组件与局部仿真规划](architecture/composable_simulation.md)进入。本轮优先 CIM array + DAC/ADC + 缓冲；接口与配置样例仍为设计提案，未实现为可调用 API。
 
-## 阅读与权威范围
+## 目录分工
 
-| 层次 | 文档 | 回答的问题 |
-| --- | --- | --- |
-| 总入口 | [项目总览](PROJECT_OVERVIEW.md) | 从目录和输入输出理解整条工作链 |
-| 顶层 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md) | 模块怎样分工和装配 |
-| 语义 | [公共契约](interfaces/contracts.md)、[产物规范](interfaces/artifacts.md) | 信息交换、状态和复现 |
-| 方法 | [参数与公式](methods/parameters_and_math.md)、[工作流](methods/workflows.md)、[优化](methods/optimization.md) | 怎样计算、比较和改进 |
-| 场景 | [分场景推演](architecture/scenarios.md)、[异构规划](architecture/heterogeneous_cluster_plan.md) | CIM/3D/HBF/双 Die/异构/集群怎么组合 |
-| 依据 | [结构参数手册](architecture/architecture_parameters.md) | 英文术语、参数族和来源 |
-| 判断 | [第一性原理](architecture/first_principles.md)、[验证](architecture/validation.md) | 核心问题、可信度与阶段门槛 |
-| 决策 | [架构决策](decisions/README.md) | 已选边界和选择理由 |
-| 补充审视 | [遗漏细节与优先级](architecture/design_review.md) | 接口冻结前还需定清楚什么 |
+```text
+docs/
+  README.md              文档入口与维护规则
+  PROJECT_OVERVIEW.md     整体逻辑 模块输入输出 任务路线
+  STATUS.md              当前实现状态 验证依据 下一步
+  architecture/          架构规范 关系图 场景 验证门槛
+  interfaces/            公共对象 生命周期 产物协议
+  methods/               参数公式 实验方法 优化与手算案例
+  reference/             参数手册与异构背景参考
+  decisions/             架构决策及选择理由
+  exports/               由维护源生成的 Word 阅读版
+  archive/               历史审视记录 不作为当前进度依据
+  tools/                 Word 构建脚本与来源清单
+```
 
-各主模块有自己的 README 与 docs/design.md，从[仓库导航](../README.md)进入。顶层架构规定边界，公共契约规定交换语义，模块设计细化本模块；参数手册和异构规划提供背景与方案。实现状态以仓库 README 和验证阶段为准，规划描述不代表模型已可执行。
+## 按问题阅读
 
-结构清单 [modules.json](architecture/modules.json) 是模块目录与公开依赖的机器可读清单。改变边界时同步更新清单、顶层文档与模块设计；正文以 Markdown 为源，不单独改 Word。
-
-## 本轮补充专题
-
-- [请求与数据生命周期](interfaces/resource_lifecycle.md)：源释放、目标可见、重试、取消和复位。
-- [模型覆盖与组合](architecture/model_composition.md)：条件能力、成本归属、混合粒度与扩展接口。
-- [完整工作与数值](methods/workload_and_numeric_semantics.md)：四种字节量、非矩阵算子、KV cache、训练更新与 CIM 误差。
-- [实验有效性](methods/experiment_validity.md)：到达过程、ROI、尾延迟、随机性、校准和搜索偏差。
-- [物理可行性](architecture/physical_feasibility.md)：端点、3D 几何、DVFS、热反馈、良率和寿命。
-- [六个手算示例](methods/design_tradeoff_examples.md)：给出未来验证所需的明确前提与预期。
-
-补充专题细化现有模块；只有公共契约已同步的语义属于当前接口约定，其他模型能力仍按 P0/P1/P2 条件逐步实现。所有文档均不代表执行能力已具备。
-
-## Word 来源
-
-| 输出 | 维护源 |
+| 想确认什么 | 阅读入口 |
 | --- | --- |
-| [UniverseModel_Project_Overview.docx](UniverseModel_Project_Overview.docx) | PROJECT_OVERVIEW.md |
-| [UniverseModel_Design.docx](UniverseModel_Design.docx) | architecture/design.md、interfaces/contracts.md、architecture/validation.md |
-| [UniverseModel_Architecture_Parameters.docx](UniverseModel_Architecture_Parameters.docx) | architecture/architecture_parameters.md |
-| [UniverseModel_Heterogeneous_Cluster_Plan.docx](UniverseModel_Heterogeneous_Cluster_Plan.docx) | architecture/heterogeneous_cluster_plan.md |
-| [UniverseModel_Architecture_Review.docx](UniverseModel_Architecture_Review.docx) | architecture/design_review.md |
+| 项目整体怎样运转 | [项目总览](PROJECT_OVERVIEW.md) |
+| 现在能运行什么 | [实现状态](STATUS.md) |
+| 怎样跳过完整链条只运行局部组件 | [可组合仿真规划](architecture/composable_simulation.md) |
+| 组件输入输出和端口怎样配置 | [组件接口提案](interfaces/component_protocols.md) |
+| ADC、DMA、缓存、存储与互连放在哪里 | [硬件组件目录](reference/hardware_component_catalog.md) |
+| chipmodel 每个目录还应包含哪些单元 | [逐目录覆盖清单](../chipmodel/docs/component_inventory.md)，包括 DDR/LPDDR/GDDR、控制器/PHY 与处理器内部单元 |
+| Unit 用什么语言 怎样写类和参数 | [Unit 类与参数设计](../chipmodel/docs/unit_model_design.md)：参数、派生值、状态、单位、接口与使用顺序 |
+| 怎样设计指令 是否需要 RTL | [指令与仿真精度](architecture/instruction_and_fidelity.md) |
+| 模块边界和代码依赖 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md)、[模块清单](architecture/modules.json) |
+| 模块交换什么信息 | [公共契约](interfaces/contracts.md)、[数据生命周期](interfaces/resource_lifecycle.md) |
+| 数据如何保存与复现 | [产物规范](interfaces/artifacts.md) |
+| 参数怎样计算和修改 | [参数与公式](methods/parameters_and_math.md)、[工作流](methods/workflows.md) |
+| 模型怎样组合及验证 | [模型组合](architecture/model_composition.md)、[验证门槛](architecture/validation.md)、[手算案例](methods/design_tradeoff_examples.md) |
+| 端到端比较是否可信 | [完整工作与数值](methods/workload_and_numeric_semantics.md)、[实验有效性](methods/experiment_validity.md)、[优化方法](methods/optimization.md) |
+| CIM 或多芯片多机怎样组织 | [场景推演](architecture/scenarios.md)、[物理可行性](architecture/physical_feasibility.md) |
+| 英文术语与公开资料 | [参考资料索引](reference/README.md) |
+| 核心判断和决策理由 | [第一性原理](architecture/first_principles.md)、[架构决策](decisions/README.md) |
+| 过去讨论过哪些问题 | [归档索引](archive/README.md) |
 
-模块细化、公式目录、场景推演与优化方法保留为独立 Markdown，避免一本 Word 不断膨胀。Word 输出是指定来源的阅读版本，不包含仓库全部正文。
+各模块的细化设计仍保留在对应模块的 docs/design.md，总览中有完整导航。
 
-## 构建与检查
+## 怎样避免再次过时
 
-使用含 python-docx 的环境，依赖范围见 [requirements.txt](tools/requirements.txt)。根目录执行：
+按本次改动选择维护位置，避免在多份文档中复制进度或接口定义：
+
+| 发生的变化 | 更新位置 |
+| --- | --- |
+| 功能新增、部分可用或验证结果变化 | [STATUS.md](STATUS.md)：支持范围、核对日期、代码基线和验证入口；总览与模块 README 引用它 |
+| 模块职责、目录或允许依赖变化 | [架构设计](architecture/design.md)、[模块清单](architecture/modules.json)、[依赖图](architecture/diagrams.md)及受影响的模块设计；总览同步导航 |
+| 公共字段、单位或生命周期变化 | [公共契约](interfaces/contracts.md)及对应接口专题；模块设计引用共同定义 |
+| 算法、成本或实验条件变化 | 对应 methods 文档及模块设计；改变已有决策时在 [decisions](decisions/README.md)记录替代关系 |
+| 文档移动、改名或归档 | 本索引、所有引用及 [Word 构建清单](tools/documents.json)；归档索引注明来源与现行规范入口 |
+
+modules.json 只维护目录与依赖等结构信息，实现状态集中在 STATUS.md。参考手册说明候选结构与依据；历史审视归档后保留原样，其中的“当前”“下一步”仅指记录形成时。
+
+Markdown 是维护源，exports 中的 Word 通过构建生成。开发中先改源文件，提交前更新受影响 Word 并检查排版。
+
+发现冲突时按问题定位：实现能力查 STATUS 和代码证据；接口语义查 interfaces；模块归属查 architecture 和模块设计。参考资料和历史记录不能覆盖这些约定。检查工具能发现路径和源哈希问题，内容是否与实现一致仍需变更时核对。
+
+## Word 阅读版与构建
+
+| 构建名称（--document） | 阅读版 | 维护源 |
+| --- | --- | --- |
+| overview | [项目总览](exports/UniverseModel_Project_Overview.docx) | [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) |
+| design | [工程设计](exports/UniverseModel_Design.docx) | [架构设计](architecture/design.md)、[公共契约](interfaces/contracts.md)、[验证门槛](architecture/validation.md) |
+| parameters | [结构参数手册](exports/UniverseModel_Architecture_Parameters.docx) | [结构参数参考](reference/architecture_parameters.md) |
+| scaling | [异构与集群参考](exports/UniverseModel_Heterogeneous_Cluster_Plan.docx) | [异构扩展参考](reference/heterogeneous_cluster_plan.md) |
+
+构建配置见 [documents.json](tools/documents.json)，依赖见 [requirements.txt](tools/requirements.txt)。使用 Python 3.10 及以上版本，在仓库根目录首次安装文档依赖：
+
+```text
+python -m pip install -r docs/tools/requirements.txt
+```
+
+按上表选择受影响的构建名称，例如修改总览后运行：
 
 ```text
 python docs/tools/build_docx.py --document overview
-python docs/tools/build_docx.py --document design
-python docs/tools/build_docx.py --document parameters
-python docs/tools/build_docx.py --document scaling
-python docs/tools/build_docx.py --document review
 python tools/check_structure.py
 ```
 
-[documents.json](tools/documents.json) 统一声明输出、标题与来源。构建工具在文档属性记录按顺序拼接的 Markdown 源 SHA256；检查工具验证同步。哈希通过不代表排版合格，生成后仍需渲染并逐页检查字体、表格、分页与裁切。QA 文件放 .build，不纳入版本控制。
+只改索引、STATUS 或其他未列入维护源的文档时，运行结构检查即可，无需重建 Word。移动维护源、阅读版或它们引用的文件时，也应重建受影响的阅读版，以更新相对链接。归档阅读版不参与日常构建。
 
-Markdown 链接检查针对本地文件目标，不验证外部网站可达性或标题锚点。Mermaid 图保留在独立 Markdown；当前 Word 构建器不渲染 Mermaid，也不汇编包含它们的文件。
+构建器写入 Markdown 来源哈希，检查工具核对同步；该哈希不校验 Word 排版或其中的链接。Markdown 检查只覆盖本地文件链接，不验证标题锚点和外部网站。生成 Word 后仍需渲染并逐页检查字体、表格与分页，图片和 PDF 放入 .build。Mermaid 图保留在 Markdown，现有 Word 构建器不渲染它们。

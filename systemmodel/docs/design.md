@@ -6,6 +6,8 @@
 
 `composition/board` 表达卡和板的组合，`node` 表达主机与设备；`io` 管访问与传输能力，`memory` 管系统地址/内存组织，`topology` 管节点内连接。物理 DRAM/Flash 介质可复用 chipmodel/memory 原语，系统层拥有实例放置与访问语义。
 
+DDR DIMM/板载 LPDDR/GDDR 器件及板级通道在此层按实际位置组合；处理器内存控制器、对应 PHY 与 DRAM 器件可以复用 chipmodel 的独立模型。rank/通道共享和数据返回路径必须显式连接，不按 DIMM 或逻辑设备数重复增加带宽。详细拆分见[存储子系统目录](../../docs/reference/hardware_component_catalog.md)。
+
 ## 交换信息与状态
 
 向 compiler/runtime 输出设备视图、可达路径、地址域、NUMA 距离、访问能力和共享约束。接收搬运与访存请求，输出接受、背压、完成和注入统计。NIC、DMA、Root Complex、共享上行链路分别拥有队列或资源占用；跨节点 fabric 只引用 NIC 端口。

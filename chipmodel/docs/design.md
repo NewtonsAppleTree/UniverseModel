@@ -17,11 +17,17 @@
 
 CPU/GPU 可先用能力与服务摘要模型，研究微架构时再细化。摘要设备与内部细模型是替代层级，不能双重执行。NPU 的 engine_kind 与 compute_mechanism 分开：一个 NPU 可以混合数字 MAC 和 CIM。
 
+逐目录的候选单元见[覆盖清单](component_inventory.md)：展开处理器内部前端/访存、DDR/LPDDR/GDDR 与控制器/PHY、cache/TLB/一致性、控制管理及物理条件。存储技术 profile、控制器和物理访问路径分开；代码归属不意味着外接 DRAM 器件位于处理器 Die 内。
+
+代码组织建议见[Unit 类与参数设计](unit_model_design.md)：首批采用 Python 与显式类型/校验，以行为类型定义模型类、以物理实例持有独立状态；冻结规格、动态状态、指标和注入服务分开。纯公式不强制做成 Unit，大量同质 cell 用数组表示；C++ 迁移由实际性能瓶颈决定。
+
 ## 输入输出与责任
 
 输入是冻结结构、成本接口和显式请求；输出是 HardwareSpec 能力、接受/背压、完成/失败、动作计数及只读观测。每个组件维护自己的容量、队列、数据和状态；simulator 提供时间与事件接口。compiler 不能直接改存储内容或队列。
 
 传输必须经过有效端口及路径，声明内存读、链路、目标写阶段的计时边界。地址域与一致性是能力，不能因为两个资源同属一个 Package 就视为共享一致内存。
+
+局部台架应允许直接创建单组件或子图，并注入初态、输入源、接收端、时钟与成本服务，不要求完整 Die/Package 或 compiler/runtime。首批 CIM array、DAC、采样保持、ADC、累加和缓冲的专用字段见[组件接口提案](../../docs/interfaces/component_protocols.md)，全部候选组件及目录归属见[硬件组件目录](../../docs/reference/hardware_component_catalog.md)。这些入口尚待实现。
 
 ## CIM 与 3D CIM 的特有链条
 

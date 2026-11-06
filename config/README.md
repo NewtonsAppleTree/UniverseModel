@@ -1,6 +1,6 @@
 # 配置文件
 
-本目录存配置，解析逻辑在 configuration。当前只建立存放位置，尚无可执行 schema 或实验配置。
+本目录存配置，解析逻辑在 configuration。可用 schema 与实验配置的完成情况见[实现状态](../docs/STATUS.md)。
 
 | 目录 | 内容 |
 | --- | --- |

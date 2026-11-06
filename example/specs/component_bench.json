@@ -1,0 +1,124 @@
+{
+  "schema_version": "illustrative-component-bench/v1",
+  "executable": false,
+  "purpose": "CIM array, DAC, shared ADC and buffer timing fixture; proposed fields only",
+  "scope": "component_subgraph",
+  "clock": {"id": "bench_clock", "frequency_hz": 1000000000},
+  "workload": {
+    "operation": "matvec",
+    "rows": 16,
+    "columns": 16,
+    "matrix_layout": "rows_are_inputs_columns_are_outputs",
+    "input_dtype": "uint4",
+    "weight_dtype": "int4",
+    "output_dtype": "int32",
+    "accumulation": "exact_int32",
+    "overflow": "error",
+    "input_fixture": {"rule_id": "index_modulo", "modulus": 16},
+    "weight_fixture": {
+      "rule_id": "modular_matrix",
+      "row_multiplier": 1,
+      "column_multiplier": 2,
+      "modulus": 16,
+      "offset": -8
+    }
+  },
+  "cim": {
+    "id": "cim0",
+    "model_kind": "ideal_functional_equivalent",
+    "weight_mapping": "positive_negative_differential",
+    "array_count": 2,
+    "rows_per_array": 16,
+    "columns_per_array": 16,
+    "cell_bits": 4,
+    "input_encoding": "bit_serial_lsb_first",
+    "input_phases": 4,
+    "dac": {
+      "channels": 16,
+      "bits": 1,
+      "driven_arrays_per_channel": 2
+    },
+    "signal": {
+      "quantity_kind": "equivalent_signed_column_sum",
+      "unit": "dimensionless",
+      "differential_before_quantization": true
+    },
+    "drive_array_sample_cycles": 3,
+    "sample_hold": {
+      "sample_slots": 16,
+      "valid_for_cycles_after_sampling": 12,
+      "consumer_release_at": "adc_conversion_complete"
+    },
+    "adc": {
+      "count": 4,
+      "bits": 10,
+      "code_format": "signed_twos_complement",
+      "code_min": -512,
+      "code_max": 511,
+      "equivalent_sum_per_code": 1,
+      "conversion_latency_cycles": 2,
+      "initiation_interval_cycles": 2,
+      "noise_model": "none"
+    },
+    "shift_accumulate": {
+      "lanes": 4,
+      "accumulator_bits": 32,
+      "latency_per_group_cycles": 1,
+      "input_bit_weight_applied": true
+    },
+    "control_policy": "groups_and_input_phases_serial",
+    "phase_overlap": false,
+    "weight_state": "preprogrammed"
+  },
+  "buffer": {
+    "id": "buffer0",
+    "slot_count": 2,
+    "bytes_per_slot": 72,
+    "input_region": {"offset_bytes": 0, "length_bytes": 8},
+    "output_region": {"offset_bytes": 8, "length_bytes": 64},
+    "bank_count": 2,
+    "slot_to_bank": [0, 1],
+    "allocation_policy": "reserve_both_slots_at_initialize",
+    "local_access_timing": "included_in_stage_service",
+    "single_vector_slot": 0
+  },
+  "transfer": {
+    "id": "dma0",
+    "direction_mode": "half_duplex",
+    "startup_cycles": 1,
+    "payload_bytes_per_cycle": 8
+  },
+  "boundary_conditions": {
+    "source": "input_available_at_time_zero",
+    "sink": "no_additional_latency_or_backpressure",
+    "transfer_path": "through_dma0",
+    "software_launch": "excluded",
+    "weight_programming_and_calibration": "excluded",
+    "analog_nonidealities": "excluded",
+    "physical_energy_and_area": "unavailable"
+  },
+  "stimulus": [
+    {"id": "load0", "kind": "input_transfer", "bytes": 8, "depends_on": []},
+    {"id": "compute0", "kind": "cim_matvec", "depends_on": ["load0.destination_visible"]},
+    {"id": "store0", "kind": "output_transfer", "bytes": 64, "depends_on": ["compute0.destination_visible"]}
+  ],
+  "stop_condition": "store0.destination_visible_and_all_requests_drained",
+  "expected": {
+    "input_transfer_cycles": 2,
+    "adc_groups_per_phase": 4,
+    "cycles_per_input_phase": 15,
+    "compute_cycles": 60,
+    "output_transfer_cycles": 9,
+    "elapsed_cycles": 71,
+    "elapsed_seconds": 0.000000071,
+    "logical_mac_count": 256,
+    "adc_conversion_count": 64,
+    "physical_cell_evaluations": 2048,
+    "dma_payload_bytes": 72,
+    "reserved_buffer_bytes": 144,
+    "logical_weight_bytes": 128,
+    "physical_weight_cell_bits": 2048,
+    "output_int32": [280, 56, -104, -200, -232, -200, -104, 56, 280, 56, -104, -200, -232, -200, -104, 56],
+    "timing_basis": "hand_calculated_illustrative_assumptions"
+  }
+}

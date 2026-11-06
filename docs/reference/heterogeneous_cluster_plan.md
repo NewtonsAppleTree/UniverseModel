@@ -1,12 +1,12 @@
 # 异构芯片封装与集群建模规划
 
-UniverseModel 扩展为能够组合 CPU、GPU、NPU、CIM 和 3D CIM 的多层架构建模平台。芯片内多核、封装内多裸片、节点内多卡和集群内多机分别表达，通过统一资源、端口、数据引用和时间语义连接。当前工作仍以架构定义、功能模型、映射和性能评估为主，RTL 用于后续关键模块校准。
+UniverseModel 的目标是组合 CPU、GPU、NPU、CIM 和 3D CIM，形成多层架构建模平台。芯片内多核、封装内多裸片、节点内多卡和集群内多机分别表达，通过统一资源、端口、数据引用和时间语义连接。研究范围是架构定义、软件模型、映射和性能评估；关键模块可引用外部 RTL 或实测数据校准。
 
-本规划中的 HBF 指 High Bandwidth Flash；duo die 按双裸片 Dual-Die 处理。相关模块目录与设计文档现已建立，执行接口和模型仍待实现。当前模块边界以 docs/architecture/design.md 和 modules.json 为准。
+本文是异构结构与扩展路线的参考规划。HBF 指 High Bandwidth Flash；duo die 按双裸片 Dual-Die 处理。模块边界以[顶层架构](../architecture/design.md)和[模块清单](../architecture/modules.json)为准，公共对象以[契约规范](../interfaces/contracts.md)为准，实现进度见[实现状态](../STATUS.md)。
 
 ## 1 模块边界与设计判断
 
-工程已增加 systemmodel 和 clustermodel 的结构，将 chipmodel 的组合范围明确到封装。多核放在 chipmodel 内；板卡、节点和集群按各自管理的资源与共享瓶颈建模。这样可以在单芯片模型成熟后复用它，也可以用粗粒度设备模型先开展系统实验。
+chipmodel 的组合范围到封装，systemmodel 负责板卡和节点，clustermodel 负责跨节点结构。多核放在 chipmodel 内；板卡、节点和集群按各自管理的资源与共享瓶颈建模。这样可以在单芯片模型成熟后复用它，也可以用粗粒度设备模型先开展系统实验。
 
 | 模块 | 建模范围 | 核心职责 |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ UniverseModel 扩展为能够组合 CPU、GPU、NPU、CIM 和 3D CIM 的多层�
 | clustermodel | 多 Node、Fabric、Switch、Rack / Pod | 网络拓扑、共享链路、路由、拥塞、资源分组 |
 | compiler | 单设备和跨设备映射 | 切块、分区、放置、数据布局、静态依赖 |
 | runtime | 软件执行策略 | 派发、流与队列、通信算法、动态策略 |
-| simulator | 所有建模层次的执行 | 时间推进、事件、资源争用、统计与终止 |
+| simulator | 所有建模层次的执行 | 时间推进、事件、争用观测、统计与终止；资源仲裁由所属组件负责 |
 | configuration / contracts | 公共配置与契约 | 参数定义、解析校验、版本、资源与数据语义 |
 
 runtime 表达被建模的软件行为，simulator 表达运行这些行为的仿真机制。AllReduce 的分块与通信步骤属于软件通信层；交换机只处理其收到的流量。具备硬件归约能力的交换机应显式声明对应操作，不能默认具有该能力。
@@ -102,7 +102,7 @@ Apple M2 Ultra 是两片 M2 Max 裸片通过封装互连组成产品的公开例
 
 TSV 是 Through-Silicon Via；Micro-bump 是微凸点；Hybrid Bonding 是混合键合。UCIe 是可选的 Die-to-Die 接口标准，具体版本和模式通过配置引用；其官方资料包含 3D 集成支持 [3]。连接到 UCIe 不自动意味着整个封装具备缓存一致性。
 
-首版热模型提供 off、budget、rc 三种精度：off 仅报告功耗，不推断温度；budget 检查功率或外部给定温度是否越界，不计算温度场；rc 使用有来源的热阻热容及耦合关系估算温度。启用降频时，温度影响的服务率要反馈到执行时间线。没有校准数据时报告敏感性，不声称已完成封装热验证。
+热模型可按 off、budget、rc 三种精度组织：off 仅报告功耗，不推断温度；budget 检查功率或外部给定温度是否越界，不计算温度场；rc 使用有来源的热阻热容及耦合关系估算温度。启用降频时，温度影响的服务率要反馈到执行时间线。没有校准数据时报告敏感性，不声称已完成封装热验证。
 
 ## 4 HBM 与 HBF 的存储层次
 
@@ -174,7 +174,7 @@ Rank 是通信参与者标识；Rank 到进程、设备和资源的映射显式�
 
 ### 6.2 通信操作与执行过程
 
-支持点对点 Send / Receive，以及 Broadcast、AllReduce、ReduceScatter、AllGather、AllToAll 等集合操作。操作记录通信组、成员次序、数据类型、元素数量或分段、归约运算、源目标缓冲及依赖。具体计数约束按操作种类校验 [6]。
+通信模型规划覆盖点对点 Send / Receive，以及 Broadcast、AllReduce、ReduceScatter、AllGather、AllToAll 等集合操作。操作记录通信组、成员次序、数据类型、元素数量或分段、归约运算、源目标缓冲及依赖。具体计数约束按操作种类校验 [6]。
 
 集合操作由通信层选择 Ring、Tree、分层或其他算法，再展开为传输和局部归约。先节点内、后节点间的分层方案只是候选；拓扑、消息大小、设备能力和拥塞决定其实际表现。
 
@@ -194,15 +194,15 @@ Rank 是通信参与者标识；Rank 到进程、设备和资源的映射显式�
 
 配置目录为 config/hardware/components、chips、systems、clusters，以及独立 config/costs。它们是按职责组织的配置文件目录；组件模板与实例引用关系才决定实际架构。
 
-配置按默认值、类型模板、平台变体和实验覆盖解析，保存完整快照及哈希。改变底层结构后，重新校验所有使用该模板的实例、成本模型和执行计划。单实例覆盖需要明确目标 ID，不能悄悄改变全部同类型设备。
+配置按显式 schema 默认 → 组件模板 → 架构实例 → 实验覆盖 → 显式调用覆盖解析，具体规则见[configuration 设计](../../configuration/docs/design.md)，保存完整快照及哈希。改变底层结构后，重新校验所有使用该模板的实例、成本模型和执行计划。单实例覆盖需要明确目标 ID，不能悄悄改变全部同类型设备。
 
 ### 7.2 核心契约
 
 | 契约 | 必备内容 | 使用边界 |
 | --- | --- | --- |
 | HardwareSpec | 资源实例、包含关系、端口、链路、域和 DeviceView | 延续现有名称，范围可扩展到整个实验平台 |
-| ComponentSpec | 类型、能力、参数、模型和成本引用 | 支持芯片、节点和网络的分层组合 |
-| MemoryRegion / TensorRef | 存储所有者、地址范围、形状、布局、精度与版本 | 明确数据当前位置及可访问性 |
+| 组件描述 | 类型、能力、参数、模型和成本引用 | 用于分层组合；本表不另立名为 ComponentSpec 的公共契约 |
+| DataRef | 数据与分配身份、版本、存储所有者、地址范围、形状、布局、精度与内容引用 | 明确目标位置与内容位置，可见性按组件协议维护 |
 | PlacementPlan | 子图、Rank、阶段与设备映射 | 编译映射与运行时共同遵守 |
 | CommunicationPlan | 通信组、算法、分块、路径约束和依赖 | 与计算计划组合执行 |
 | ExecutionPlan | 计算、存储、传输、同步及硬件快照哈希 | 可分层组织，但保持统一依赖语义 |
@@ -210,7 +210,7 @@ Rank 是通信参与者标识；Rank 到进程、设备和资源的映射显式�
 
 Chip、System、Cluster 采用类型化的组合描述，统一解析到 HardwareSpec；避免另外维护三份互不一致的硬件真相。新增版本保留单芯片入口，单芯片任务无需先构造多机集群。
 
-TensorRef 至少标明所有者和地址空间。软件统一地址不等于物理本地；统一内存迁移和页面错误需要所选模型明确支持。不能通过共享 Python 对象绕过本应发生的设备或网络传输。
+DataRef 至少标明存储所有者、地址空间及分配版本。软件统一地址不等于物理本地；统一内存迁移和页面错误需要所选模型明确支持。不能通过共享 Python 对象绕过本应发生的设备或网络传输。
 
 ### 7.3 跨模块调用边界
 
@@ -274,7 +274,7 @@ Strong Scaling 固定总工作量，Weak Scaling 随资源增加工作量。异�
 
 ## 10 目录与实现位置
 
-以下目录已建立，作为后续执行模型的实现位置；原有 chipmodel/compute、memory、interconnect、control 保留。目录是代码职责划分，实际资源组成由配置决定。
+以下目录说明执行模型的实现归属，完整清单见[模块清单](../architecture/modules.json)。目录是代码职责划分，实际资源组成由配置决定。
 
 ```text
 chipmodel/
@@ -302,7 +302,7 @@ ui/                 参数表单 拓扑 映射与时序视图
 
 NIC 的硬件状态由实例所属的 systemmodel 维护，clustermodel 引用其端口；需要细化 NIC 内部时再组合 chipmodel 资源。同一个物理组件只有一份状态。公共端口和事件定义放在 contracts，具体时序适配仍由对应模型负责。
 
-现有 compiler/src/globalsplit、globalsolver、tiling、memplan、sched、lowering 和 export 按阶段扩展跨设备支持，不立即复制一套集群编译器。现有 simulator 和 evaluation 继续承担统一执行、实验管理与结果分析。主模块的 README.md 与 docs/design.md 说明子目录、状态、输入输出和验证责任；本次建立结构，不代表已完成执行实现。
+compiler/src/globalsplit、globalsolver、tiling、memplan、sched、lowering 和 export 按阶段扩展跨设备支持，不另建一套集群编译器。simulator 和 evaluation 分别承担统一时间执行、实验管理与结果分析。主模块的 README.md 与 docs/design.md 说明子目录、状态归属、输入输出和验证责任；实现进度统一见[实现状态](../STATUS.md)。
 
 ## 11 参考资料
 

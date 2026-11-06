@@ -4,6 +4,8 @@
 
 最重要的是事件按可解释的因果顺序发生。simulator 只依赖 contracts，接受 evaluation 注入的硬件组件、runtime 策略和观察器。`engine/events` 管事件队列，`engine/time` 管时间，`adapters` 适配协议，`stats` 管计数，`trace` 管轨迹，`snapshots` 管未来的完整检查点。
 
+局部仿真扩展允许用户脚本直接注入组件和驱动器，evaluation 与 runtime 按需使用。输入可为直接请求、访问轨迹或已有计划，仍经过相同的背压、可见性与终止检查。适配器仅承担指定激励行为，不能用零成本宿主调度冒充已模拟目标软件开销；详见[局部仿真规划](../../docs/architecture/composable_simulation.md)。
+
 全局时间、待处理事件和稳定排序序号属于引擎。资源局部队列/占用属于组件，软件策略状态属于 runtime。统计可以订阅事件或组件计数器，但同一指标必须有唯一权威来源。
 
 ## 输入输出与时间契约
