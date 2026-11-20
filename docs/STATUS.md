@@ -2,6 +2,8 @@
 
 核对日期：2026-11-06。代码基线：6b36384；本轮工作区新增通用配置/运行/记录/产物接口与全项目接入设计，保留已有 chipmodel 基础模型。
 
+文档更新：2026-11-20，新增根目录[项目使命与顶层要求](../PROJECT_MISSION.md)，同步仓库入口、开发约束、总览与架构导航；Word 构建器为围栏代码块增加同页约束，保持短文本图完整。本次不新增模型或执行能力；上述日期和下表测试记录仍指原实现核对。
+
 **已具备 chipmodel 基础模型与可独立使用的通用工程短路径。** configuration、contracts、evaluation、artifacts 已有严格参数解析、公共运行记录、单次注入调用和本地保存/校验；其他主模块仍以架构规范和骨架为主。完整模板配置、编译、软硬件执行、事件仿真、扫描与 UI 尚未形成端到端业务链。当前不包含 RTL，也不将分析时间界当作实际仿真时间。
 
 ## 能力与证据
@@ -51,6 +53,8 @@ python docs/tools/build_docx.py --document overview
 业务检查/示例使用 Python 3.10 及以上的标准库；最后一条需要 [文档依赖](tools/requirements.txt)。修改字段或定义说明后，用 `python tools/check_model_rules.py --write-docs` 刷新 UNITS.md 生成区。示例中的频率/服务参数是显式假设；`example/specs` 下的 JSON 仍不是可执行配置。通用示例使用独立的 `config/experiments/universal_*.json` schema。
 
 ## 下一步和更新规则
+
+长期目标按[项目使命](../PROJECT_MISSION.md)执行；具体课题与近期优先级在相应实验材料、本节及工程接入路线中维护，不写入使命正文。
 
 按用户最新方向，先完善 universal 的通用工程：模块能力/字段导出 → 最小 workload/硬件能力/plan 边界 → 独立校验与实验比较 → 按实际争用需求接入 runtime/simulator。各模块的输入输出、状态归属与最小接入顺序见[工程框架](../ENGINEERING_FRAMEWORK.md)。不先实现完整处理器或复杂事件/插件框架。
 

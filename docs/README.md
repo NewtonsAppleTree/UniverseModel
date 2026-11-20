@@ -1,6 +1,6 @@
 # 文档入口
 
-先读 [项目总览](PROJECT_OVERVIEW.md)了解模块、输入输出和任务路线；查看 [实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
+先读根目录[项目使命](../PROJECT_MISSION.md)了解长期研究目标与顶层要求，再读[项目总览](PROJECT_OVERVIEW.md)了解模块怎样服务研究、输入输出和任务路线；查看[实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
 通用工程接口、各模块接入与实现顺序从[ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)进入。当前先完善可独立使用的工程框架；CIM array + DAC/ADC + 缓冲台架保留为后续验收。
 
@@ -27,6 +27,7 @@ docs/
 
 | 想确认什么 | 阅读入口 |
 | --- | --- |
+| 项目的使命、研究范围和顶层要求 | 根目录[PROJECT_MISSION.md](../PROJECT_MISSION.md)，使命正文的唯一维护源 |
 | 项目整体怎样运转 | [项目总览](PROJECT_OVERVIEW.md) |
 | 现在能运行什么 | [实现状态](STATUS.md) |
 | 设计时该选哪些参数、单位与公式 | 根目录[芯片架构与 AI 参数清单](../ARCHITECTURE_PARAMETERS.md)：计算、存储、互连、物理条件与训练/推理资源账本 |
@@ -60,6 +61,8 @@ docs/
 
 | 发生的变化 | 更新位置 |
 | --- | --- |
+| 长期使命、研究范围或顶层要求变化 | 根目录[PROJECT_MISSION.md](../PROJECT_MISSION.md)；同步 README 摘要、AGENTS 开发约束和总览中的模块解释，其他文档引用使命正文 |
+| 具体课题或近期优先级变化 | 对应课题与实验材料、[工程框架](../ENGINEERING_FRAMEWORK.md)的接入路线及 [STATUS](STATUS.md)的下一步；不在使命正文维护进度 |
 | 功能新增、部分可用或验证结果变化 | [STATUS.md](STATUS.md)：支持范围、核对日期、代码基线和验证入口；总览与模块 README 引用它 |
 | 模块职责、目录或允许依赖变化 | [架构设计](architecture/design.md)、[模块清单](architecture/modules.json)、[依赖图](architecture/diagrams.md)及受影响的模块设计；总览同步导航 |
 | 公共字段、单位或生命周期变化 | [公共契约](interfaces/contracts.md)及对应接口专题；模块设计引用共同定义 |
@@ -71,7 +74,7 @@ modules.json 只维护目录与依赖等结构信息，实现状态集中在 STA
 
 Markdown 是维护源，exports 中的 Word 通过构建生成。开发中先改源文件，提交前更新受影响 Word 并检查排版。
 
-发现冲突时按问题定位：实现能力查 STATUS 和代码证据；接口语义查 interfaces；模块归属查 architecture 和模块设计。参考资料和历史记录不能覆盖这些约定。检查工具能发现路径和源哈希问题，内容是否与实现一致仍需变更时核对。
+发现冲突时按问题定位：长期使命与研究范围查根目录 PROJECT_MISSION.md；实现能力查 STATUS 和代码证据；接口语义查 interfaces；模块归属查 architecture 和模块设计。参考资料和历史记录不能覆盖这些约定。检查工具能发现路径和源哈希问题，内容是否与实现一致仍需变更时核对。
 
 ## Word 阅读版与构建
 
@@ -98,3 +101,5 @@ python tools/check_structure.py
 只改索引、STATUS 或其他未列入维护源的文档时，运行结构检查即可，无需重建 Word。移动维护源、阅读版或它们引用的文件时，也应重建受影响的阅读版，以更新相对链接。归档阅读版不参与日常构建。
 
 构建器写入 Markdown 来源哈希，检查工具核对同步；该哈希不校验 Word 排版或其中的链接。Markdown 检查只覆盖本地文件链接，不验证标题锚点和外部网站。生成 Word 后仍需渲染并逐页检查字体、表格与分页，图片和 PDF 放入 .build。Mermaid 图保留在 Markdown，现有 Word 构建器不渲染它们。
+
+围栏代码块中的相邻行设置同页约束，使单页容得下的文本图和命令块保持完整；超过页面容量的长块仍需检查分页。

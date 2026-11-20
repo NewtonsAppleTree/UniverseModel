@@ -255,6 +255,7 @@ def add_table(document, lines: list[str], *, reference: bool = False,
     spacer.add_run().font.size = Pt(4)
 
 
+# 将 Markdown 按来源链接与章节层级写入 Word，并保持表格和文本图的分页关系。
 def append_markdown(document, content: str, section_number: int,
                     *, reference: bool = False,
                     page_break_titles: tuple[str, ...] = (),
@@ -293,8 +294,13 @@ def append_markdown(document, content: str, section_number: int,
             continue
         elif line.startswith("```"):
             index += 1
+            previous_code_paragraph = None  # 当前围栏块的上一段；不连接相邻块或后续正文。
             while index < len(lines) and not lines[index].strip().startswith("```"):
-                document.add_paragraph(lines[index], "Code Block")
+                if previous_code_paragraph is not None:
+                    previous_code_paragraph.paragraph_format.keep_with_next = True
+                paragraph = document.add_paragraph(lines[index], "Code Block")
+                paragraph.paragraph_format.keep_together = True
+                previous_code_paragraph = paragraph
                 index += 1
         elif re.match(r"^\d+\.\s", line):
             paragraph = document.add_paragraph(style="List Number")
