@@ -10,6 +10,12 @@ CIM局部台架复用[runner](runner/UNITS.md)进行固定数据的差分位置�
 
 CH6计算能力实验通过ComputeStudy保存CPU阶段/GPU驻留/NPU服务的分组案例；资源或工作单因素变化自动检查，格式不支持和启动未知/不可行分别留档。接口与复现见[指南](../../chipmodel/docs/compute_capabilities.md)。
 
+CH7新增[runner/memory.py](runner/memory.py)有限外存/缓存研究：按实际访问比较DRAM条件界、缓存回填/脏写回和NAND页服务/外部输出。复用RunRecord和artifact，不建立另一个执行引擎；来源、完整名单和未知成本由[runner](runner/UNITS.md)维护。
+
+CH8新增[runner/assembly.py](runner/assembly.py)：固定工作的位置、资源及完整job顺序对照，保存共享账本/跨Die线路量与同指标摘要。完整案例回读及适用边界由[runner](runner/UNITS.md)维护。
+
+CH9物理条件实验已接入[runner](runner/UNITS.md)：来源点、几何、PVT、观测窗口、热敏感性与未知成本保留在同一套实验记录中；不将来源再现等同于物理校准。
+
 <!-- model-fields:start -->
 
 

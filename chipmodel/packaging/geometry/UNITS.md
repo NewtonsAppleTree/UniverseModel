@@ -2,9 +2,11 @@
 
 Rectangle 描述位置 [mm] 和尺寸 [mm]，面积为 width*height [mm²]。validate_floorplan 检查所有 block 在给定 boundary 内、同一层内部不重叠；边界接触合法。旋转后的矩形由调用方交换尺寸，不引入隐藏变换。
 
-最关心实际包含边界、keep-out、层身份和面积计量范围。当前没有 keep-out margin、布线拥塞、重叠投影的层标签、TSV/凸点密度；多层需分别调用，不把不同层的重叠投影当作冲突。
+最关心实际包含边界、keep-out、层身份和面积计量范围。当前没有 keep-out margin、布线拥塞或TSV/凸点密度；本独立函数的多层输入需分别调用，不把不同层的重叠投影当作冲突。
 
 输入坐标/尺寸来自布局或假设，校验通过只证明这些矩形约束。不会从面积推导门数、频率、功率或制造成本。使用顺序为边界 → block 矩形 → 同层校验 → 在 composition 中保留实例关联。
+
+CH9的[父层PhysicalModel/Placement](../evidence.py)已绑定唯一实例/子树与layer，并逐层调用本目录校验。同一面积指标的祖先/叶子不能双计，几何和特征化面积不相加；未知表面积或无法分摊的摘要返回未知必要条件。
 
 <!-- model-fields:start -->
 

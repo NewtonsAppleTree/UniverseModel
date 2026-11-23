@@ -1,10 +1,12 @@
 # 文档入口
 
+chipmodel基础收尾及统一验收见[完成报告](../chipmodel/docs/completion.md)；历史分包指南继续维护各专业模型边界。
+
 先读根目录[项目使命](../PROJECT_MISSION.md)了解长期研究目标与顶层要求，再读[项目总览](PROJECT_OVERVIEW.md)了解模块怎样服务研究、输入输出和任务路线；查看[实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
 近期优先级和验收门槛从[研究开发路线](RESEARCH_ROADMAP.md)进入，选型依据见[开源项目调研](reference/open_source_landscape.md)。[首个线性实验](../evaluation/docs/linear_mapping.md)已覆盖任务、映射、校验和比较，后续补训练语义与外部基线校准；通用工程接口与接入规则见 [ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)。CIM array + DAC/ADC + 缓冲台架继续按局部验收方案推进。
 
-当前已完成 [chipmodel CH1–CH4首包](../chipmodel/docs/foundation_usage.md)：契约/精度、SRAM访问、搬运账本、数字Tile同预算对照及敏感性；[CH5 CIM局部台架](../chipmodel/docs/cim_bench.md)也已完成数值链、共享ADC/保持检查与同输入对照；[CH6计算能力解释](../chipmodel/docs/compute_capabilities.md)已接续CPU/GPU/NPU的限制、格式与供数对照；下一项按[开发计划](../chipmodel/docs/development_plan.md)推进CH7外存与缓存接入。此前clustermodel基础已完成，见[交接报告](../clustermodel/docs/completion.md)及[横向能力指南](../clustermodel/docs/breadth_usage.md)。
+当前已完成 [chipmodel CH1–CH4首包](../chipmodel/docs/foundation_usage.md)：契约/精度、SRAM访问、搬运账本、数字Tile同预算对照及敏感性；[CH5 CIM局部台架](../chipmodel/docs/cim_bench.md)也已完成数值链、共享ADC/保持检查与同输入对照；[CH6计算能力解释](../chipmodel/docs/compute_capabilities.md)已接续CPU/GPU/NPU的限制、格式与供数对照；[CH7外存与缓存接入](../chipmodel/docs/memory_access.md)已接续DRAM/profile、缓存轨迹和NAND页服务；[CH8 Tile/Die/Package组合](../chipmodel/docs/assembly.md)已接续共享资源/跨界流量/摘要；[CH9物理条件与成本证据](../chipmodel/docs/physical_evidence.md)已接续精确查表、唯一物理计量与热轨迹；后续按[开发计划](../chipmodel/docs/development_plan.md)的研究证据缺口扩展。此前clustermodel基础已完成，见[交接报告](../clustermodel/docs/completion.md)及[横向能力指南](../clustermodel/docs/breadth_usage.md)。
 
 搭建组件台架或设计硬件接口时，再查[可组合组件与局部仿真规划](architecture/composable_simulation.md)；其公共事件接口与 BenchSpec 样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 

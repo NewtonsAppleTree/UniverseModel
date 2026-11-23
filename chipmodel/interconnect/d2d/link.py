@@ -1,8 +1,9 @@
 """单方向串行链路：分包、协议字节和线路编码分开计量。"""
 
 from dataclasses import dataclass
+from fractions import Fraction
 
-from chipmodel.common import ceil_div, count, positive, real
+from chipmodel.common import ceil_div, count, finite_fraction, positive, real
 
 
 # D2D/SerDes 分析参数；lane_rate 已是每 lane 线路 bit rate，不再乘 DDR 系数。
@@ -21,8 +22,8 @@ class SerialLinkParams:
         for name in ("lane_count", "coding_data_bits", "coding_wire_bits", "max_payload_bytes"):
             count(name, getattr(self, name))
         count("packet_overhead_bytes", self.packet_overhead_bytes, 0)
-        positive("lane_rate_bps", self.lane_rate_bps)
-        real("fixed_latency_s", self.fixed_latency_s, minimum=0)
+        object.__setattr__(self, "lane_rate_bps", positive("lane_rate_bps", self.lane_rate_bps))
+        object.__setattr__(self, "fixed_latency_s", real("fixed_latency_s", self.fixed_latency_s, minimum=0))
         if self.coding_wire_bits < self.coding_data_bits:
             raise ValueError("coding_wire_bits must be >= coding_data_bits")
 
@@ -45,6 +46,9 @@ def estimate_link(p: SerialLinkParams, payload_bytes: int) -> LinkEstimate:
     if tail:
         codewords += ceil_div((tail + p.packet_overhead_bytes) * 8, p.coding_data_bits)
     bits = ceil_div(codewords * p.coding_wire_bits, p.lane_count) * p.lane_count
-    rate = positive("wire_rate_bps", p.lane_count * p.lane_rate_bps)
-    seconds = positive("completion_time_s", p.fixed_latency_s + bits / rate) if packets else 0.0
+    rate = p.lane_count * Fraction(p.lane_rate_bps)
+    finite_fraction("wire_rate_bps", rate)
+    serialization = Fraction(bits) / rate
+    finite_fraction("serialization_time_s", serialization)
+    seconds = finite_fraction("completion_time_s", Fraction(p.fixed_latency_s) + serialization) if packets else 0.0
     return LinkEstimate(packets, packets * p.packet_overhead_bytes, bits, seconds)

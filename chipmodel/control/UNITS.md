@@ -12,6 +12,8 @@ TMA 地址=base+Σindex*stride。logical_bytes=product(shape)*element_bytes；sp
 
 [搬运装配](../composition/UNITS.md)已把本通道服务与源读/链路/目标写连接到共同资源账本。相同通道的请求串行占用，端点/路径根据ID检查；通道摘要不包含完整copy服务。
 
+序列输入仅接受有限list/tuple，冻结shape/stride并逐项校验Python整数；字典/字符串/惰性迭代器不能隐式变成维度或坐标。广播stride=0和非连续span关系不变。
+
 <!-- model-fields:start -->
 
 ### [data_movement.py](data_movement.py)

@@ -1,5 +1,9 @@
 # 验证归属
 
+基础收尾新增[数值边界测试](chipmodel/test_numerical_boundaries.py)与[统一验收测试](integration/test_chipmodel_acceptance.py)：线路大计数、热收敛、CIM有理乘加/下溢、严格序列，以及完整预期失败/哈希/只读回放。全仓库七组回归与104案例验收互补，见[完成报告](../chipmodel/docs/completion.md)。
+
+CH9新增[成本接口测试](costmodel/test_costs.py)、[物理模型测试](chipmodel/test_physical.py)和[物理集成测试](integration/test_physical_experiment.py)，覆盖固定来源再现、条件/未知成本、唯一计量、观测窗口、50组高精度热参考、CH8读写/线路量和完整保存回读。成本组独立运行 `python -m unittest discover -s tests/costmodel -p "test_*.py" -v`；其余沿用chipmodel/integration组。来源再现不代替器件校准，见[CH9指南](../chipmodel/docs/physical_evidence.md)。
+
 CH6新增[计算能力模型测试](chipmodel/test_compute_capabilities.py)与[计算能力集成测试](integration/test_compute_experiment.py)，涵盖CPU阶段槽枚举、GPU资源消耗/启动限额、NPU签名/尾批、完整单因素协议及Tile供数/不重复计费。运行方式沿用chipmodel和integration的独立discover命令，边界和证据见[指南](../chipmodel/docs/compute_capabilities.md)。
 
 本目录按 contracts、configuration、costmodel、chipmodel、systemmodel、clustermodel、workloads、runtime、simulator、artifacts、evaluation、ui 与 integration 划分。compiler 的阶段验证保留在 compiler/tests。

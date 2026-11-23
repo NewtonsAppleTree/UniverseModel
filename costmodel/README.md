@@ -6,6 +6,8 @@
 
 ## 阅读入口
 
+- [可运行接口与单位](UNITS.md)
+- [CH9指南与来源范围](../chipmodel/docs/physical_evidence.md)
 - [模块设计](docs/design.md)
 - [顶层架构](../docs/architecture/design.md)
 - [公共契约](../docs/interfaces/contracts.md)

@@ -1,6 +1,6 @@
 # chipmodel 开发任务与验收计划
 
-日期：2026-11-23。顶层依据为[项目使命](../../PROJECT_MISSION.md)，开发约束见[本模块规则](../AGENTS.md)。CH1–CH4首包已执行：G1/G2修复、SRAM访问/容量绑定、搬运账本、数字Tile及Linear适配已实现；模型边界、对照与复现见[基础指南](foundation_usage.md)。CH5完整局部CIM数值/资源/保持台架也已实现并验证，见[CIM指南](cim_bench.md)。CH6的CPU/GPU/NPU能力与瓶颈解释已实现，见[能力指南](compute_capabilities.md)；CH7–CH9仍待后续开发，CH10随各包落实。下面的源码盘点和缺口复现保留为开发前基线。长期使命不在本页另行维护，实际完成状态统一见[STATUS](../../docs/STATUS.md)。
+日期：2026-11-23。顶层依据为[项目使命](../../PROJECT_MISSION.md)，开发约束见[本模块规则](../AGENTS.md)。CH1–CH4首包已执行：G1/G2修复、SRAM访问/容量绑定、搬运账本、数字Tile及Linear适配已实现；模型边界、对照与复现见[基础指南](foundation_usage.md)。CH5完整局部CIM数值/资源/保持台架也已实现并验证，见[CIM指南](cim_bench.md)。CH6的CPU/GPU/NPU能力与瓶颈解释已实现，见[能力指南](compute_capabilities.md)；CH7外存与缓存接入已实现，见[外存指南](memory_access.md)；CH8共享资源与跨Die组合已实现，见[组合指南](assembly.md)；CH9精确来源查询、资源/物理账本和热轨迹已实现，见[物理证据指南](physical_evidence.md)；CH10已完成跨包数值审计、统一验收和文档收尾，见[完成报告](completion.md)。下面的源码盘点和缺口复现保留为开发前基线。长期使命不在本页另行维护，实际完成状态统一见[STATUS](../../docs/STATUS.md)。
 
 ## 1 本阶段要支持的研究判断
 
@@ -31,7 +31,7 @@
 | [packaging](../packaging/UNITS.md) | 同层矩形包含/重叠校验、一阶恒功率热RC | 未绑定资源/功率来源；无多die热网、PDN、制造成本和校准，CH9 |
 | [registry](../registry/UNITS.md)、[docs](UNITS.md) | 显式独立工厂表、全部目录UNITS和规则检查 | 沿用已有配置/记录，按实际接入补能力说明、版本和实验入口，CH10 |
 
-候选硬件机制仍查[组件清单](component_inventory.md)；该清单不作为必须创建的类列表。costmodel当前没有可用的Python成本provider，不能假定已有能耗/面积校准接口可直接调用。
+候选硬件机制仍查[组件清单](component_inventory.md)；该清单不作为必须创建的类列表。开发前costmodel尚无Python成本provider；CH9已实现精确条件查询，实际范围见[物理证据指南](physical_evidence.md)，仍不能假定所有硬件成本已校准。
 
 ## 3 开发前确认的问题与修复状态
 
@@ -55,14 +55,14 @@ action = ActionEstimate(action_id="move", latency_s=0, dependencies=(), demands=
 ))
 budget = ResourceBudget(resource_id="port", work_unit="B", rate_per_s=1,
                         initial_credit=2**53)
-print(estimate_time_bounds((action,), (budget,)).resource_bound_s)  # 当前0.0；精确值1 s。
+print(estimate_time_bounds((action,), (budget,)).resource_bound_s)  # 修复后1.0；旧结果0.0。
 print(ActionEstimate(action_id="compute", latency_s=0,
-                     dependencies="load", demands=()).dependencies)  # 当前拆为4个字符。
+                     dependencies="load", demands=()).dependencies)  # 修复后抛TypeError；旧结果拆为4个字符。
 ```
 
 ## 4 按研究问题划分的开发任务
 
-CH0盘点与CH1–CH4首包已完成，CH10实验/文档/来源要求已应用到本包。CH5已完成完整局部数值链、资源/精度对照与保持验证，CH6能力解释与单因素对照已完成，CH7–CH9为后续任务；P0表示首包，P1表示复用首包的局部扩展，P2按课题证据条件进入。当前新增首包模型/集成测试及验证结果见STATUS。
+CH0盘点与CH1–CH9基础已完成，CH10实验/文档/来源要求随各包落实，并已完成[统一验收](completion.md)。CH5完成局部数值链、资源/精度对照与保持验证，CH6完成能力解释，CH7完成外存/缓存接入，CH8完成共享资源与跨Die组合；CH9已完成有来源的最小查询与几何/能量/热证据接口，实际器件校准和联合可行性按研究主张扩展。P0表示首包，P1表示复用首包的局部扩展，P2按课题证据条件进入。各包实际验证结果见STATUS。
 
 | 任务 / 优先级 / 依赖 | 研究什么 | 怎样建模及交付位置 | 如何证明 |
 | --- | --- | --- | --- |
@@ -146,4 +146,4 @@ CH4首先比较同一任务和硬件预算下的地址布局或现有output_stat
 | 文档与检查 | 定义/字段注释、实现目录及祖先UNITS、必要参数关系和STATUS同步；相关业务测试及两个规则检查通过 |
 | 声明范围 | 区分functional、analytical、static_schedule和event；性能下界不冒充完成时间，host时间不进入目标指标 |
 
-本阶段进展按任务验收更新，不按类数或目录填充率统计。本次从44项芯片测试基线扩展到契约/地址/路径/共享的独立回归，并接入数字Tile同预算实验及资源敏感性。CH5已接续完整CIM数值/动作/资源台架并保存同输入对照，CH6能力/格式/驻留/供数解释也已接续，下一项CH7外存与缓存接入；后续任务只扩展与其机制有关的验证。
+本阶段进展按任务验收更新，不按类数或目录填充率统计。从44项芯片测试基线扩展到契约/地址/路径/共享的独立回归，并接入数字Tile同预算实验及资源敏感性。CH5–CH8已依次补充CIM数值/资源、计算能力、外存/缓存和多Tile/跨Die证据；CH9已接续固定来源点、条件成本与物理账本，后续只扩展与具体研究主张有关的校准和执行证据。

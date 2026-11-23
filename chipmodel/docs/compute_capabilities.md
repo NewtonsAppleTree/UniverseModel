@@ -69,4 +69,4 @@ python tools/check_model_rules.py
 python tools/check_structure.py
 ```
 
-CLI常规案例要求分析成功且GPU没有已知启动拒绝；boundary案例的失败仍完整展示。没有任务功能参考的能力实验不生成“数值质量通过”标志。各家族的执行时间指标统一保留None和原因，不以宿主时间替代。默认source_revision为unrecorded；可复现证据应填入真实来源。完整回归、来源清单、保存实验和隔离wheel证据由[STATUS](../../docs/STATUS.md)维护。本包完成后按计划进入CH7外存与缓存接入，按研究需要增加机制。
+CLI常规案例要求分析成功且GPU没有已知启动拒绝；boundary案例的失败仍完整展示。没有任务功能参考的能力实验不生成“数值质量通过”标志。各家族的执行时间指标统一保留None和原因，不以宿主时间替代。默认source_revision为unrecorded；可复现证据应填入真实来源。完整回归、来源清单、保存实验和隔离wheel证据由[STATUS](../../docs/STATUS.md)维护。后续[CH7外存与缓存接入](memory_access.md)已完成，[CH8 Tile/Die/Package组合](assembly.md)也已完成，当前按来源推进CH9物理条件与成本证据。

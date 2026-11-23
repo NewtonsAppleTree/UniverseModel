@@ -54,14 +54,14 @@ def typed_tuple(name: str, values: object, kind: type | tuple[type, ...]) -> tup
     return tuple(values)
 
 
-# 精确有理中间量只在输出边界转 binary64；正值下溢和溢出必须显式失败。
-def finite_fraction(name: str, value: Fraction) -> float:
+# 有理中间量在输出边界转 binary64；minimum=None允许带符号电气量，非零下溢和溢出显式失败。
+def finite_fraction(name: str, value: Fraction, *, minimum: float | None = 0) -> float:
     try:
-        result = real(name, float(value), minimum=0)
+        result = real(name, float(value), minimum=minimum)
     except OverflowError as exc:
         raise ValueError(f"{name} exceeds binary64 range") from exc
-    if value > 0 and result == 0:
-        raise ValueError(f"{name} positive value underflows binary64")
+    if value != 0 and result == 0:
+        raise ValueError(f"{name} nonzero value underflows binary64")
     return result
 
 

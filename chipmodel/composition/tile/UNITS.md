@@ -16,13 +16,33 @@ CH6可选mac_arithmetic和mac_profile_source绑定该MAC资源的显式格式/�
 
 本地与DMA共用相同backing/端口；资源包络、逐bank L/II服务和MAC服务分别解释瓶颈。最敏感的是映射复用、地址布局、端口数、L/II和各域时钟。CH5的CIM完整组合也已实现，见下节。独立测试和Linear适配用法见[指南](../../docs/foundation_usage.md)。
 
+CH7可通过MemoryResource.dram_read和TransferRequest.source_row_state连接DRAM外部读；LinearTileBackend.external_read_row_state向每次load传递条件。scratch和MAC服务不变，burst需求只在所属channel预算中累计一次，目标DRAM写服务仍未知；见[CH7指南](../../docs/memory_access.md)。
+
 ## 已实现的CIM局部台架
 
 `CimTile`引用唯一DAC/切片阵列/TIA/ADC/hold/数字资源，`analyze_cim`组合数值链、有限保持和寄存器容量、共享ADC与跨phase II。每行需要持续DAC；phase内阶段barrier，phase间串行，输出资源下界与显式策略分析时间，不宣称通用事件完成时间。
 
 接口顺序：CimNumericParams+CimInput→CimTile归属/服务参数→analyze_cim→数值/动作/样本时间与未知成本。最敏感的是ADC精度、差分位置、ADC lane/时钟、TIA扫描与MUX间隔、保持年龄和数字服务。profile_source必须说明假设/来源。复现与证据见[CH5指南](../../docs/cim_bench.md)。
 
+## CH8共享清单绑定
+
+[binding.py](binding.py)的TileBinding保存Tile容器、MAC叶子、scratch引用和MacArray配置；bind(resources)得到原有DigitalTile视图。MAC属于本Tile子树，scratch可由同Die多个Tile共享；这些视图不拥有第二份memory/DMA/link预算。相同资源上的多个真实任务由[ChipAssembly](../package/UNITS.md)全局累计。独立bind仍可调用analyze_tile，不要求完整Package。
+
 <!-- model-fields:start -->
+
+### [binding.py](binding.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `TileBinding` | `tile_id` | `str` | 1（标识/枚举） | Tile容器节点身份；不是额外服务资源。 |
+| `TileBinding` | `scratch_id` | `str` | 1（标识/枚举） | 唯一SRAM backing引用，可被同die其他Tile共享。 |
+| `TileBinding` | `mac_resource_id` | `str` | 1（标识/枚举） | 本Tile独占MAC叶子资源身份。 |
+| `TileBinding` | `mac` | `MacArray` | —（结构/对象） | 操作/格式、P/L/II、时钟及来源；不另增一份MAC。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `TileBinding` | 一个Tile的计算资源配置与scratch引用；物理归属由组合清单统一校验。 |
+| `TileBinding.bind(self, resources: TransferResources)` | 同一清单可构造独立Tile视图；调用方不能把多个视图的共享预算相加。 |
 
 ### [cim.py](cim.py)
 

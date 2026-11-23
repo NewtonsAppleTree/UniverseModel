@@ -1,6 +1,117 @@
 # 实现状态
 
-## 2026-11-23 chipmodel CH6计算能力与瓶颈解释完成
+## 2026-11-23 chipmodel CH10统一验收与基础收尾完成
+
+本轮按[项目使命](../PROJECT_MISSION.md)完成chipmodel基础阶段的横向覆盖审查、数值/输入契约修复、统一验收和文档收尾。CH1–CH10基础均已交付；研究问题、独立/组合入口、证据及后续触发条件见[完成报告](../chipmodel/docs/completion.md)，专业边界继续由各目录UNITS和分包指南维护。候选清单中的全部硬件机制不作为本阶段必填项。
+
+本轮确认并修复：串行链路巨大wire-bit计数的中间浮点溢出；热RC长时间冷却丢失稳态温度；CIM阵列求和/TIA乘加的中间溢出和微小贡献丢失；TensorLayout/CIM直接输入误接收字典键或惰性序列。有理中间量只在输出边界转换，带符号电气输出非零下溢明确失败；合法list/tuple保持冻结、广播及非连续布局语义。新增9项数值/契约测试，含逐包枚举、70组Decimal热参考、50组TIA乘加参考及subnormal反例。极值为数值审计，不表示物理可行参数。
+
+新增[统一验收工具](../tools/validate_chipmodel.py)及4项防退化测试。六组默认夹具的完整案例数与预期失败名单固定受审查；主比较沿用各CLI的正确性/质量门槛，保存源码身份、完整bundle、摘要、命令和host耗时，最后提交验收报告。回读先核对完整原始字节哈希，再从记录重建摘要；不重新执行模型或改写历史版本。CI使用同一入口，文档已修正停留在CH6的当前状态和已实现缓存/成本查询的过时说明。
+
+验证结果：
+
+- 全仓库七组共368项：366通过、2项可选PyTorch测试跳过。分组为contracts 6、clustermodel 72、costmodel 7、chipmodel 141、workloads 19、compiler 17、integration 106（含2跳过）。
+- 六组104案例全部保存/回读一致：数字Tile 24、CIM 7、compute 16、memory 21、assembly 16、physical 20；82分析成功、22预期失败全部保留。CIM `adc_2bit`虽分析成功，质量门槛未通过且最大绝对误差62，作为精度消融明确保留；不计作任务质量成功。
+- 模型规则通过66个实现目录；结构检查通过13模块、81份模块Python、169份Markdown和4份DOCX源哈希。旧chipmodel示例及空白检查通过。
+- wheel中79份Python与工作区原始字节一致；`python -I`仅从解包wheel导入59个项目模块，含所有36个chipmodel实现；六组104案例的输出/指标/身份/失败及保存回读与工作区一致。示例和配置仍从checkout提供，不宣称wheel安装示例CLI。
+
+证据根目录：`.build/chipmodel-closeout-20261123`。`studies/source.json`覆盖146个实际Python/config/pyproject文件；`studies/acceptance.json`、`validation.json`、`audit.json`及`wheel_smoke_audit.json`保存完整明细。源码身份：
+
+`2d6e4c5daa542b98a6d536a9fc4e62e03272d1fe+python-config-sha256:1cead179b93189d94a589fe1dc15c09f5343c911d00868fa92d1503d26a366ec`
+
+wheel SHA256：`751c4c9614a33186a95ffd829cbdf9f0190dc607743c9949a1be122522e41add`。CH7–CH9既有修改与证据保留，Git索引未改变。本地通过不等于远端CI已经运行。
+
+当前边界：标准库功能/分析及显式局部静态策略基础已完整验收；没有完整ISA、动态队列/可见性/一致性、多CIM同步或经实测校准的整芯片PPA。热输入仍为外部总功率，Nangate仍只覆盖两个单元的面积/库标量漏电。CIM有理算术增加宿主运行成本，大规模后端按研究精度另选。后续工作由具体课题所需的任务质量、真实执行、跨模块组合或物理校准证据触发，不把未知成本补成零。
+
+## 2026-11-23 chipmodel CH9物理条件与成本证据基础完成（历史批次）
+
+已按[项目使命](../PROJECT_MISSION.md)和[开发计划](../chipmodel/docs/development_plan.md)完成CH9基础接口、物理账本、真实来源再现及独立验证。研究问题、模型关系、原始来源、限制和复现命令见[物理证据指南](../chipmodel/docs/physical_evidence.md)。CH1–CH9基础已接通，CH10的实验/兼容/文档要求随各包落实；具体器件校准与联合物理可行性仍需研究课题的外部证据。
+
+| 范围 | 已实现与证据 | 保留边界 |
+| --- | --- | --- |
+| 条件成本查询 | costmodel首次实现结构/PVT/metric/action/unit精确查询；原工件SHA256、版本、提取方法、类别、覆盖和误差未知状态随点返回 | 不插值/外推、不按nm/V自动缩放；没有相应profile就返回None |
+| 唯一物理计量 | 静态面积/漏电选择完整覆盖且摘要/后代互斥，单PVT摘要与叶子一致；动态按真实叶子活动，ΣnE与P*T分开 | 模型范围以输入与来源声明为限；缺点、缺活动或缺窗口使完整成本未知，保留已知子集 |
+| 几何与热 | 实例/子树绑定layer/Rectangle，逐层包含/不重叠；外部总功率分段驱动固定RC，记录峰值/供能及阈值判断 | 面积/温度只是必要条件；无布线/时序签核、空间热点、多Die热耦合、PDN或PVT反馈 |
+| CH8组合接入 | 参数结构哈希、SRAM逐bank读写、MAC、DMA cycle、DRAM burst byte、D2D wire bit按原账本接入；共享RW供给不合并能量读写动作 | 不把通用MAC/SRAM匹配到标准单元数据；DRAM行命令/刷新/写及容量模型缺口保留；不推断真实时长 |
+| 研究记录 | 四组20案例：17分析成功、3预期失败；完整来源/输入/未知状态保存回读；热敏感性单数值改动 | 其中12个成功案例的modeled_energy未知；分析成功不等于几何/热条件满足或器件已校准 |
+
+已从OpenROAD-flow-scripts固定提交`82ac25be57125cc724388ef89f01ce65f9ba3dcc`核对Nangate45的Liberty和LEF。原库为typical/TypTyp、1.1 V、25 °C、漏电单位1nW。INV_X1的LEF尺寸0.38×1.4 μm、面积0.532 μm²、库标量漏电14.353185 nW；NAND2_X1为0.57×1.4 μm、0.798 μm²、17.393360 nW。离线工具验证两个原文件SHA256、PVT/单位，以Decimal确认LEF尺寸乘积与Liberty面积相等后生成4个条件点，重新提取与保存表完全一致。
+
+两单元显式无切换、假设1 s窗口的模型面积1.33 μm²、漏电31.746545 nW、能量31.746545 nJ；窗口翻倍为63.49309 nJ。移除窗口或加入没有动作能量profile的10次INV切换，总能量保持未知；INV改成1.0 V也不会自动缩放。分配边界缩到1 μm²时，面积必要条件失败，但程序分析成功。所有数值仅覆盖这两单元的库标量与指定条件，没有MAC/SRAM、芯片功耗或实际输入状态加权漏电主张。
+
+合成代数案例验证动态3 J与背景0.375 W×2 s=0.75 J分开累计；叶子和显式摘要均为3.75 J，缺少一个动态点或窗口时总量未知。该案例仅验证公式/计量，不是器件成本。CH8共享两Tile的64 MAC、16次word读和D2D的500 wire bit均保留；两份原CH8分析与上一包保存结果一致，真实标准单元表无法给出这些结构的成本，补假设窗口后仍未知。
+
+热情景为R=2 K/W、C=5 J/K、Ta=T0=300 K，10 W加热10 s再零功率冷却10 s：峰值312.642411 K、末温304.650883 K、外部供能100 J。R/C/加热功率分别翻倍后，峰值315.738774/307.869387/325.284822 K；R和功率翻倍违反315 K情景阈值。功率、RC和阈值是合成条件，未与标准单元查询结果耦合；供能是外部输入积分，不作为另一份芯片预测能耗相加。
+
+本包新增27项测试（costmodel 7、chipmodel 12、integration 8）。50组随机RC/初态/功率使用80位Decimal指数独立参考，另有半时间常数、分段/冷却、摘要/PVT/几何/时长反例、数值范围、原始工作量守恒和完整记录检查。全仓库回归355项：353通过、2项可选PyTorch因默认环境未安装而跳过；分组contracts 6、clustermodel 72、costmodel 7、chipmodel 132、workloads 19、compiler 17、integration 102（其中2跳过）。规则通过66个实现目录；结构检查通过13模块、81份模块Python、167份Markdown及4份Word来源哈希；diff空白检查和旧chipmodel_demo通过。CI已加入costmodel组与physical_demo保存/回读，本地结果不代表远端CI运行。
+
+本地证据位于 `.build/chipmodel-physical-20261123`。source.json记录143份Python、所有config下JSON及pyproject的逐文件哈希、环境与工作区状态；源码身份为 `2d6e4c5daa542b98a6d536a9fc4e62e03272d1fe+python-config-sha256:fc7f192faca5f9b53b99cb29f99651bfe8724806274492051a20affefd4372cc`。该身份包含未提交源码，不含文档/构建产物；上一包130份源文件与Git暂存区保持不变。validation.json及各组日志保留回归；physical/、physical_summary.json和studies_audit.json保存20案例，assembly_origins.json保存CH8输入/分析/物理活动；references/保存两个原工件及来源元数据，source_table_reextracted.json与source_reproduction.json记录4个点再现、零提取误差和“无独立器件校准”的明确状态。
+
+wheel为 `.build/chipmodel-physical-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `01209c9dc466bc4686ba4003d8d30c7a08656d7c171fcc73d0b2340d885c8537`。79份打包Python与工作区逐字节一致；python -I从解包目录加载33个实际依赖模块，完整20案例/回读、4个成本查询和两个CH8适配对照与工作区一致。audit.json、wheel_smoke_audit.json及构建/运行日志保存验证细节。
+
+本包只有来源再现与解析模型的独立正确性证据，尚无独立器件留出校准误差。check_reference禁止把同一工件或假设参考当留出，但不能代替研究者证明方法独立性。真实执行时间、完整AI任务能效、MAC/SRAM动态成本、布局可布通及多Die联合物理可行性继续保持未证实，不把未知填成零。
+
+## 2026-11-23 chipmodel CH8 Tile/Die/Package组合完成（历史批次）
+
+承接CH7，已按[项目使命](../PROJECT_MISSION.md)完成CH8的共享资源与跨Die组合。研究问题、专业接口、公式、边界、独立调用和复现命令见[组合指南](../chipmodel/docs/assembly.md)。下一包为**CH9：物理条件与成本证据**，按明确来源和研究主张补充物理条件；当前不把分析下界作为真实执行时间。
+
+| 范围 | 已实现与证据 | 适用边界 |
+| --- | --- | --- |
+| Tile/Die/Package | TileBinding引用唯一资源清单；单Die可独立调用，多Tile共享SRAM、MAC与DMA工作统一计量，容量和初始credit不倍增 | 数字Tile工作组合；没有新建容器成本、事件引擎或多CIM执行器 |
+| 归属与边界 | 每个memory/route域明确属于Die或外部边界；NoC留在Die内，跨界串行link显式方向/归属；相同时钟域的频率必须一致 | 支持同构NoC多hop或单串行link；混合bridge路径、CDC同步成本和协议状态未实现 |
+| 任务与时间 | 完整job依赖、并发scratch预留检查、累计SRAM/MAC服务与全局资源包络；工作不因分到不同Tile而丢失 | 整体界取必要约束最大值，无动态释放、部分可见性、可行调度或任务数值执行主张 |
+| 摘要与展开 | 从同一冻结分析投影resource-envelope-lower-bound/v1；叶子/Die/Package容量与贡献一致，完整覆盖且禁止祖先重叠 | 摘要不是新成本provider；不把各scope时间相加为执行时间 |
+| 实验与来源 | 五组16案例：12分析成功、4预期失败；位置、单参数资源、顺序消融分开；全名单保存/回读 | 合成参数；失败、假设、输入、版本和未知成本保留，没有器件校准或AI质量收益主张 |
+
+固定两份32 MAC、各8次4 B读，集中在一个Tile或分给两个Tile时整体下界均16 ns：单bank共享读服务仍是限制。只将共享读端口1→2后为8 ns；只将SRAM时钟1 GHz→500 MHz后为32 ns。每job改为64 MAC的独立对照中，固定硬件和工作，分工使下界32→16 ns；再加完整job先后依赖，界回到32 ns。共享容量始终只登记一次。
+
+两个17 B请求共用一个1 Gb/s D2D方向，每请求两packet、每packet 4 B协议、8b/10b编码：总计34 B payload、16 B协议及500 wire bit，必要界500 ns。lane 1→2后为250 ns；固定延迟2→20 ns时仍为500 ns。独立双向请求分别使用各自线路，单向250 bit加2 ns固定延迟得到252 ns，不能把两个方向当同一份500 bit需求。CH7外部DRAM接入反例/正确路径也通过：地址15读取2 B产生32 B burst需求，外存与两个SRAM容量只累计一次，row状态/写成本仍保留条件和未知。
+
+本包新增18项测试（chipmodel 12、integration 6），包括45组随机配置的整数组数/Fraction换钟独立参考、共享MAC的L/II、容量与依赖反例、方向流量守恒、摘要一致性及保存回读。全仓库回归328项：326通过、2项可选PyTorch因默认环境未安装而跳过；分组contracts 6、clustermodel 72、chipmodel 120、workloads 19、compiler 17、integration 94（其中2跳过）。规则通过62个实现目录；结构检查通过13模块、75份模块Python、162份Markdown及4份Word来源哈希；diff空白检查和旧chipmodel_demo通过。CI新增assembly_demo保存/回读，本地结果不代表远端CI已运行。
+
+规模观测固定2048 B共享SRAM，每Tile一个32 MAC、8次4 B读job；各规模是独立基线，工作和MAC资源数量同时增加，不构成同工作加速比。结果如下：
+
+| Tile / job数 | 实际MAC / 读次数 | 必要服务界 | 宿主run_study耗时 | tracemalloc峰值 |
+| --- | --- | --- | --- | --- |
+| 2 | 64 / 16 | 16 ns | 0.0284 s | 128641 B |
+| 8 | 256 / 64 | 64 ns | 0.0561 s | 321023 B |
+| 32 | 1024 / 256 | 256 ns | 0.2560 s | 1029763 B |
+
+每规模只测一次；宿主耗时含记录序列化、不含保存/回读，并开启tracemalloc，峰值是Python跟踪分配而非进程RSS。它们仅说明本机模型开销，没有跨平台、统计性能或硬件伸缩性主张。所有规模的配置、记录、手算界和回读一致性均已保存。
+
+本地证据位于 `.build/chipmodel-assembly-20261123`：source.json覆盖130份Python/实验JSON/pyproject的逐文件哈希、环境与工作区状态；源码身份为 `2d6e4c5daa542b98a6d536a9fc4e62e03272d1fe+python-config-sha256:3af216841994c736beb8ae044a88f0c8168461b13ce8dafccbee46b8b54aedc4`，包含未提交源码，不含文档/构建产物。validation.json及分组日志保存回归；assembly/、assembly_summary.json、comparison_metrics.json、scale_2/8/32对应配置和记录、studies_audit.json保留实验与回读结果，capture_studies.py保存生成与观测方法。
+
+wheel位于 `.build/chipmodel-assembly-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256为 `5173c080fe778dd56c76c08f47a625c06cccc71d6ce9b15c3ac73092bc561f74`。73份打包Python与工作区逐字节一致；python -I从解包目录加载25个实际依赖模块，完整16案例和32 Tile规模案例与工作区结果一致，保存/回读通过。audit.json、wheel_smoke_audit.json及构建/运行脚本和日志保留细节。
+
+实际执行时间、数据可见性/一致性、跨域同步、物理面积/能耗及多Die热条件仍未知；CH9将围绕这些具体证据缺口推进，不把未知成本填成零。
+
+## 2026-11-23 chipmodel CH7外存与缓存接入完成（历史批次）
+
+已按[项目使命](../PROJECT_MISSION.md)和[开发计划](../chipmodel/docs/development_plan.md)完成CH7。研究问题、资源/状态边界、公式、独立参考和复现命令见[外存与缓存指南](../chipmodel/docs/memory_access.md)。本包完成DRAM读profile与搬运/Linear接入、cache实际访问轨迹及NAND页缓冲/外部输出；下一包为**CH8：Tile/Die/Package组合**。
+
+| 范围 | 已实现与证据 | 适用边界 |
+| --- | --- | --- |
+| DRAM | 组织/CK/数据时钟/MT/s/burst绑定、行块混合进制地址、单行拒绝越界或span拆分、未对齐burst覆盖；24种映射排列与逐byte参考 | 显式hit/closed/conflict条件；无自动open-row更新、连续命令队列/刷新或完整时序合法性 |
+| Cache | 精确LRU/write-back/write-allocate、逐行hit/miss、有序回填/脏写回、显式flush和快照恢复；60组随机轨迹对照独立时间戳oracle | 所有miss含整行写均读入整行；无数据值、lookup时序、MSHR、一致性或物理替换成本 |
+| NAND | 单die单完整页缓冲，阵列页读取与外部data/OOB列输出/命令分项，重复页复用和恢复；手算/范围/未知成本验证 | 串行分析策略；读profile不承担program/erase，未实现写状态、FTL/GC/ECC或多die并行 |
+| 组合 | Cache回填→DRAM；DRAM源→搬运/Tile，rank共用每channel唯一burst预算；Linear load显式行条件，输出与scratch/MAC保持不变 | 目标写服务未知，条件界不宣称实际执行；容量/summary与内部服务不重复计费 |
+| 研究记录 | 三组21案例，固定资源访问对照与单参数资源消融分开；17分析成功、4预期边界失败，成功项含1个NAND成本未知 | 保存完整profile、访问、初态、策略、来源/假设和失败；分析成功不等于任务质量或物理结论成立 |
+
+合成DRAM夹具为64 B行、16 B burst、1 GHz CK、4 GB/s/channel；地址15读取2 B需要32 B传输，hit/closed/conflict为12/15/20 ns。rank 1→2使容量512→1024 B，接口仍4 GB/s；channel 1→2增加总峰值，但仅使用一个channel的单行请求时间仍为12 ns。跨行地址63长度3 B拆成1+2 B，closed条件界11 ns；单行入口拒绝同一请求。
+
+32 B、两set单路cache的0/32/0/32四次1 B访问产生4 miss、64 B回填与16 ns读子集界；同预算改成0/16/0/16后为2 miss、32 B回填与8 ns。增加一路也得到32 B回填，但容量增到64 B，属于额外资源消融。写0/32/0产生48 B回填、32 B逐出写回及16 B尚未写回；显式flush后写回总量48 B，DRAM写时间仍未知。
+
+NAND夹具页data/OOB为32/4 B，tR=10 μs、输出1 MB/s、命令2 μs/request；同页两次总输出7 B为1次阵列读、21 μs串行时间。只翻倍输出速率后为17.5 μs，第二次访问换页则为31 μs。以上均为合成条件和指定策略的分析值，无器件性能校准主张。
+
+相同Linear/Tile输入与计划替换外存后，数值输出、scratch服务和MAC分析一致；154 B逻辑外存读产生1264 B完整burst需求，唯一DRAM读总线贡献为316 ns。原profile与DRAM配置的整体下界均为348 ns，说明更细的外存粒度计量不必然改变最终瓶颈。目标写服务、DRAM调度、实际任务执行时间及面积/能耗仍未知。
+
+新增24项测试（chipmodel 18、integration 6）。全仓库回归310项：308通过、2项可选PyTorch因当前默认环境未安装而跳过；分组contracts 6、clustermodel 72、chipmodel 108、workloads 19、compiler 17、integration 88（其中2跳过）。模型规则通过62个实现目录；结构检查通过13模块、71份模块Python、161份Markdown和4份Word来源哈希；HEAD diff空白检查和旧chipmodel_demo通过。CI新增memory_demo保存/回读，本地结果不代表远端CI已执行。
+
+本地证据位于 `.build/chipmodel-memory-20261123`。source.json记录122份Python/实验JSON/pyproject的逐文件哈希、环境和工作区状态，源码身份为 `2d6e4c5daa542b98a6d536a9fc4e62e03272d1fe+python-config-sha256:537aa7239dfaa03102536c8e0ceb683c659d65d95113b60d89b2ba2c12d8c6fc`，包括本轮未提交源码、不包括文档/构建产物。validation.json与各组日志保存回归证据；memory/、memory_summary.json、linear_baseline/、linear_dram/及studies_audit.json保存完整研究和回读一致性。
+
+wheel为 `.build/chipmodel-memory-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256为 `ecd8f51f0cc4a79d155b6c007fed9e8776924a84251e1ae8459b13253bac8952`。69份打包Python与工作区逐字节一致；python -I从解包目录加载34个实际依赖模块，完整21案例及Linear对照与工作区结果一致，保存/回读通过。audit.json、wheel_smoke_audit.json和构建/运行日志保留细节。
+
+## 2026-11-23 chipmodel CH6计算能力与瓶颈解释完成（历史批次）
 
 已按[项目使命](../PROJECT_MISSION.md)和[开发计划](../chipmodel/docs/development_plan.md)完成CH6。研究问题、独立接口、公式、适用域、反例与复现命令见[计算能力指南](../chipmodel/docs/compute_capabilities.md)。本包扩展CPU/GPU/NPU的能力解释，并将NPU格式检查接入现有数字Tile；下一包为**CH7外存与缓存接入**。
 
@@ -250,11 +361,11 @@ python docs/tools/build_docx.py --document overview
 
 长期目标按[项目使命](../PROJECT_MISSION.md)执行；近期优先级与验收统一见[研究开发路线](RESEARCH_ROADMAP.md)，本节保留下一步摘要，具体课题另有实验材料，不写入使命正文。
 
-当前clustermodel基础已完成，chipmodel CH1–CH6已执行，下一包按[计划](../chipmodel/docs/development_plan.md)推进CH7外存与缓存接入；后续Die/Package与物理证据按研究需要展开。动态队列/可见性与物理校准仍不能由分析下界替代。
+当前clustermodel及chipmodel CH1–CH10基础均已完成，chipmodel已通过[统一验收](../chipmodel/docs/completion.md)。后续按[计划](../chipmodel/docs/development_plan.md)和具体研究主张补充执行、器件校准与联合物理证据；动态队列/可见性和物理有效性仍不能由分析下界或来源再现替代。
 
 既有线性路径的后续任务保留：Linear 前向/反向/更新及短算子链、梯度与状态版本、固定版本 PyTorch 功能对照、Timeloop/Accelergy及ZigZag/SCALE-Sim共同可比案例、带来源条件成本和误差报告。按实际复现决定适配，接口规则见[工程框架](../ENGINEERING_FRAMEWORK.md)。
 
-CIM array + DAC/ADC + 缓冲仍是后续局部台架：先验收精确整数 MatVec、数值/静态时序/字节/动作账本，再做 GEMM ROI 和单层训练/推理资源账本。本轮未实现 run_cim_matvec，71-cycle 与 lane 扩展时间仍是台架验收方案；步骤见[局部仿真规划](architecture/composable_simulation.md)与 [B/C 门槛](architecture/validation.md)。
+CIM array + DAC/ADC + 缓冲的完整局部台架已在CH5完成，数值/动作/资源与保持证据见本页历史批次及[CIM指南](../chipmodel/docs/cim_bench.md)。GEMM ROI、单层训练/推理资源账本和71-cycle流水提案仍未由该台架实现；后续按[局部仿真规划](architecture/composable_simulation.md)与 [B/C 门槛](architecture/validation.md)选择所需证据。
 
 BenchSpec 等新对象与计划生产者字段目前属于提案，现行公共契约的修订清单见上述规划第 10 节。代码级功能/事件模型先行，周期、RTL 与电路校准按[精度选择](architecture/instruction_and_fidelity.md)的触发条件加入。
 

@@ -8,6 +8,8 @@ ConductanceArray 拥有冻结的 G[R,C] 初态，接收 R 个电压，返回 C �
 
 CH5的[电导编码](../matvec.py)按位slice生成真实ConductanceArray初态，支持非零Gmin；共享ADC不减少两支路cell活动。阵列读取时序和稳定电流假设由[局部台架](../../../composition/tile/UNITS.md)显式提供。程序矩阵的创建不提供编程耗时/能耗证据。
 
+直接矩阵/电压/TIA输入采用有限list/tuple。电流求和与跨阻乘加使用有理中间量后输出带符号binary64，避免中间溢出或提前丢失微小乘积；精确零允许，非零最终下溢或溢出明确失败。该路径用于局部功能参考，宿主算术成本不代表阵列时延。
+
 <!-- model-fields:start -->
 
 ### [conductance.py](conductance.py)
@@ -26,7 +28,7 @@ CH5的[电导编码](../matvec.py)按位slice生成真实ConductanceArray初态�
 | --- | --- |
 | `ConductanceArrayParams` | 阵列几何与电气适用域；cell 数不直接给出吞吐或有效权重容量。 |
 | `ConductanceArray` | 一份固定编程后的电导矩阵；深拷贝到 tuple，避免外部修改影响功能结果。 |
-| `ConductanceArray.evaluate(self, voltages_v: tuple[float, ...])` | 给定 R 个行电压 [V]，计算 C 个列电流 I=GᵀV [A]；不隐式把 A 转成 V。 |
-| `transimpedance(currents_a: tuple[float, ...], *, gain_ohm: float, offset_v: float)` | 显式模拟前端增益：Vout=Voffset+I*Rtia；Rtia [Ω] 为带符号跨阻，极性由调用方决定。 |
+| `ConductanceArray.evaluate(self, voltages_v: tuple[float, ...])` | I=GᵀV [A]采用有理乘积/求和后转binary64，保留抵消与微小贡献；不隐式把A转成V。 |
+| `transimpedance(currents_a: tuple[float, ...], *, gain_ohm: float, offset_v: float)` | Vout=Voffset+I*Rtia，有理中间量避免抵消前溢出；Rtia [Ω] 可带符号，极性由调用方决定。 |
 
 <!-- model-fields:end -->

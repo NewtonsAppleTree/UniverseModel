@@ -8,6 +8,8 @@ SerialLinkParams/estimate_link 描述一条单方向链路。lane_rate_bps 是�
 
 [transfer.py](../../composition/transfer.py)把一次单方向链路服务纳入显式源读/DMA/目标写账本，wire bits消耗唯一link预算；需要往返时分别声明方向资源。
 
+分包/编码/lane beat计数保持整数；时间采用有理除法后转binary64，支持wire bit计数超出浮点范围但商有限的情况。线路总速率及非零时间须可表示，非有限派生量明确失败。
+
 <!-- model-fields:start -->
 
 ### [link.py](link.py)

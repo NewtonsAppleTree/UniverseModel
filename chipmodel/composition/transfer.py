@@ -9,6 +9,8 @@ from chipmodel.composition.graph import ResourceNode, validate_graph, validate_m
 from chipmodel.control.data_movement import DmaParams, estimate_dma
 from chipmodel.interconnect.d2d.link import SerialLinkParams, estimate_link
 from chipmodel.interconnect.noc.path import NoCPathParams, estimate_noc
+from chipmodel.memory.access import MemoryAccess
+from chipmodel.memory.controllers.dram_read import DramReadProfile, DramSpanEstimate, estimate_dram_span
 from chipmodel.memory.sram.access import SramAccess, SramService, analyze_sram
 from chipmodel.memory.sram.bank import SramParams
 
@@ -19,16 +21,24 @@ class MemoryResource:
     resource_id: str  # 唯一物理 backing 身份；owner 由资源图给出。
     domain_id: str  # 唯一地址域及路由端点身份。
     capacity_bytes: int  # 可寻址容量 [B]。
-    sram: SramParams | None = None  # None 表示只声明容量，服务成本未知。
+    sram: SramParams | None = None  # SRAM服务；与dram_read互斥，两者均None时仅声明容量。
     clock: ClockDomain | None = None  # SRAM 时钟；容量边界不能附带虚构服务时钟。
     unknown_reason: str | None = None  # 缺少服务 profile 的原因；已建模 SRAM 为 None。
+    dram_read: DramReadProfile | None = None  # DRAM读服务及其自有CK/data clock；写服务始终未知。
 
     # 容量必须与 SRAM backing 一致；缺失模型不可当作零成本。
     def __post_init__(self) -> None:
         identifier("resource_id", self.resource_id)
         identifier("domain_id", self.domain_id)
         count("capacity_bytes", self.capacity_bytes)
-        if self.sram is None:
+        if self.dram_read is not None:
+            if not isinstance(self.dram_read, DramReadProfile):
+                raise TypeError("dram_read must be DramReadProfile")
+            if self.sram is not None or self.clock is not None or self.unknown_reason is not None:
+                raise ValueError("DRAM owns its clocks and cannot also select SRAM/capacity-only service")
+            if self.capacity_bytes != self.dram_read.organization.capacity_bytes:
+                raise ValueError("DRAM capacity/profile mismatch")
+        elif self.sram is None:
             identifier("unknown_reason", self.unknown_reason)
             if self.clock is not None:
                 raise ValueError("capacity-only memory has no service clock")
@@ -119,6 +129,7 @@ class TransferRequest:
     channel_id: str  # 承担本请求的 DMA 通道 ID。
     path: tuple[str, ...] = ()  # 有向 link IDs；空路径须符合直接可达声明。
     dependencies: tuple[str, ...] = ()  # 先完成的传输 request IDs；无隐式全局序列化。
+    source_row_state: str | None = None  # DRAM源读的显式hit/closed/conflict条件；非DRAM源须为None。
 
     # 拒绝无身份/负地址/字符串序列；缺失资源与路由连续性在分析入口检查。
     def __post_init__(self) -> None:
@@ -126,6 +137,8 @@ class TransferRequest:
             identifier(name, getattr(self, name))
         for name in ("source_address_bytes", "target_address_bytes", "payload_bytes"):
             count(name, getattr(self, name), 0)
+        if self.source_row_state not in (None, "hit", "closed", "conflict"):
+            raise ValueError("source_row_state must be hit, closed or conflict")
         for name in ("path", "dependencies"):
             values = typed_tuple(name, getattr(self, name), str)
             for value in values:
@@ -146,7 +159,7 @@ class TransferLeg:
     service_amount: int | None  # 对应服务工作量；未知 memory 为 None。
     protocol_bytes: int  # 链路编码前头尾开销 [B]；非链路为零。
     packet_count: int  # 链路 packet 数 [packet]；非链路为零。
-    isolated_time_s: float | None  # 此资源空闲服务时间 [s]；未知为 None。
+    isolated_time_s: float | None  # 空闲服务或DRAM条件span下界 [s]；未知为None。
     unknown_reason: str | None  # 服务未知的明确原因。
 
 
@@ -170,6 +183,7 @@ class TransferAnalysis:
     bounds: TimeBounds  # 依赖和资源包络下界；不会串加流水线各 hop 整包时间。
     lower_bound_s: float  # max(bounds,各 backing 全批隔离服务) [s]。
     unknown_costs: tuple[str, ...]  # 已触及但未建模的 memory 成本原因。
+    dram_services: tuple[tuple[str, DramSpanEstimate], ...] = ()  # backing ID及各源读的逐行条件估算。
 
 
 # 对 bank 创建独立 R/W 或共享 RW 的服务包络；初始 P 项允许起点瞬时发起。
@@ -192,6 +206,15 @@ def sram_demands(memory: MemoryResource, service: SramService) -> tuple[Resource
                                 work_unit="word", amount=amount)
                  for bank, (r, w) in enumerate(zip(service.bank_reads, service.bank_writes))
                  for direction, amount in ((("rw", r + w),) if shared else (("read", r), ("write", w))) if amount)
+
+
+# DRAM所有rank共享每channel的一份数据总线预算；byte为完整burst字节，无起点免费传输。
+def dram_budgets(memory: MemoryResource) -> tuple[ResourceBudget, ...]:
+    if memory.dram_read is None:
+        return ()
+    return tuple(ResourceBudget(resource_id=f"{memory.resource_id}/channel/{channel}/read_bus", work_unit="byte",
+                                rate_per_s=memory.dram_read.channel_bandwidth_bytes_per_s, initial_credit=0)
+                 for channel in range(memory.dram_read.organization.channel_count))
 
 
 # 累计账本后用精确包络函数生成贡献，不把多个共享请求当作独立硬件。
@@ -219,7 +242,7 @@ def analyze_transfers(resources: TransferResources, requests: tuple[TransferRequ
     memories = {r.resource_id: r for r in resources.memories}
     channels = {r.resource_id: r for r in resources.channels}
     links = {r.resource_id: r for r in resources.links}
-    budgets = [b for memory in resources.memories for b in sram_budgets(memory)]
+    budgets = [b for memory in resources.memories for b in (*sram_budgets(memory), *dram_budgets(memory))]
     budgets.extend(ResourceBudget(resource_id=c.resource_id, work_unit="cycle", rate_per_s=c.clock.frequency_hz,
                                   initial_credit=0) for c in resources.channels)
     for link in resources.links:
@@ -231,15 +254,19 @@ def analyze_transfers(resources: TransferResources, requests: tuple[TransferRequ
     # 派生 bank ID 不得与调用者的资源 ID 冲突。
     if len({b.resource_id for b in budgets}) != len(budgets):
         raise ValueError("derived service resource ID collision")
-    derived = {b.resource_id for memory in resources.memories for b in sram_budgets(memory)}
+    derived = {b.resource_id for memory in resources.memories for b in (*sram_budgets(memory), *dram_budgets(memory))}
     if derived & {n.instance_id for n in resources.nodes}:
-        raise ValueError("bank service ID collides with physical resource identity")
+        raise ValueError("memory service ID collides with physical resource identity")
     all_accesses = {key: [] for key in memories}
-    legs, actions, unknown = [], [], set()
+    legs, actions, unknown, dram_services = [], [], set(), []
     for request in requests:
         if request.source_id not in memories or request.target_id not in memories or request.channel_id not in channels:
             raise ValueError("transfer references missing memory/channel")
         source, target, channel = memories[request.source_id], memories[request.target_id], channels[request.channel_id]
+        if source.dram_read is None and request.source_row_state is not None:
+            raise ValueError("row_state requires a DRAM source")
+        if source.dram_read is not None and request.payload_bytes and request.source_row_state is None:
+            raise ValueError("DRAM source read requires explicit source_row_state")
         route = []
         domain = source.domain_id
         for link_id in request.path:
@@ -264,7 +291,27 @@ def analyze_transfers(resources: TransferResources, requests: tuple[TransferRequ
                 raise ValueError("transfer outside memory capacity")
             access = SramAccess(request_id=f"{request.request_id}/{role}", address_bytes=address,
                                 length_bytes=request.payload_bytes, direction=direction)
-            if memory.sram is None:
+            if memory.dram_read is not None and direction == "read":
+                service = estimate_dram_span(memory.dram_read, MemoryAccess(request_id=access.request_id,
+                                             address_bytes=address, length_bytes=request.payload_bytes, direction="read"),
+                                             row_state=request.source_row_state or "hit")
+                dram_services.append((memory.resource_id, service))
+                demands.extend(ResourceDemand(resource_id=f"{memory.resource_id}/channel/{i}/read_bus", work_unit="byte",
+                                              amount=amount) for i, amount in service.channel_transferred_bytes)
+                times.append(service.lower_bound_s)
+                reason = f"{memory.resource_id}: {service.unknown_reason}" if request.payload_bytes else None
+                if reason:
+                    unknown.add(reason)
+                legs.append(TransferLeg(request.request_id, memory.resource_id, role, request.payload_bytes, "byte",
+                                        sum(amount for _, amount in service.channel_transferred_bytes), 0, 0, service.lower_bound_s, reason))
+            elif memory.dram_read is not None:
+                reason = f"{memory.resource_id}: DRAM write service is unknown; read profile cannot price writes"
+                if request.payload_bytes:
+                    unknown.add(reason)
+                legs.append(TransferLeg(request.request_id, memory.resource_id, role, request.payload_bytes,
+                                        "byte", None if request.payload_bytes else 0, 0, 0,
+                                        None if request.payload_bytes else 0.0, reason if request.payload_bytes else None))
+            elif memory.sram is None:
                 reason = f"{memory.resource_id}: {memory.unknown_reason}"
                 if request.payload_bytes:
                     unknown.add(reason)
@@ -306,4 +353,4 @@ def analyze_transfers(resources: TransferResources, requests: tuple[TransferRequ
     bounds = estimate_time_bounds(actions, budgets)
     lower = max(bounds.lower_bound_s, max((s.completion_time_s for _, s in services), default=0))
     return TransferAnalysis(tuple(legs), actions, budgets, resource_contributions(actions, budgets), services,
-                            bounds, lower, tuple(sorted(unknown)))
+                            bounds, lower, tuple(sorted(unknown)), tuple(dram_services))

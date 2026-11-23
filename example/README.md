@@ -1,5 +1,7 @@
 # 示例
 
+CH1–CH10六组默认夹具统一运行/回读：`python tools/validate_chipmodel.py --output .build/chipmodel-acceptance`，然后以`--read`回读同一目录。固定案例名单、源码身份和证据范围见[完成报告](../chipmodel/docs/completion.md)。
+
 新增六节点[leaf-spine配置](../config/experiments/cluster_leaf_spine.json)，可用`--config config/experiments/cluster_leaf_spine.json --overview`查看安装资源/方向可达性与需求矩阵。停用来源和失败回读见[横向指南](../clustermodel/docs/breadth_usage.md)。
 
 [`cluster_demo.py`](cluster_demo.py)运行四节点同预算放置比较，输出共享通信账本与条件下界，可保存完整候选（含失败）并校验回读；见[基础指南](../clustermodel/docs/foundation_usage.md)。
@@ -57,3 +59,13 @@ python -m example.adc_demo
 `specs` 放可检查的结构/规划示例；其中 JSON 不是可执行 HardwareSpec 或 BenchSpec。`workflows` 预留端到端示例。
 
 先读 [specs 说明](specs/README.md)。完整硬件工作流仍需覆盖计划、参考比对与手算时序，达到[阶段 B/C](../docs/architecture/validation.md)后才标为可执行。
+
+## 外存与缓存
+
+[`memory_demo.py`](memory_demo.py)运行CH7的三组21个有限案例，比较DRAM行条件/共享总线、缓存LRU回填/脏写回和NAND页缓冲/外部data/OOB输出。运行 `python -m example.memory_demo --output .build/memory-study`，再用 `--read .build/memory-study` 回读。完整profile、访问、初态、源码身份与失败/未知均保存；条件分析界不等于执行时间。见[外存与缓存指南](../chipmodel/docs/memory_access.md)。
+
+## Tile/Die/Package组合
+
+[`physical_demo.py`](physical_demo.py)运行CH9四组20案例，保留真实来源点、未知成本、几何/热必要条件和预期失败。`python -m example.physical_demo --output .build/physical-study` 保存，`--read .build/physical-study` 回读；运行无需联网，见[物理证据指南](../chipmodel/docs/physical_evidence.md)。
+
+[`assembly_demo.py`](assembly_demo.py)运行CH8五组16个案例，比较固定工作的位置、共享端口/时钟、完整job顺序和D2D方向预算。`python -m example.assembly_demo --output .build/assembly-study` 保存，`--read .build/assembly-study` 回读。完整工作/资源/预留/来源及失败保留，未知执行/能量不补零；见[组合指南](../chipmodel/docs/assembly.md)。

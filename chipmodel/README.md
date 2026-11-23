@@ -4,7 +4,7 @@
 
 实现进度统一见[实现状态](../docs/STATUS.md)；本页说明职责与目录。
 
-CH1–CH4首包已实现并验证：基础契约与下界、SRAM访问、搬运路径账本和数字Tile对照。见[基础用法与证据](docs/foundation_usage.md)；CH5也已实现完整CIM数值链、资源/精度对照和有限样本保持，见[CIM指南](docs/cim_bench.md)；[CH6能力解释](docs/compute_capabilities.md)已实现CPU阶段、GPU驻留/启动和NPU格式/尾批对照；后续按[开发计划](docs/development_plan.md)推进CH7外存与缓存接入。
+CH1–CH10 基础开发与统一验收已完成，范围和证据见[完成报告](docs/completion.md)。已实现资源/搬运/数字Tile、完整CIM局部台架、CPU/GPU/NPU能力解释、外存与缓存、Tile/Die/Package组合，以及有来源的成本查询、物理账本和热轨迹。独立调用从[UNITS](UNITS.md)进入；后续扩展按[开发计划](docs/development_plan.md)中的研究证据条件触发。
 
 ## 阅读入口
 

@@ -226,6 +226,21 @@ CH5实际字段、局部策略与同输入证据见[CIM指南](chipmodel/docs/ci
 | Flash 可靠性 | P/E cycle、retention s、raw BER、uncorrectable error rate、坏块数 | 耐久与保持绑定产品、温度、已循环次数、编程模式/ECC 条件；读/编程干扰、read retry 增加误差或访问成本；不预置统一寿命范围 |
 | HBF 方案 | Flash profile、通道/堆叠、容量、粒度、带宽、控制时延、功耗 | 按明确来源的高带宽 Flash 方案建模；不从名称推断统一命令、HBM 级随机访问、耐久或直接 CIM 能力 |
 
+### CH7已落地的访问参数关系
+
+实现字段仍由[memory UNITS](chipmodel/memory/UNITS.md)和代码维护。下表限定本包的分析/功能范围，合成profile不代表器件校准。
+
+| 参数关系 | 已实现语义与范围 |
+| --- | --- |
+| DRAM row_bytes=columns_per_row*payload_width_bits/8 | 整行连续，row_order指定channel/rank/bank/row的低→高混合进制顺序；没有XOR或行内channel交织 |
+| R=fdata*transfers_per_data_clock；MT/s=R/10^6 | CK与数据时钟可不同域，技术名不带隐式比例；同域不得有两频率 |
+| burst_bytes=BL*width/8；burst_cycles/fCK=BL/R | 当前burst需整数CK周期；覆盖地址偏移和长度的完整burst，单行拒绝越界或由span显式拆分 |
+| 每channel必要接口时间=burst_bytes_sum/channel_rate | rank共享总线；只累计真实使用的独立channel，不重复加行摘要服务；row_state是逐片段条件而非自动更新状态 |
+| cache line=(address//line_bytes)，set=line mod sets | 精确LRU/write-back/write-allocate按实际byte轨迹；miss整行回填，dirty逐出先写后填；整行写也回填 |
+| dirty窗口守恒与flush | 默认保留dirty末态，flush显式写回并清dirty不失效；touch统计不同于请求统计，LRU电路位不计入valid/dirty预算 |
+| NAND miss加载完整data+OOB，output=(data+OOB请求字节)/rate | 单die单页缓冲串行路径；page_read_s只计阵列到缓冲，command_overhead_s独立且须覆盖列选择开销 |
+| NAND known_service与modeled_time | 正工作遇未知输出率/命令成本时总时间为None；program/erase不套read路径，多die并行/FTL/ECC仍未实现 |
+
 ### 5.5 其他介质：只保留会影响架构的参数
 
 这些是可选技术 profile，不要求预先建立所有器件的类或电路仿真器。没有写入/保持/成本依据时，先标未知。
@@ -264,6 +279,20 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 | 设：一致性、内存序、原子与 barrier（按需） | 协议、scope、ordering；entry、s | Coherence 管同址副本，Consistency/Ordering 管访存可见顺序；directory/snoop/atomic 会增加流量与串行依赖。Publish-subscribe 不作为通用缓存一致性参数 |
 
 最关心：每条边的实际流量、有效带宽、在途窗口、共享瓶颈、完成时的数据可见性。GPIO/UART/I2C 等只有出现在研究路径上才加入速率/事务开销模型；通常不影响主要 AI 数据路径。
+
+### CH8已落地的组合关系
+
+| 参数 / 关系 | 语义与边界 |
+| --- | --- |
+| scope / die / tile / resource identity | 整个局部清单只有一份物理资源；TileBinding只引用MAC和scratch，scope可直接为Die |
+| domain_id→die_id / 外部None | 地址域须与backing的Die一致；NoC留在Die内，跨界完整串行路径由scope层有向资源承担 |
+| 共享W与供给credit | 全部job的真实工作累计到同一bank/MAC/DMA/link；credit只计一次，各资源cycle按其clock换成second |
+| job完整依赖与预留 | 无先后关系的同backing区间不能重叠；完整传递依赖允许复用，不推断分块可见或动态释放 |
+| D2D payload / protocol / wire | 按每个请求分包编码后累计到有向link；full duplex需要两个独立方向ID，不能把payload当wire量 |
+| resource-envelope摘要 | 同一结果投影到scope，容量求和、服务包络界取max；无祖先重叠，不能把摘要和内部成本同时收费 |
+| 宿主规模 | max_jobs/max_accesses是材料化保护；host_elapsed与内存观测不进入目标执行指标 |
+
+实际字段由[组合UNITS](chipmodel/composition/UNITS.md)和代码维护。时钟一致性不提供CDC代价，必要界不证明真实调度或物理可行；复现见[CH8指南](chipmodel/docs/assembly.md)。
 
 ### 6.1 集群首批设计采用的参数子集
 
@@ -304,7 +333,7 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 | 设/标/推：Die/Macro 面积、几何与布线余量 | mm²、mm、µm、layer | A_die=width·height；宏面积求和需再考虑互连、空白/布线、时钟电源/控制开销。晶体管数或 cell area 不能单独给出可布通 die 面积 |
 | 设/标：2.5D/3D、chiplet、interposer/bridge、TSV/bump/bond | die、layer、µm pitch、link/mm、mm² | 几何包含/重叠、边缘与布线通道、连接数量、堆叠顺序约束配置；连线带宽/能量归实际链路，面积归实际物理对象 |
 | 标/设：热阻 Rθ、热容 Cθ、环境/结温 | K/W、J/K、°C、W/mm² | 一阶 Cθ·dT/dt=P−(T−T_a)/Rθ；τ=RθCθ；恒功率稳态 T∞=T_a+P·Rθ。θJC、θJA 的参考边界不同，不可混用 |
-| 推/观：热瞬态、热点、节流 | °C、s、Hz | 恒功率单节点 T(t)=T∞+(T0−T∞)exp(−t/τ)；3D 邻层耦合/空间热点需要多节点或校准模型，平均功率密度不能证明无热点 |
+| 推/观：热瞬态、热点、节流 | °C、s、Hz | 恒功率单节点 T(t)=T∞+(T0−T∞)exp(−t/τ)；数值冷却保留此稳态残差式，加热用expm1短步长式；3D 邻层耦合/空间热点需要多节点或校准模型，平均功率密度不能证明无热点 |
 | 标/观：可靠性与错误（按需） | FIT、error/bit/access、s、失败概率 | ECC/重试/备用资源/老化影响有效工作和寿命时才展开；失败率要注明每 bit、器件还是系统以及时间/温度条件，不能把 MTBF 当无故障保证 |
 
 归属：[geometry](chipmodel/packaging/geometry/UNITS.md)、[thermal](chipmodel/packaging/thermal/UNITS.md)、costmodel；clock/power 控制行为在 control。PDK/SPICE、RTL/STA、宏编译器、实测提供条件数据，当前参数公式模型不能替代这些物理校准。
@@ -322,6 +351,24 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 | PPA / 延迟-吞吐权衡 | 多目标集合 | 先满足质量、容量、热和延迟约束，再比较 Pareto 候选；不默认把 W、s、mm²、货币任意加权成唯一分数 |
 
 掩膜/晶圆尺寸/晶体管密度/良率是成本或实现可行性输入，不是每次架构仿真的必填项。“暗硅”“内存墙”“功耗墙”是现象描述，应由相应资源/功率约束表达。
+
+### 7.3 CH9采用的物理证据子集
+
+CH9已实现[精确成本查询](costmodel/UNITS.md)、[物理资源账本](chipmodel/packaging/UNITS.md)和[分段热输入](chipmodel/packaging/thermal/UNITS.md)。实际字段由代码/UNITS维护，来源与限制见[指南](chipmodel/docs/physical_evidence.md)。
+
+| 参数关系 | 单位与范围 | 当前约束/可观测结果 |
+| --- | --- | --- |
+| structure_id / OperatingPoint / action / work_unit | 结构版本/参数哈希、process、V、K、动作粒度 | 完全匹配才返回成本；不因同名MAC/SRAM、近似PVT或相同数量级复用数据 |
+| CostSource / relative_uncertainty | 原工件SHA256、版本、类别、提取方法；相对误差幅度 | 特征化/实测/解析/假设分开；误差None不是0，不以来源点再现宣称独立校准 |
+| area / leakage / dynamic | mm²/instance、W/instance、J/动作单位 | dynamic排除背景；静态实体完整覆盖且摘要/后代互斥，面积不与几何footprint重复相加 |
+| layer / Placement / boundary | 层标识、mm、mm² | 同层包含且内部不重叠；不同层只提供投影约束，无热耦合和自动硅面积/成本推断 |
+| 已知子集与总量 | mm²、J；None显式未知 | 缺点或动作覆盖不足使完整总量未知；保留known子集与每行来源 |
+| ObservationWindow | s、measured/simulated/assumed、来源 | E_background=P*T；拒绝lower_bound/host语义，非零动作不容纳于零窗口 |
+| SRAM端口约束与动作 | word read/write | 共享RW端口不合并能量读写动作；CH8从逐bank服务保留实际方向 |
+| 分段外部总功率 / RC | W、s、K/W、J/K、K | 连续应用一阶解析解，单节点峰值在初态/段末；ΣP*T是外部供能，不与账本再相加 |
+| 来源再现/留出误差 | 与成本相同单位、相对比例 | abs(pred−ref)、abs差/ref；ref=0时相对误差未定义；同工件不能称留出，方法独立性仍需研究证据 |
+
+当前真实表仅包含Nangate45的INV_X1和NAND2_X1在TypTyp/1.1 V/25 °C下的面积与库标量漏电。公开来源不提供本项目MAC/SRAM的成本，也不证明实际芯片或热网络已校准。
 
 ## 8 AI 训练/推理的资源账本与指标
 

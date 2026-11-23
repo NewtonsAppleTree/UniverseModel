@@ -4,7 +4,7 @@
 
 ## 1 下一步要交付什么
 
-**2026-11-23 当前模块：chipmodel，CH1–CH4首包已完成并验证。** [基础指南](../chipmodel/docs/foundation_usage.md)记录实际模型/接口、同预算对照、资源敏感性与未知成本；[CH5完整CIM局部台架](../chipmodel/docs/cim_bench.md)也已完成；[CH6计算能力解释](../chipmodel/docs/compute_capabilities.md)已实现CPU阶段、GPU驻留/启动、NPU格式/尾批和供数消融，下一包为CH7外存与缓存接入。 [开发任务与验收计划](../chipmodel/docs/development_plan.md)以研究问题、建模边界和证据组织CH1–CH10；首包已按基础契约/下界修复 → SRAM访问 → 搬运路径账本 → 数字Tile对照落地，CIM局部台架已复用同一资源规则，并验证电导/码值恢复、有限保持和ADC资源/精度消融。此前clustermodel基础已完成，见[完成报告](../clustermodel/docs/completion.md)；更高精度集群机制仍由后续课题触发。
+**2026-11-23：chipmodel CH1–CH10基础开发与统一验收已完成。** [完成报告](../chipmodel/docs/completion.md)按研究问题、独立/组合接口和证据列出当前覆盖；[开发计划](../chipmodel/docs/development_plan.md)保留历史基线及后续精度触发条件。此前clustermodel基础已完成，见[完成报告](../clustermodel/docs/completion.md)。下一步按具体研究路径选择跨模块接入或外部校准，不再将CH7–CH9列为待开发。
 
 **近期目标：通过一个真实研究问题驱动的最小实验，建立“任务 → 映射 → 模型/外部工具 → 独立校验 → 对照与解释”的闭环。** 衡量进展时看能够回答的问题和证据覆盖，而不是已填充多少目录。
 
@@ -97,8 +97,8 @@ A/B/C 保持硬件映射与算子基线调查，E/F 补充当前优先的软件�
 | P0 扩展 | compiler | 已有两策略计划/容量/账本；下一步短链与跨算子生命周期 | 延续静态合法性和数值校验；按实际需求实现[切块规约](../compiler/docs/tiling_and_reduction.md) |
 | P0 扩展 | evaluation | 已有有限候选比较/回读；下一步外部对照与敏感性报告 | 复用现有 runner；失败/不可行样本进入汇总，比较口径固定 |
 | P0 按需 | contracts | 已有线性任务/计划；随训练与外部工具需求扩展边界 | 标准库值对象；版本、单位和身份明确；可直接传预制计划 |
-| P0 | costmodel | 一个条件化成本查询与 profile 来源/覆盖描述 | 区分已知、未知、越域；查询可独立运行，先覆盖本实验必要动作 |
-| 当前模块 | chipmodel | CH1–CH6已完成；下一项[CH7](../chipmodel/docs/development_plan.md)外存与缓存接入 | DRAM组织/地址/单行profile、NAND粒度/传输与实际轨迹需要的缓存行为；已完成能力解释不等于执行时间或物理性能 |
+| P0 按需扩展 | costmodel | 已有精确结构/PVT/动作查询和固定Nangate来源再现 | 补具体课题的真实动作点与独立校准；未知/越域不插值，见[物理证据](../chipmodel/docs/physical_evidence.md) |
+| 当前模块 | chipmodel | CH1–CH10基础已完成，见[验收报告](../chipmodel/docs/completion.md) | 已有功能/分析/局部静态策略；动态执行与器件校准按课题进入 |
 | P0 复用 | configuration / artifacts | 复用严格配置、运行记录、本地 bundle；仅补实验必需字段 | 不因调研工具多而提前建设通用插件系统、数据库或配置解释器 |
 | P1 | runtime / simulator | 在需要排队/争用时冻结提交、接纳、完成、可见性与释放协议 | 一种策略、一个共享资源、可手算事件例；也可先驱动成熟外部模拟器 |
 | P1 | systemmodel | 节点资源引用、设备容量与主机/设备路径 | 层级或异构实验需要时加入；所有共享资源只能有一个所有者 |

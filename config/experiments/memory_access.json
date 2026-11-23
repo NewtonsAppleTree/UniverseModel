@@ -1,0 +1,1331 @@
+{
+  "cases": [
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_baseline",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "baseline",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_ranks_x2",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 2,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "resource_ablation",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_channels_x2",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 2,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "resource_ablation",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_closed",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "closed",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_conflict",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "conflict",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_cross_split",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 63,
+            "direction": "read",
+            "length_bytes": 3,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "closed",
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_cross_rejected",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "boundary",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 63,
+            "direction": "read",
+            "length_bytes": 3,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": true
+      }
+    },
+    {
+      "cache": null,
+      "family": "dram",
+      "group": "dram_row",
+      "name": "dram_write_rejected",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "boundary",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 15,
+            "direction": "write",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": true
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_baseline",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "baseline",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "2"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "3"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 2
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_ways_x2",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "resource_ablation",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "2"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "3"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_distributed_layout",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 16,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "2"
+          },
+          {
+            "address_bytes": 16,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "3"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_larger_working_set",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 64,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "2"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "3"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "4"
+          },
+          {
+            "address_bytes": 64,
+            "direction": "read",
+            "length_bytes": 1,
+            "request_id": "5"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_dirty",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "2"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_dirty_flush",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 0,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "0"
+          },
+          {
+            "address_bytes": 32,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "1"
+          },
+          {
+            "address_bytes": 0,
+            "direction": "write",
+            "length_bytes": 1,
+            "request_id": "2"
+          }
+        ],
+        "flush": true,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": {
+        "geometry": {
+          "address_bits": 16,
+          "line_bytes": 16,
+          "sets": 2,
+          "status_bits_per_line": 2,
+          "ways": 1
+        },
+        "policy": "lru-write-back-write-allocate/v1",
+        "profile_source": "Synthetic CH7 exact LRU/write-back/write-allocate; no timing or energy calibration"
+      },
+      "family": "cached_dram",
+      "group": "cache_reuse",
+      "name": "cache_out_of_backing",
+      "profile": {
+        "burst_transfers": 8,
+        "ck": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "data_clock": {
+          "domain_id": "ck",
+          "frequency_hz": 1000000000.0
+        },
+        "organization": {
+          "banks_per_rank": 2,
+          "channel_count": 1,
+          "columns_per_row": 32,
+          "data_rate_mt_s": 2000.0,
+          "payload_width_bits": 16,
+          "ranks_per_channel": 1,
+          "rows_per_bank": 4,
+          "technology": "synthetic-CH7"
+        },
+        "profile_source": "Synthetic CH7 example; not a device calibration",
+        "row_order": [
+          "bank",
+          "row",
+          "rank",
+          "channel"
+        ],
+        "timing": {
+          "burst_bytes": 16,
+          "burst_cycles": 4,
+          "t_ccd_cycles": 4,
+          "t_cl_cycles": 4,
+          "t_rcd_cycles": 3,
+          "t_rp_cycles": 5
+        },
+        "transfers_per_data_clock": 2
+      },
+      "role": "boundary",
+      "work": {
+        "accesses": [
+          {
+            "address_bytes": 512,
+            "direction": "read",
+            "length_bytes": 2,
+            "request_id": "read"
+          }
+        ],
+        "flush": false,
+        "nand_requests": [],
+        "row_state": "hit",
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_baseline",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": 1000000.0,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "baseline",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 4,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "data_oob",
+            "spare_bytes": 2,
+            "spare_offset_bytes": 0
+          },
+          {
+            "data_bytes": 0,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "oob",
+            "spare_bytes": 1,
+            "spare_offset_bytes": 3
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_output_x2",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": 2000000.0,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "resource_ablation",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 4,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "data_oob",
+            "spare_bytes": 2,
+            "spare_offset_bytes": 0
+          },
+          {
+            "data_bytes": 0,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "oob",
+            "spare_bytes": 1,
+            "spare_offset_bytes": 3
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_different_page",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": 1000000.0,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 4,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "data_oob",
+            "spare_bytes": 2,
+            "spare_offset_bytes": 0
+          },
+          {
+            "data_bytes": 0,
+            "data_offset_bytes": 0,
+            "page_index": 1,
+            "request_id": "oob",
+            "spare_bytes": 1,
+            "spare_offset_bytes": 3
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_full_page",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": 1000000.0,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "access_comparison",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 32,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "full",
+            "spare_bytes": 4,
+            "spare_offset_bytes": 0
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_oob_rejected",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": 1000000.0,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "boundary",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 0,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "bad",
+            "spare_bytes": 5,
+            "spare_offset_bytes": 0
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    },
+    {
+      "cache": null,
+      "family": "nand",
+      "group": "nand_page",
+      "name": "nand_unknown_output",
+      "profile": {
+        "command_overhead_s": 2e-06,
+        "geometry": {
+          "blocks_per_plane": 2,
+          "die_count": 1,
+          "page_data_bytes": 32,
+          "page_spare_bytes": 4,
+          "pages_per_block": 4,
+          "planes_per_die": 1
+        },
+        "output_bytes_per_s": null,
+        "profile_source": "Synthetic CH7 one-die/one-page-buffer serial profile; command cost includes selected column addressing",
+        "timing": {
+          "block_erase_s": 0.0001,
+          "page_program_s": 2e-05,
+          "page_read_s": 1e-05
+        }
+      },
+      "role": "boundary",
+      "work": {
+        "accesses": [],
+        "flush": false,
+        "nand_requests": [
+          {
+            "data_bytes": 4,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "data_oob",
+            "spare_bytes": 2,
+            "spare_offset_bytes": 0
+          },
+          {
+            "data_bytes": 0,
+            "data_offset_bytes": 0,
+            "page_index": 0,
+            "request_id": "oob",
+            "spare_bytes": 1,
+            "spare_offset_bytes": 3
+          }
+        ],
+        "row_state": null,
+        "single_row": false
+      }
+    }
+  ],
+  "schema_version": "memory-access-study/v1"
+}

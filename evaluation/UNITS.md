@@ -12,6 +12,12 @@ CH5的[CIM研究入口](../chipmodel/docs/cim_bench.md)已接入公共记录，�
 
 CH6的[计算能力对照](../chipmodel/docs/compute_capabilities.md)按CPU/GPU/NPU专业语义分组，检查单因素参数与固定预算/工作口径。完整案例、失败和未知限额进入公共记录，不将能力分析成功当成任务质量或物理可行性证据。
 
+CH7外存/缓存实验入口见[experiments/runner](experiments/runner/UNITS.md)，将专业模型接入同一记录/回读流程，并使Linear/Tile可显式采用DRAM源读profile。证据区分功能轨迹、条件分析界与未知执行成本。
+
+CH8的[组合实验](experiments/runner/UNITS.md)接入ChipAssembly，使用同一RunRecord/产物流验证位置、资源和顺序消融；目标必要界、未知执行/能量与宿主规模开销分开记录。
+
+CH9的[物理条件实验](experiments/runner/physical.py)已接入条件成本与单节点热响应；完整来源/输入/反例/未知状态可保存回读，详见[指南](../chipmodel/docs/physical_evidence.md)。
+
 <!-- model-fields:start -->
 
 

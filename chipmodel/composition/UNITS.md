@@ -33,6 +33,18 @@
 
 [CIM局部台架](tile/UNITS.md)现已复用相同归属、计量选择、actions/budgets及资源贡献；增加有限样本保持、内部ADC在途、数字寄存器和显式串行phase分析。它不要求完整Die/Package或compiler；读取能耗和编程成本保持未知。
 
+## CH7外存与缓存接入
+
+[memory.py](memory.py)先运行cache元数据轨迹，再把回填读交给DRAM span；每channel只计一次burst需求，rank共享预算。dirty写回保持在有序事务中，写服务、lookup、队列和完整执行时间未知。初态须匹配profile且驻留行在backing内，backing容量须由完整cache行组成。
+
+MemoryResource可选SRAM、DRAM读profile或容量边界，三者互斥；DRAM拥有CK/data clock。TransferRequest.source_row_state显式声明DRAM读条件，非DRAM源不可附加。读入搬运/Tile复用同一账本，逻辑byte与burst byte分开；memory/channel/i/read_bus为无初始credit的共享服务预算，派生ID碰撞被拒绝。外存写不借用读时序；DRAM条件界不与内部行/bus界重复相加。独立接口与验证见[CH7指南](../docs/memory_access.md)。
+
+## CH8多Tile与Die/Package
+
+[TileBinding](tile/UNITS.md)只引用共享清单，[Die拓扑](die/UNITS.md)验证domain/物理归属和clock，[ChipAssembly](package/UNITS.md)累计全部job的真实MAC/local/DMA工作。共享容量与初始credit不按Tile数量复制；有向D2D分别报告payload/protocol/wire；未排序的共享预留不允许重叠。
+
+project_scopes对同一资源包络指标给出summary或expanded视图，禁止祖先与后代混选，不提供另一份可叠加成本。整体执行时间、CDC/队列与物理成本仍未知，复现与反例见[CH8指南](../docs/assembly.md)。
+
 <!-- model-fields:start -->
 
 ### [bounds.py](bounds.py)
@@ -88,6 +100,22 @@
 | `validate_graph(nodes: tuple[ResourceNode, ...], connections: tuple[Connection, ...])` | 校验唯一身份、无环包含与端口兼容；允许局部多根资源及 ring 等有环连接。 |
 | `validate_model_selection(nodes: tuple[ResourceNode, ...], selected_ids: tuple[str, ...])` | 同一指标口径中选择摘要或内部细模型；祖先和后代不可同时成为收费方。 |
 
+### [memory.py](memory.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `CachedDramAnalysis` | `cache` | `CacheTrace` | —（结构/对象） | 精确元数据命中/替换与有序外存事务。 |
+| `CachedDramAnalysis` | `read_services` | `tuple[DramSpanEstimate, ...]` | —（结构/对象） | 每次cache fill的DRAM条件估算。 |
+| `CachedDramAnalysis` | `channel_read_bytes` | `tuple[tuple[int, int], ...]` | B | 每channel累计burst有效接口字节 [B]，rank共享。 |
+| `CachedDramAnalysis` | `read_lower_bound_s` | `float` | s | max(所有fill条件界,每channel字节/带宽) [s]。 |
+| `CachedDramAnalysis` | `execution_time_s` | `None` | —（结构/对象） | lookup、写回、队列与调度未知，整体执行时间不推定。 |
+| `CachedDramAnalysis` | `unknown_costs` | `tuple[str, ...]` | 1（标识/枚举） | 已触及的cache/DRAM缺项；空轨迹可为空。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `CachedDramAnalysis` | 只引用cache及一个DRAM backing；DRAM读填充计一次，dirty写回保留未知。 |
+| `analyze_cached_dram(params: CacheParams, dram: DramReadProfile, accesses: tuple[MemoryAccess, ...], *, row_state: str, initial_state: CacheState \| None=None, flush: bool=False, max_line_touches: int=100000)` | 验证完整cache行均落入backing；初态显式恢复，row_state仅用于每个fill的条件分析。 |
+
 ### [transfer.py](transfer.py)
 
 | Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
@@ -95,9 +123,10 @@
 | `MemoryResource` | `resource_id` | `str` | 1（标识/枚举） | 唯一物理 backing 身份；owner 由资源图给出。 |
 | `MemoryResource` | `domain_id` | `str` | 1（标识/枚举） | 唯一地址域及路由端点身份。 |
 | `MemoryResource` | `capacity_bytes` | `int` | B | 可寻址容量 [B]。 |
-| `MemoryResource` | `sram` | `SramParams \| None` | —（结构/对象） | None 表示只声明容量，服务成本未知。 |
+| `MemoryResource` | `sram` | `SramParams \| None` | —（结构/对象） | SRAM服务；与dram_read互斥，两者均None时仅声明容量。 |
 | `MemoryResource` | `clock` | `ClockDomain \| None` | —（结构/对象） | SRAM 时钟；容量边界不能附带虚构服务时钟。 |
 | `MemoryResource` | `unknown_reason` | `str \| None` | 1（标识/枚举） | 缺少服务 profile 的原因；已建模 SRAM 为 None。 |
+| `MemoryResource` | `dram_read` | `DramReadProfile \| None` | —（结构/对象） | DRAM读服务及其自有CK/data clock；写服务始终未知。 |
 | `DmaResource` | `resource_id` | `str` | 1（标识/枚举） | 物理通道身份，重复请求共享同一预算。 |
 | `DmaResource` | `params` | `DmaParams` | —（结构/对象） | 每请求启动、burst 与通道占用参数。 |
 | `DmaResource` | `clock` | `ClockDomain` | Hz | 通道时钟 f_dma [Hz]。 |
@@ -120,6 +149,7 @@
 | `TransferRequest` | `channel_id` | `str` | 1（标识/枚举） | 承担本请求的 DMA 通道 ID。 |
 | `TransferRequest` | `path` | `tuple[str, ...]` | 1（标识/枚举） | 有向 link IDs；空路径须符合直接可达声明。 |
 | `TransferRequest` | `dependencies` | `tuple[str, ...]` | 1（标识/枚举） | 先完成的传输 request IDs；无隐式全局序列化。 |
+| `TransferRequest` | `source_row_state` | `str \| None` | 1（标识/枚举） | DRAM源读的显式hit/closed/conflict条件；非DRAM源须为None。 |
 | `TransferLeg` | `request_id` | `str` | 1（标识/枚举） | 来源请求身份。 |
 | `TransferLeg` | `resource_id` | `str` | 1（标识/枚举） | 实际承载资源 ID。 |
 | `TransferLeg` | `role` | `str` | 1（标识/枚举） | source_read、dma、link 或 target_write。 |
@@ -128,7 +158,7 @@
 | `TransferLeg` | `service_amount` | `int \| None` | —（结构/对象） | 对应服务工作量；未知 memory 为 None。 |
 | `TransferLeg` | `protocol_bytes` | `int` | B | 链路编码前头尾开销 [B]；非链路为零。 |
 | `TransferLeg` | `packet_count` | `int` | packet | 链路 packet 数 [packet]；非链路为零。 |
-| `TransferLeg` | `isolated_time_s` | `float \| None` | s | 此资源空闲服务时间 [s]；未知为 None。 |
+| `TransferLeg` | `isolated_time_s` | `float \| None` | s | 空闲服务或DRAM条件span下界 [s]；未知为None。 |
 | `TransferLeg` | `unknown_reason` | `str \| None` | 1（标识/枚举） | 服务未知的明确原因。 |
 | `ResourceContribution` | `resource_id` | `str` | 1（标识/枚举） | bank 端口、DMA 或有向链路的服务身份。 |
 | `ResourceContribution` | `work_unit` | `str` | 1（标识/枚举） | 与预算一致的服务单位。 |
@@ -142,6 +172,7 @@
 | `TransferAnalysis` | `bounds` | `TimeBounds` | —（结构/对象） | 依赖和资源包络下界；不会串加流水线各 hop 整包时间。 |
 | `TransferAnalysis` | `lower_bound_s` | `float` | s | max(bounds,各 backing 全批隔离服务) [s]。 |
 | `TransferAnalysis` | `unknown_costs` | `tuple[str, ...]` | 1（标识/枚举） | 已触及但未建模的 memory 成本原因。 |
+| `TransferAnalysis` | `dram_services` | `tuple[tuple[str, DramSpanEstimate], ...]` | 1（标识/枚举） | backing ID及各源读的逐行条件估算。 |
 
 | 类型 / 接口 | 用途、公式与边界 |
 | --- | --- |
@@ -155,6 +186,7 @@
 | `TransferAnalysis` | 分析输出保留账本、可组合 actions/budgets 和未建模成本；没有目标完成事件。 |
 | `sram_budgets(memory: MemoryResource)` | 对 bank 创建独立 R/W 或共享 RW 的服务包络；初始 P 项允许起点瞬时发起。 |
 | `sram_demands(memory: MemoryResource, service: SramService)` | 把实际 word 事务绑定到唯一 bank 端口；仅引用 backing 的资源，不按 buffer 再计量。 |
+| `dram_budgets(memory: MemoryResource)` | DRAM所有rank共享每channel的一份数据总线预算；byte为完整burst字节，无起点免费传输。 |
 | `resource_contributions(actions: tuple[ActionEstimate, ...], budgets: tuple[ResourceBudget, ...])` | 累计账本后用精确包络函数生成贡献，不把多个共享请求当作独立硬件。 |
 | `analyze_transfers(resources: TransferResources, requests: tuple[TransferRequest, ...])` | 展开存储和路径边界；同构 NoC 用 wormhole 公式，单条 D2D 用编码模型。 |
 

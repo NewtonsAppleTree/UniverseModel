@@ -40,7 +40,42 @@ LinearHardware.tile_backend可选；接入时MAC/DMA/容量必须与旧摘要字
 
 `reference_integer_matvec`给独立点积，再独立应用最终输出格式。运行成功、质量通过、容量/保持失败分开；resource_lower_bound与serial_policy_time分别是下界和策略分析。max_cell_evaluations为宿主预算。详情见[CIM指南](../../../chipmodel/docs/cim_bench.md)。
 
+## CH7外存/缓存研究与Linear接入
+
+memory.py提供MemoryWork/Case/Study和run/summarize/write/read_study，分别调用DRAM条件分析、cache→DRAM组合和NAND串行读取。案例固定冷cache/页缓冲初态并保存完整profile、实际访问、行状态、flush策略、来源与未知成本。每组一个baseline，resource_ablation保持work且只改一个数值资源参数，access_comparison保持全部资源；boundary保留失败或未知。指标不作跨介质统一性能排名，成功不表示执行时间或物理可行性已证实。
+
+LinearTileBackend.external_read_row_state将显式DRAM条件传给每次load；store的写成本仍未知。替换外部profile保持原任务、scratch事务及MAC计量，DRAM通道只累计真实burst一次。完整名单保存/回读拒绝遗漏、混来源/输入、重复和越界索引；回读不运行模型。见[CH7指南](../../../chipmodel/docs/memory_access.md)与[集成测试](../../../tests/integration/test_memory_experiment.py)。
+
+## CH8固定工作与共享资源研究
+
+assembly.py提供AssemblyCase/Study、run/summarize/write/read_study，直接接收ChipAssembly与实际AssemblyJob。五组默认案例区分placement、单数值resource_ablation、ordering_ablation和boundary。位置变化保持硬件/TileWork/依赖；资源消融固定全部job；顺序变化固定硬件/位置/TileWork。没有数值执行或物理可行性主张。
+
+完整清单、实际访问、预留、依赖、来源、失败和未知进入RunRecord，回读拒绝混来源/输入/名单且不重跑模型。返回全局分析、scope与whole的同指标投影；目标必要界和host_elapsed_s分开。专业接口与证据见[CH8指南](../../../chipmodel/docs/assembly.md)，协议验证见[集成测试](../../../tests/integration/test_assembly_experiment.py)。
+
+CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和可选ThermalTrace。每组基线固定来源表，geometry/observation/thermal/pvt/activity各限定变动范围，thermal仅单数值变化。专业输入、完整名单和来源保留，已知子集/未知总成本、几何必要条件和热阈值与程序成功分开。保存/回读不执行模型，宿主时间不参与积分；见[CH9指南](../../../chipmodel/docs/physical_evidence.md)。
+
 <!-- model-fields:start -->
+
+### [assembly.py](assembly.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AssemblyCase` | `name` | `str` | 1（标识/枚举） | 全研究唯一案例身份。 |
+| `AssemblyCase` | `group` | `str` | 1（标识/枚举） | 固定基线的一组位置/资源/顺序比较。 |
+| `AssemblyCase` | `role` | `Literal['baseline', 'placement', 'resource_ablation', 'ordering_ablation', 'boundary']` | —（结构/对象） | 区分调度位置、额外资源与边界反例。 |
+| `AssemblyCase` | `assembly` | `ChipAssembly` | —（结构/对象） | 唯一资源/时钟/Die/domain清单及profile来源。 |
+| `AssemblyCase` | `jobs` | `tuple[AssemblyJob, ...]` | —（结构/对象） | 实际任务、MAC/访问/搬运、地址预留与依赖。 |
+| `AssemblyStudy` | `cases` | `tuple[AssemblyCase, ...]` | —（结构/对象） | 全部有限比较名单，包括失败反例。 |
+| `AssemblyStudy` | `schema_version` | `Literal['chip-assembly-study/v1']` | —（结构/对象） | 配置与比较协议版本。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `AssemblyCase` | 专业组合与完整job输入直接进入记录；role约束允许变化的研究因素。 |
+| `AssemblyStudy` | 每组一基线；位置变化保留实际工作，资源消融只改一个数值参数，顺序消融只改依赖。 |
+| `run_study(study: AssemblyStudy, *, source_revision: str='unrecorded')` | 完整清单、配置、实际工作与来源参与身份；运行异常保存failed记录，不删去反例。 |
+| `summarize_records(records: tuple[RunRecord, ...])` | 回读检查完整同源名单和真实工作；保留专业分析、全部失败与未知指标。 |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | 哈希bundle先落盘，固定相对路径索引最后写；禁止覆盖已存在的研究目录。 |
+| `read_study(directory: str \| Path)` | 回读不执行模型；索引路径、run身份和完整研究协议必须一致。 |
 
 ### [cim.py](cim.py)
 
@@ -156,6 +191,58 @@ LinearHardware.tile_backend可选；接入时MAC/DMA/容量必须与旧摘要字
 | `run_study(study: LinearStudy, *, source_revision: str='unrecorded')` | Execute a finite comparison with identical data/budget; callback failures are retained as failed RunRecords. |
 | `summarize_records(records: tuple[RunRecord, ...])` | Rebuild comparison rows solely from immutable records; execution success and numerical quality stay separate. |
 
+### [memory.py](memory.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `MemoryWork` | `accesses` | `tuple[MemoryAccess, ...]` | —（结构/对象） | DRAM单请求或cache有序byte访问。 |
+| `MemoryWork` | `nand_requests` | `tuple[NandReadRequest, ...]` | —（结构/对象） | NAND有序page/data/OOB列请求。 |
+| `MemoryWork` | `row_state` | `Literal['hit', 'closed', 'conflict'] \| None` | —（结构/对象） | DRAM每行片段的隔离起点条件。 |
+| `MemoryWork` | `single_row` | `bool` | 1（布尔） | DRAM单行API；True时越行必须失败。 |
+| `MemoryWork` | `flush` | `bool` | 1（布尔） | Cache窗口末显式写回dirty行；默认保留dirty状态。 |
+| `MemoryCase` | `name` | `str` | 1（标识/枚举） | 完整研究内唯一案例身份。 |
+| `MemoryCase` | `group` | `str` | 1（标识/枚举） | 一组共享研究问题的基线/消融/边界案例。 |
+| `MemoryCase` | `family` | `Literal['dram', 'cached_dram', 'nand']` | —（结构/对象） | 已实现的三个调用边界。 |
+| `MemoryCase` | `role` | `Literal['baseline', 'resource_ablation', 'access_comparison', 'boundary']` | —（结构/对象） | 单参数资源变化与访问/边界变化分开。 |
+| `MemoryCase` | `profile` | `DramReadProfile \| NandReadProfile` | —（结构/对象） | 外存资源来源、几何、时钟/接口和成本。 |
+| `MemoryCase` | `work` | `MemoryWork` | —（结构/对象） | 真实访问及显式策略，研究固定冷cache/NAND buffer初态。 |
+| `MemoryCase` | `cache` | `CacheParams \| None` | —（结构/对象） | cached_dram必需；其他家族不得附加未使用缓存。 |
+| `MemoryStudy` | `cases` | `tuple[MemoryCase, ...]` | —（结构/对象） | 完整有限案例名单，含失败/未知结果。 |
+| `MemoryStudy` | `schema_version` | `Literal['memory-access-study/v1']` | —（结构/对象） | 参数与比较语义版本。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `MemoryWork` | 访问与策略边界；DRAM行状态条件不是由缓存命中推导。 |
+| `MemoryCase` | family选择已有专业入口；资源profile可独立替换，配置没有可执行字符串。 |
+| `MemoryStudy` | 一组一个基线；资源消融仅改一个数值，访问对照固定全部资源。 |
+| `run_study(study: MemoryStudy, *, source_revision: str='unrecorded')` | 每次运行保留完整名单、输入、初态、条件和版本；模型异常转换为failed记录。 |
+| `summarize_records(records: tuple[RunRecord, ...])` | 回读检查同一研究/版本、真实输入和完整名单；保留失败与所有未知成本。 |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | 先写哈希校验bundle，再写固定相对路径索引；已有目录不覆盖。 |
+| `read_study(directory: str \| Path)` | 回读不运行模型；路径、索引、输入身份与完整比较协议必须一致。 |
+
+### [physical.py](physical.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `PhysicalCase` | `name` | `str` | 1（标识/枚举） | 全研究唯一案例名。 |
+| `PhysicalCase` | `group` | `str` | 1（标识/枚举） | 一个基线及其敏感性/反例集合。 |
+| `PhysicalCase` | `role` | `Literal['baseline', 'geometry', 'observation', 'thermal', 'pvt', 'activity', 'boundary']` | —（结构/对象） | 明确允许变化因素。 |
+| `PhysicalCase` | `model` | `PhysicalModel` | —（结构/对象） | 唯一资源、结构/PVT、面积计量和几何约束。 |
+| `PhysicalCase` | `work` | `PhysicalWork` | —（结构/对象） | 动作账本、覆盖缺口及外部观测窗口。 |
+| `PhysicalCase` | `table` | `CostTable` | —（结构/对象） | 明确来源/单位/条件与误差未知状态。 |
+| `PhysicalCase` | `thermal` | `ThermalTrace \| None` | —（结构/对象） | 可选外部总功率驱动的单节点轨迹。 |
+| `PhysicalStudy` | `cases` | `tuple[PhysicalCase, ...]` | —（结构/对象） | 完整研究名单，含未知结果与失败反例。 |
+| `PhysicalStudy` | `schema_version` | `Literal['physical-evidence-study/v1']` | —（结构/对象） | 配置/比较语义版本。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `PhysicalCase` | 一个固定来源表下的物理情景；输入工作与模型/功率条件分别保存。 |
+| `PhysicalStudy` | 每组一基线；查询表与来源固定，避免把换成本数据误作方案收益。 |
+| `run_study(study: PhysicalStudy, *, source_revision: str='unrecorded')` | 来源/PVT/完整名单和工作进入身份，失败分析不丢弃。 |
+| `summarize_records(records: tuple[RunRecord, ...])` | 完整同源名单和实际输入校验，保留全部来源、失败与未知值。 |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | 先写哈希bundle，再写固定相对路径索引；不覆盖已有实验目录。 |
+| `read_study(directory: str \| Path)` | 回读只核对工件/输入身份和完整协议，不运行物理模型。 |
+
 ### [single.py](single.py)
 
 | 类型 / 接口 | 用途、公式与边界 |
@@ -174,6 +261,7 @@ LinearHardware.tile_backend可选；接入时MAC/DMA/容量必须与旧摘要字
 | `LinearTileBackend` | `store_path` | `tuple[str, ...]` | 1（标识/枚举） | scratch 到外部的固定有向路径。 |
 | `LinearTileBackend` | `access_policy` | `Literal['scalar-ab-register-c/v1']` | —（结构/对象） | 每 MAC 各读 A/B；每 K slice 在寄存器累加 C。 |
 | `LinearTileBackend` | `max_local_accesses` | `int` | request | 显式本地请求的宿主展开上限 [request]，非目标硬件预算。 |
+| `LinearTileBackend` | `external_read_row_state` | `Literal['hit', 'closed', 'conflict'] \| None` | —（结构/对象） | DRAM每次load的条件行状态；非DRAM资源为None。 |
 
 | 类型 / 接口 | 用途、公式与边界 |
 | --- | --- |

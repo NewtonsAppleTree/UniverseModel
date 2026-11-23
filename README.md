@@ -1,5 +1,7 @@
 # UniverseModel
 
+chipmodel CH1–CH10基础与统一验收已完成，覆盖、调用入口和后续证据条件见[完成报告](chipmodel/docs/completion.md)。
+
 **面向 AI 与软硬件协同设计的通用计算架构研究与实验平台。**
 
 UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支撑体系结构、AI 与 EDA 领域的原创研究和顶级会议论文，并探索研究成果的工业应用。通过可组合的建模、仿真、系统执行与评估方法，检验软硬件方案的可行性，解释收益、瓶颈和适用条件。
@@ -10,7 +12,7 @@ UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支�
 
 实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
-已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前chipmodel已完成CH1–CH4首包**：资源契约与精度修复、SRAM访问/容量、搬运路径账本、数字Tile同预算对照与敏感性，见[实现用法与证据](chipmodel/docs/foundation_usage.md)。**CH5完整CIM局部台架也已完成**：电导编码、DAC/阵列/TIA/ADC/累加、共享读出与有限保持、资源/精度对照，见[CIM指南](chipmodel/docs/cim_bench.md)。[CH6计算能力与瓶颈解释](chipmodel/docs/compute_capabilities.md)已落地CPU阶段、GPU驻留/启动、NPU格式/尾批与供数消融；随后按[开发计划](chipmodel/docs/development_plan.md)推进CH7外存与缓存接入。
+已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前chipmodel已完成CH1–CH4首包**：资源契约与精度修复、SRAM访问/容量、搬运路径账本、数字Tile同预算对照与敏感性，见[实现用法与证据](chipmodel/docs/foundation_usage.md)。**CH5完整CIM局部台架也已完成**：电导编码、DAC/阵列/TIA/ADC/累加、共享读出与有限保持、资源/精度对照，见[CIM指南](chipmodel/docs/cim_bench.md)。[CH6计算能力与瓶颈解释](chipmodel/docs/compute_capabilities.md)已落地CPU阶段、GPU驻留/启动、NPU格式/尾批与供数消融；[CH7外存与缓存接入](chipmodel/docs/memory_access.md)已完成DRAM地址/profile与搬运、缓存LRU轨迹及NAND页缓冲/输出对照；[CH8 Tile/Die/Package组合](chipmodel/docs/assembly.md)已完成共享清单、多job计量、跨Die路径和同指标摘要；[CH9物理条件与成本证据](chipmodel/docs/physical_evidence.md)已完成精确来源查询、资源/面积/能量账本和外部功率热轨迹；器件校准与联合物理可行性按[开发计划](chipmodel/docs/development_plan.md)继续补证据。
 
 **设计查阅：[芯片架构与 AI 训练/推理参数清单](ARCHITECTURE_PARAMETERS.md)。** 按计算、存储、互连及物理条件筛选参数，列明中英文术语、单位、公式、模块归属和来源；包括 DDR/HBM/Flash、CIM 外围与训练/推理资源账本。
 
@@ -79,6 +81,9 @@ python -m example.adc_demo
 python -m example.chipmodel_demo
 python -m example.digital_tile_demo
 python -m example.cim_demo
+python -m example.memory_demo
+python -m example.assembly_demo
+python -m example.physical_demo
 python -m example.universal_demo --case adc
 python -m example.universal_demo --case dma --set inputs.payload_bytes=64
 python -m example.linear_demo

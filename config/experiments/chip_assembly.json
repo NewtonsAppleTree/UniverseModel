@@ -1,0 +1,5225 @@
+{
+  "cases": [
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_memory",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "shared_baseline",
+      "role": "baseline"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_memory",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "shared_parallel",
+      "role": "placement"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_memory",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "shared_overlap_rejected",
+      "role": "boundary"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_memory",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [
+            "missing"
+          ],
+          "job_id": "b",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "unknown_dependency_rejected",
+      "role": "boundary"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "memory_ports",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "bandwidth_baseline",
+      "role": "baseline"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 2,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "memory_ports",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "memory_read_ports_x2",
+      "role": "resource_ablation"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 500000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "memory_ports",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 32,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 32,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "memory_clock_half",
+      "role": "resource_ablation"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "compute_placement",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "compute_baseline",
+      "role": "baseline"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "compute_placement",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "compute_parallel",
+      "role": "placement"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "ordering",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "ordering_baseline",
+      "role": "baseline"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die"
+        ],
+        "domains": [
+          {
+            "die_id": "die",
+            "domain_id": "mem"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma"
+            }
+          ],
+          "links": [],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem",
+              "dram_read": null,
+              "resource_id": "scratch",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "die",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "scratch",
+              "model_id": "sram",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "dma",
+              "model_id": "dma",
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "die",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "scratch",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "scratch",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "ordering",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile0",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 0,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 4,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 8,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 12,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 16,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 20,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 24,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 28,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [
+            "a"
+          ],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 64,
+            "local_accesses": [
+              {
+                "address_bytes": 64,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r0"
+              },
+              {
+                "address_bytes": 68,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r1"
+              },
+              {
+                "address_bytes": 72,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r2"
+              },
+              {
+                "address_bytes": 76,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r3"
+              },
+              {
+                "address_bytes": 80,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r4"
+              },
+              {
+                "address_bytes": 84,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r5"
+              },
+              {
+                "address_bytes": 88,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r6"
+              },
+              {
+                "address_bytes": 92,
+                "direction": "read",
+                "length_bytes": 4,
+                "request_id": "r7"
+              }
+            ],
+            "logical_macs": 64,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "scratch",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "ordering_serial",
+      "role": "ordering_ablation"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die0",
+          "die1"
+        ],
+        "domains": [
+          {
+            "die_id": "die0",
+            "domain_id": "mem0"
+          },
+          {
+            "die_id": "die1",
+            "domain_id": "mem1"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s0"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma0"
+            },
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s1"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma1"
+            }
+          ],
+          "links": [
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d01",
+              "source_domain": "mem0",
+              "target_domain": "mem1"
+            },
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d10",
+              "source_domain": "mem1",
+              "target_domain": "mem0"
+            }
+          ],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem0",
+              "dram_read": null,
+              "resource_id": "s0",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            },
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem1",
+              "dram_read": null,
+              "resource_id": "s1",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "package",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "die0",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s0",
+              "model_id": "sram",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "dma0",
+              "model_id": "dma",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "die1",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s1",
+              "model_id": "sram",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "dma1",
+              "model_id": "dma",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            },
+            {
+              "instance_id": "d01",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "d10",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "package",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "s0",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "s1",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_d2d",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 0,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 64,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "d2d_baseline",
+      "role": "baseline"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die0",
+          "die1"
+        ],
+        "domains": [
+          {
+            "die_id": "die0",
+            "domain_id": "mem0"
+          },
+          {
+            "die_id": "die1",
+            "domain_id": "mem1"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s0"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma0"
+            },
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s1"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma1"
+            }
+          ],
+          "links": [
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 2,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d01",
+              "source_domain": "mem0",
+              "target_domain": "mem1"
+            },
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d10",
+              "source_domain": "mem1",
+              "target_domain": "mem0"
+            }
+          ],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem0",
+              "dram_read": null,
+              "resource_id": "s0",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            },
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem1",
+              "dram_read": null,
+              "resource_id": "s1",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "package",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "die0",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s0",
+              "model_id": "sram",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "dma0",
+              "model_id": "dma",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "die1",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s1",
+              "model_id": "sram",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "dma1",
+              "model_id": "dma",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            },
+            {
+              "instance_id": "d01",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "d10",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "package",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "s0",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "s1",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_d2d",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 0,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 64,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "d2d_lanes_x2",
+      "role": "resource_ablation"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die0",
+          "die1"
+        ],
+        "domains": [
+          {
+            "die_id": "die0",
+            "domain_id": "mem0"
+          },
+          {
+            "die_id": "die1",
+            "domain_id": "mem1"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s0"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma0"
+            },
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s1"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma1"
+            }
+          ],
+          "links": [
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-08,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d01",
+              "source_domain": "mem0",
+              "target_domain": "mem1"
+            },
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d10",
+              "source_domain": "mem1",
+              "target_domain": "mem0"
+            }
+          ],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem0",
+              "dram_read": null,
+              "resource_id": "s0",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            },
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem1",
+              "dram_read": null,
+              "resource_id": "s1",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "package",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "die0",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s0",
+              "model_id": "sram",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "dma0",
+              "model_id": "dma",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "die1",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s1",
+              "model_id": "sram",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "dma1",
+              "model_id": "dma",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            },
+            {
+              "instance_id": "d01",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "d10",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "package",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "s0",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "s1",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_d2d",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 0,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 64,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "d2d_latency_x10",
+      "role": "resource_ablation"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die0",
+          "die1"
+        ],
+        "domains": [
+          {
+            "die_id": "die0",
+            "domain_id": "mem0"
+          },
+          {
+            "die_id": "die1",
+            "domain_id": "mem1"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s0"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma0"
+            },
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s1"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma1"
+            }
+          ],
+          "links": [
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d01",
+              "source_domain": "mem0",
+              "target_domain": "mem1"
+            },
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d10",
+              "source_domain": "mem1",
+              "target_domain": "mem0"
+            }
+          ],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem0",
+              "dram_read": null,
+              "resource_id": "s0",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            },
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem1",
+              "dram_read": null,
+              "resource_id": "s1",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "package",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "die0",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s0",
+              "model_id": "sram",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "dma0",
+              "model_id": "dma",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "die1",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s1",
+              "model_id": "sram",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "dma1",
+              "model_id": "dma",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            },
+            {
+              "instance_id": "d01",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "d10",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "package",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "s0",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "s1",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_d2d",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 0,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 64,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 64,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "d2d_path_rejected",
+      "role": "boundary"
+    },
+    {
+      "assembly": {
+        "die_ids": [
+          "die0",
+          "die1"
+        ],
+        "domains": [
+          {
+            "die_id": "die0",
+            "domain_id": "mem0"
+          },
+          {
+            "die_id": "die1",
+            "domain_id": "mem1"
+          }
+        ],
+        "profile_source": "synthetic",
+        "resources": {
+          "channels": [
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s0"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma0"
+            },
+            {
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "direct_memory_ids": [
+                "s1"
+              ],
+              "params": {
+                "burst_overhead_cycles": 0,
+                "bytes_per_cycle": 16,
+                "max_burst_bytes": 64,
+                "startup_cycles": 0
+              },
+              "resource_id": "dma1"
+            }
+          ],
+          "links": [
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d01",
+              "source_domain": "mem0",
+              "target_domain": "mem1"
+            },
+            {
+              "clock": null,
+              "params": {
+                "coding_data_bits": 8,
+                "coding_wire_bits": 10,
+                "fixed_latency_s": 2e-09,
+                "lane_count": 1,
+                "lane_rate_bps": 1000000000.0,
+                "max_payload_bytes": 16,
+                "packet_overhead_bytes": 4
+              },
+              "resource_id": "d10",
+              "source_domain": "mem1",
+              "target_domain": "mem0"
+            }
+          ],
+          "memories": [
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem0",
+              "dram_read": null,
+              "resource_id": "s0",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            },
+            {
+              "capacity_bytes": 512,
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              },
+              "domain_id": "mem1",
+              "dram_read": null,
+              "resource_id": "s1",
+              "sram": {
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "bank_count": 1,
+                "read_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "supports_byte_write": true,
+                "word_bits": 32,
+                "words_per_bank": 128,
+                "write_ports_per_bank": 1
+              },
+              "unknown_reason": null
+            }
+          ],
+          "nodes": [
+            {
+              "instance_id": "package",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "die0",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s0",
+              "model_id": "sram",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "dma0",
+              "model_id": "dma",
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "tile0",
+              "model_id": null,
+              "parent_id": "die0",
+              "ports": []
+            },
+            {
+              "instance_id": "mac0",
+              "model_id": "mac",
+              "parent_id": "tile0",
+              "ports": []
+            },
+            {
+              "instance_id": "die1",
+              "model_id": null,
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "s1",
+              "model_id": "sram",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "dma1",
+              "model_id": "dma",
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "tile1",
+              "model_id": null,
+              "parent_id": "die1",
+              "ports": []
+            },
+            {
+              "instance_id": "mac1",
+              "model_id": "mac",
+              "parent_id": "tile1",
+              "ports": []
+            },
+            {
+              "instance_id": "d01",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            },
+            {
+              "instance_id": "d10",
+              "model_id": "d2d",
+              "parent_id": "package",
+              "ports": []
+            }
+          ]
+        },
+        "scope_id": "package",
+        "tiles": [
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac0",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac0",
+            "scratch_id": "s0",
+            "tile_id": "tile0"
+          },
+          {
+            "mac": {
+              "arithmetic": {
+                "accumulator_format": "int64",
+                "operand_format": "int8",
+                "operation": "integer_mac",
+                "output_format": "int64"
+              },
+              "clock": {
+                "domain_id": "mac1",
+                "frequency_hz": 1000000000.0
+              },
+              "params": {
+                "initiation_interval_cycles": 1,
+                "lane_count": 4,
+                "latency_cycles": 1
+              },
+              "profile_source": "synthetic"
+            },
+            "mac_resource_id": "mac1",
+            "scratch_id": "s1",
+            "tile_id": "tile1"
+          }
+        ]
+      },
+      "group": "shared_d2d",
+      "jobs": [
+        {
+          "dependencies": [],
+          "job_id": "a",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 0,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 0,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        },
+        {
+          "dependencies": [],
+          "job_id": "b",
+          "tile_id": "tile1",
+          "work": {
+            "executed_macs": 0,
+            "local_accesses": [],
+            "logical_macs": 0,
+            "mac_arithmetic": {
+              "accumulator_format": "int64",
+              "operand_format": "int8",
+              "operation": "integer_mac",
+              "output_format": "int64"
+            },
+            "reservations": [
+              {
+                "backing_id": "s1",
+                "buffer": {
+                  "slot_bytes": 32,
+                  "slot_count": 1
+                },
+                "offset_bytes": 504,
+                "reservation_id": "buffer"
+              }
+            ],
+            "transfers": [
+              {
+                "channel_id": "dma0",
+                "dependencies": [],
+                "path": [
+                  "d01"
+                ],
+                "payload_bytes": 17,
+                "request_id": "copy",
+                "source_address_bytes": 0,
+                "source_id": "s0",
+                "source_row_state": null,
+                "target_address_bytes": 64,
+                "target_id": "s1"
+              }
+            ],
+            "work_id": "block"
+          }
+        }
+      ],
+      "name": "d2d_capacity_rejected",
+      "role": "boundary"
+    }
+  ],
+  "schema_version": "chip-assembly-study/v1"
+}

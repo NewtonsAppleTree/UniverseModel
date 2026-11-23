@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from math import prod
 
-from chipmodel.common import ClockDomain, ceil_div, count
+from chipmodel.common import ClockDomain, ceil_div, count, typed_tuple
 
 
 # 单个 DMA 通道的隔离 copy；多个通道通过多个实例表达，不自动并行一条请求。
@@ -51,8 +51,8 @@ class TensorLayout:
 
     # 冻结维度与 stride；允许非连续或重叠布局，span 不等于唯一数据量。
     def __post_init__(self) -> None:
-        object.__setattr__(self, "shape", tuple(self.shape))
-        object.__setattr__(self, "strides_bytes", tuple(self.strides_bytes))
+        object.__setattr__(self, "shape", typed_tuple("shape", self.shape, int))
+        object.__setattr__(self, "strides_bytes", typed_tuple("strides_bytes", self.strides_bytes, int))
         if not self.shape or len(self.shape) != len(self.strides_bytes):
             raise ValueError("shape and strides_bytes need matching nonzero rank")
         for size, stride in zip(self.shape, self.strides_bytes):
@@ -74,6 +74,7 @@ class TensorLayout:
 
     # 验证坐标并求字节地址；地址空间容量与权限由装配方检查。
     def address(self, indices: tuple[int, ...]) -> int:
+        indices = typed_tuple("indices", indices, int)
         if len(indices) != len(self.shape):
             raise ValueError("indices rank does not match shape")
         for i, size in zip(indices, self.shape):

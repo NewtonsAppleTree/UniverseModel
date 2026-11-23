@@ -26,6 +26,7 @@ class LinearTileBackend:
     store_path: tuple[str, ...] = ()  # scratch 到外部的固定有向路径。
     access_policy: Literal["scalar-ab-register-c/v1"] = "scalar-ab-register-c/v1"  # 每 MAC 各读 A/B；每 K slice 在寄存器累加 C。
     max_local_accesses: int = 200_000  # 显式本地请求的宿主展开上限 [request]，非目标硬件预算。
+    external_read_row_state: Literal["hit", "closed", "conflict"] | None = None  # DRAM每次load的条件行状态；非DRAM资源为None。
 
     # 保留 profile 与访问策略身份；配置资源不允许借用不存在的能力。
     def __post_init__(self) -> None:
@@ -42,6 +43,12 @@ class LinearTileBackend:
             raise ValueError("external tensors and scratch need distinct backing")
         if self.external_memory_id not in {m.resource_id for m in self.tile.resources.memories}:
             raise ValueError("external memory is missing")
+        external = next(m for m in self.tile.resources.memories if m.resource_id == self.external_memory_id)
+        if external.dram_read is not None:
+            if self.external_read_row_state not in ("hit", "closed", "conflict"):
+                raise ValueError("DRAM linear backend requires explicit external_read_row_state")
+        elif self.external_read_row_state is not None:
+            raise ValueError("external_read_row_state requires a DRAM backing")
         if self.channel_id not in {c.resource_id for c in self.tile.resources.channels}:
             raise ValueError("DMA channel is missing")
 
@@ -84,7 +91,8 @@ def map_linear_tile(backend: LinearTileBackend, spec: LinearSpec, plan: LinearPl
                     target_id=scratch_id if load else backend.external_memory_id,
                     source_address_bytes=ext if load else local, target_address_bytes=local if load else ext,
                     payload_bytes=payload, channel_id=backend.channel_id,
-                    path=backend.load_path if load else backend.store_path))
+                    path=backend.load_path if load else backend.store_path,
+                    source_row_state=backend.external_read_row_state if load else None))
                 row_signatures.append((index, purpose, payload))
         for i in range(step.m):
             for j in range(step.n):
