@@ -1,6 +1,6 @@
 # CH7：外存与缓存接入
 
-本包按[项目使命](../../PROJECT_MISSION.md)支持AI工作集、访问布局和局部驻留研究。任务含义与布局生成仍由上层提供，chipmodel接收显式地址和资源。交付范围是独立访问模型、局部组合、已有Linear/Tile外存接入及可复现对照；后续[CH8：Tile/Die/Package组合](assembly.md)也已完成；当前下一包为CH9物理条件与成本证据。完成状态与本地验证证据见[STATUS](../../docs/STATUS.md)。
+本包按[项目使命](../../PROJECT_MISSION.md)支持AI工作集、访问布局和局部驻留研究。任务含义与布局生成仍由上层提供，chipmodel接收显式地址和资源。交付范围是独立访问模型、局部组合、已有Linear/Tile外存接入及可复现对照；[CH8：Tile/Die/Package组合](assembly.md)和[CH9物理条件与成本证据](physical_evidence.md)基础也已完成。统一验收见[完成报告](completion.md)，本地验证证据见[STATUS](../../docs/STATUS.md)。
 
 ## 研究什么
 
