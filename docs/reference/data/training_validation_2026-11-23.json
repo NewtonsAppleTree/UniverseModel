@@ -1,0 +1,676 @@
+{
+  "schema_version": "training-validation-evidence/v1",
+  "validated_on": "2026-11-23",
+  "scope": "CPU functional and declared-model accounting only",
+  "source_revision": "5ebefa1-plus-training-workspace",
+  "source_provenance": "Working-tree hashes; source patch/archive still required for complete reproduction",
+  "source_sha256": {
+    "artifacts/storage/local.py": "20546a9a93116e56ddb42d175c1b92064ba89c2759c03a611d7738417ce3c2f3",
+    "chipmodel/common.py": "e3ef8352a4735c128cdc6beabee143fd479c93744f500480e49e8c799bf5bfe0",
+    "chipmodel/composition/bounds.py": "eecd2ee9331d5d848136ef0719268aa9cf1dd00ef841ee4e41c019fd4af66eff",
+    "chipmodel/composition/graph.py": "64da9acdd5d98cec4ff41695dea6032c61a0d2fc27c7299d4fcceb7d297ffa10",
+    "chipmodel/compute/cim/arrays/conductance.py": "716dfdc8b3758816fe9c51afbdc97cf5cadded2f9945459eeffd3d0f409363e3",
+    "chipmodel/compute/cim/encoding/accumulate.py": "06f292f5858da70186256adbfe784e656e45255abb4b71604c83fd1cac911e16",
+    "chipmodel/compute/cim/encoding/bit_serial.py": "c3a4bab7885b571cd8c5eb6ea0225dc0f16c4d6f71168ab788211c27d6e01646",
+    "chipmodel/compute/cim/periphery/adc.py": "645706688026acb2c676fba4a7a219ce2ad6610c6ec29a8ec4d8cbb9888d3e83",
+    "chipmodel/compute/cim/periphery/dac.py": "540b1487ba4b2ff7cc70edfb9ae1862413543cb16d85cdc2dc4a9429f015e61a",
+    "chipmodel/compute/cpu/core.py": "c784fd4b0a271939063239f16f5ce8841f2f8dd59b3eea22860c212c6ba9708c",
+    "chipmodel/compute/gpu/occupancy.py": "3de218385dc28eeb78d56f6f790dca8e8043da511e57ac33c7a87774f79880f5",
+    "chipmodel/compute/npu/mac.py": "7add64fefd2912ba7710c5f6a4b23e5a06ecdc366ca7c009231fd2fefef975d4",
+    "chipmodel/control/data_movement.py": "b55d833f168633c7ac890bb1f883c1730e3ff978aef4d3429811691f84968b40",
+    "chipmodel/interconnect/d2d/link.py": "0ccf2030bc4e726cb85cfac83660c545e645cf2c8c07fcc06b6cd933bb23be32",
+    "chipmodel/interconnect/noc/path.py": "8502f7b15db55a42267ec617b2d63becda51355a3efe06f48c2460f35d988e07",
+    "chipmodel/memory/buffer.py": "7d22a5cfe5407c2f8394c5fb1637c57097d29b536ae4481e5aee9a5fefaeae5a",
+    "chipmodel/memory/cache.py": "3dda4849a4435190c34ad7bc9a67c1c211c98a7c26be712b64039ab38da55d1e",
+    "chipmodel/memory/controllers/dram_read.py": "a73de4130d77329bfeedc72a1b94f593f8ce6236d20ed5af783b9889dc07c8c9",
+    "chipmodel/memory/dram/organization.py": "166eb0f7aa8dda6f5d1f2361297eb5e294cd0dcd0752e9f11b779df9a2c8ba1a",
+    "chipmodel/memory/flash/nand.py": "2663ecb9f3801498aaf00f8c274c4d282842e2a887a6ab5f80a5acfc2d370935",
+    "chipmodel/memory/sram/bank.py": "9f56a0c5cc7d0204b7d3f46a31f7d6e6f1a45ab9322f3ee9284976979507dbf7",
+    "chipmodel/packaging/geometry/floorplan.py": "e6f5f205cd57fc4c37d9813e6e68e18dd4965fe3b19ecf10c35b469aa3683192",
+    "chipmodel/packaging/thermal/rc.py": "c1e23268701d1ef6ab1ada24305c8a1e919cf3e5e3efd3698d335afb63c14c63",
+    "chipmodel/registry/models.py": "db4b16eb4fa703ddb384f195916c4b152d5c8d1e478ebe92f1d624ec182b1da1",
+    "compiler/src/interpret/linear.py": "4b5376ffefc89503737f16e5e77f7997cb650da0ed2e294208f637743a1c80b2",
+    "compiler/src/interpret/training.py": "9b3d3ddc5248805ac01e25f5b6012ff5165dcfbfb665424ea9e0549c2fa0d0c5",
+    "compiler/src/memplan/linear.py": "6a9c246e765aafab87bde01f75b1ca1946b3fdb0b52a54866893460f5acb43e0",
+    "compiler/src/sched/training.py": "87fe108ef4b073debd46299eac7cf25a2053cc2b6c581dc3ff44609b6710991b",
+    "compiler/src/tiling/linear.py": "6baac25c0854583e9ec5b4087c8e4e24c400ce5d373286df216ce73a2e319a31",
+    "compiler/tests/test_linear_mapping.py": "c1d38835822db2b3b962bb6fc615ac0306dcdc9d7d92dc9b8314da03d0673663",
+    "compiler/tests/test_training.py": "f4672a312c99529f6374ed491bb854e0996a7ae8576987371b3ecc8be4a15e36",
+    "config/experiments/training_step.json": "874d8e009bf9ae28d88259e04f2a942e41156ac51795570f25bc0817d46795de",
+    "configuration/resolution/dataclass_config.py": "17c8b9530b4db04d0265e5b63704a8d5e95183872a40ed22a065805bebdf6f96",
+    "contracts/plan/linear.py": "9bb25dab0e8604098b212371f416e3ff110093c21dc09335173f89480691b156",
+    "contracts/results/experiment.py": "4301c1a97003d8f08475923144c4b3e608aa72cb8224d69d934574f39839ca1f",
+    "contracts/units/metrics.py": "2b52df3af5581e5ec64856b705c3c3fd54963e5e1681523fde37317175fa4348",
+    "contracts/versions/json_codec.py": "5ec24349033a40a65292dad950b021a1d0199e660166f54306ccf99c989b67bd",
+    "contracts/workload/linear.py": "c09ce4f1c1b0ccbcf38df3d6766c8aae495af2d3704a9c2e22cb9710cd26da96",
+    "contracts/workload/training.py": "5f47a02be618dbaec0c404906280f0225c3890633c06e02ecb50fdb9ba8f08bf",
+    "evaluation/calibration/pytorch_training.py": "aede46d2fc5322f6ce38db4d3efb97375028dcb483e024bc4189b323b1f684b0",
+    "evaluation/experiments/runner/linear.py": "c591dd06deace5791c1f4b69a24b0a6ae1f7d33e4d443f1101e795c4e3449135",
+    "evaluation/experiments/runner/single.py": "d38f3e1fd56168eff62dbe36005f5b6c272fbbf5986e0fabd89fea63d78b7160",
+    "evaluation/experiments/runner/training.py": "651166442ef6d13ef4dca6858ff11e3db8113f64b83b6398b0858dc1f8845d0c",
+    "example/training_demo.py": "578d8f636e4a9f266060f1b1287c87fe92292808c14a40695396b5257efb87ba",
+    "tests/integration/test_training_experiment.py": "5da8fcfed7c3e935f3f4650cedf97e96a8a961faac5d3060464f3a94eb82510f",
+    "tests/workloads/test_training.py": "bee856bdcb0c6b98259e97257d232f347d86ed1aeeabcf09139a0d61d2322bd8",
+    "workloads/graphs/training.py": "97b85bca6cdcde665a47268451de1f2269d39a181ea16850d3805e235d5ec804",
+    "workloads/kernels/linear.py": "c8af1bceb02da5093e01aeaf6227eb3c27f1674524f1905224d99069a36aa7ec",
+    "workloads/reference/linear.py": "509dbcdb7eb42d33581d430027093c75cd670fca67ddd672cfa8914c4e0c87af",
+    "workloads/reference/training.py": "fa27c15b8d6876cf6db55cf85aee8edcae1d2c217046a22d8a36b33bd722c7eb"
+  },
+  "pytorch_environment_freeze": [
+    "filelock==4.2.4",
+    "fsspec==2026.9.0",
+    "Jinja2==3.1.6",
+    "MarkupSafe==3.0.3",
+    "mpmath==1.3.0",
+    "networkx==3.7",
+    "setuptools==78.1.0",
+    "sympy==1.13.1",
+    "torch==2.5.1+cpu",
+    "typing_extensions==4.16.0"
+  ],
+  "runs": {
+    "exact": {
+      "bundle_directory": ".build/training-exact-20261123",
+      "configuration": {
+        "experiment": {
+          "atol": 1e-12,
+          "backing_capacity_bytes": 4096,
+          "candidate": {
+            "name": "resident_2x2x2",
+            "strategy": "output_stationary",
+            "tile": {
+              "k": 2,
+              "m": 2,
+              "n": 2
+            }
+          },
+          "hardware": {
+            "compute_clock": {
+              "domain_id": "mac",
+              "frequency_hz": 1000000000.0
+            },
+            "dma": {
+              "burst_overhead_cycles": 0,
+              "bytes_per_cycle": 8,
+              "max_burst_bytes": 64,
+              "startup_cycles": 1
+            },
+            "dma_clock": {
+              "domain_id": "dma",
+              "frequency_hz": 500000000.0
+            },
+            "mac": {
+              "initiation_interval_cycles": 1,
+              "lane_count": 4,
+              "latency_cycles": 1
+            },
+            "operand_dtype": "float64",
+            "scratch_capacity_bytes": 128
+          },
+          "learning_rate": 0.125,
+          "max_macs": 1000000,
+          "reference_backend": "exact",
+          "rtol": 1e-12,
+          "workload": {
+            "batch_size": 2,
+            "dtype": "float64",
+            "hidden_activation": "relu",
+            "schema_version": "linear-training/v1",
+            "widths": [
+              3,
+              4,
+              2
+            ]
+          }
+        },
+        "input_generator": {
+          "seed": 7,
+          "version": "training-sha256-index-v1"
+        },
+        "reference_environment": {
+          "backend": "fractions-reverse-mode/v1",
+          "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]"
+        }
+      },
+      "actual_inputs": [
+        {
+          "version": 0,
+          "weights": [
+            [
+              0.0625,
+              0.3125,
+              -0.375,
+              -0.4375,
+              0.25,
+              -0.0625,
+              -0.3125,
+              -0.375,
+              0.0,
+              0.3125,
+              0.375,
+              -0.4375
+            ],
+            [
+              0.25,
+              -0.0625,
+              -0.1875,
+              0.5,
+              0.0625,
+              0.25,
+              -0.25,
+              0.25
+            ]
+          ]
+        },
+        {
+          "target": [
+            0.4375,
+            -0.3125,
+            0.5,
+            -0.25
+          ],
+          "x": [
+            0.3125,
+            -0.5,
+            0.4375,
+            -0.25,
+            0.4375,
+            0.125
+          ]
+        }
+      ],
+      "summary": [
+        {
+          "candidate": "infeasible_full",
+          "run_id": "495f9cfa50394e23af0eb76dae71690b",
+          "status": "failed",
+          "validation_passed": null,
+          "loss": null,
+          "next_version": null,
+          "diagnostic": "ValueError: scratch capacity exceeded: need 208 bytes, have 128"
+        },
+        {
+          "candidate": "resident_2x2x2",
+          "run_id": "57676e563092478d8533bf50084aff24",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1392,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 96,
+          "gemm_resource_lower_bound": 5.32e-07,
+          "step_time": null,
+          "step_energy": null
+        },
+        {
+          "candidate": "resident_1x2x2",
+          "run_id": "9715e97d29314a418024ebb951573303",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1840,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 64,
+          "gemm_resource_lower_bound": 7.04e-07,
+          "step_time": null,
+          "step_energy": null
+        },
+        {
+          "candidate": "spill_2x2x2",
+          "run_id": "d24e1111108149a888d0eceea4387ab8",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1680,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 96,
+          "gemm_resource_lower_bound": 6.44e-07,
+          "step_time": null,
+          "step_energy": null
+        }
+      ],
+      "checks": [
+        {
+          "candidate": "resident_2x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        },
+        {
+          "candidate": "resident_1x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        },
+        {
+          "candidate": "spill_2x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        }
+      ]
+    },
+    "pytorch": {
+      "bundle_directory": ".build/training-pytorch-20261123",
+      "configuration": {
+        "experiment": {
+          "atol": 1e-12,
+          "backing_capacity_bytes": 4096,
+          "candidate": {
+            "name": "spill_2x2x2",
+            "strategy": "reload_partials",
+            "tile": {
+              "k": 2,
+              "m": 2,
+              "n": 2
+            }
+          },
+          "hardware": {
+            "compute_clock": {
+              "domain_id": "mac",
+              "frequency_hz": 1000000000.0
+            },
+            "dma": {
+              "burst_overhead_cycles": 0,
+              "bytes_per_cycle": 8,
+              "max_burst_bytes": 64,
+              "startup_cycles": 1
+            },
+            "dma_clock": {
+              "domain_id": "dma",
+              "frequency_hz": 500000000.0
+            },
+            "mac": {
+              "initiation_interval_cycles": 1,
+              "lane_count": 4,
+              "latency_cycles": 1
+            },
+            "operand_dtype": "float64",
+            "scratch_capacity_bytes": 128
+          },
+          "learning_rate": 0.125,
+          "max_macs": 1000000,
+          "reference_backend": "pytorch",
+          "rtol": 1e-12,
+          "workload": {
+            "batch_size": 2,
+            "dtype": "float64",
+            "hidden_activation": "relu",
+            "schema_version": "linear-training/v1",
+            "widths": [
+              3,
+              4,
+              2
+            ]
+          }
+        },
+        "input_generator": {
+          "seed": 7,
+          "version": "training-sha256-index-v1"
+        },
+        "reference_environment": {
+          "backend": "pytorch-autograd/v1",
+          "device": "cpu",
+          "dtype": "float64",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+          "reference_scope": "functional-only",
+          "threads": 20,
+          "torch_git_version": "a8d6afb511a69687bbb2b7e88a3cf67917e1697e",
+          "torch_version": "2.5.1+cpu"
+        }
+      },
+      "actual_inputs": [
+        {
+          "version": 0,
+          "weights": [
+            [
+              0.0625,
+              0.3125,
+              -0.375,
+              -0.4375,
+              0.25,
+              -0.0625,
+              -0.3125,
+              -0.375,
+              0.0,
+              0.3125,
+              0.375,
+              -0.4375
+            ],
+            [
+              0.25,
+              -0.0625,
+              -0.1875,
+              0.5,
+              0.0625,
+              0.25,
+              -0.25,
+              0.25
+            ]
+          ]
+        },
+        {
+          "target": [
+            0.4375,
+            -0.3125,
+            0.5,
+            -0.25
+          ],
+          "x": [
+            0.3125,
+            -0.5,
+            0.4375,
+            -0.25,
+            0.4375,
+            0.125
+          ]
+        }
+      ],
+      "summary": [
+        {
+          "candidate": "spill_2x2x2",
+          "run_id": "15c5427d040743fdad27aa414c1bb260",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1680,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 96,
+          "gemm_resource_lower_bound": 6.44e-07,
+          "step_time": null,
+          "step_energy": null
+        },
+        {
+          "candidate": "resident_1x2x2",
+          "run_id": "a3cf5ffc724e47d4b5f13ada6ecdae08",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1840,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 64,
+          "gemm_resource_lower_bound": 7.04e-07,
+          "step_time": null,
+          "step_energy": null
+        },
+        {
+          "candidate": "infeasible_full",
+          "run_id": "b00d660583ca4362b2ddc9367414b608",
+          "status": "failed",
+          "validation_passed": null,
+          "loss": null,
+          "next_version": null,
+          "diagnostic": "ValueError: scratch capacity exceeded: need 208 bytes, have 128"
+        },
+        {
+          "candidate": "resident_2x2x2",
+          "run_id": "f78e3b8934bf4455b2351c0f2a89a974",
+          "status": "succeeded",
+          "validation_passed": true,
+          "loss": 0.18958117067813873,
+          "next_version": 1,
+          "diagnostic": null,
+          "gemm_macs": 120,
+          "gemm_payload": 1392,
+          "auxiliary_logical_payload": 1448,
+          "backing_peak": 568,
+          "gemm_scratch_peak": 96,
+          "gemm_resource_lower_bound": 5.32e-07,
+          "step_time": null,
+          "step_energy": null
+        }
+      ],
+      "checks": [
+        {
+          "candidate": "spill_2x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        },
+        {
+          "candidate": "resident_1x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        },
+        {
+          "candidate": "resident_2x2x2",
+          "input_identity": "256f8059c84752a2e69d43b605ee816cfbaa5d0c1227837b80a752950ef73662",
+          "validation": {
+            "dw0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dw1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "dx": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "loss": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "prediction": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w0": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            },
+            "updated_w1": {
+              "max_absolute_error": 0.0,
+              "mismatched_indices": [],
+              "passed": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

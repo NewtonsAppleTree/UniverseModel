@@ -2,6 +2,8 @@
 
 本目录整理 AI 训练的阶段、资源需求与设计权衡，是复用仓库基础模块的场景入口。当前仅有文档，尚无独立训练分析器或执行器；状态以 [STATUS](../docs/STATUS.md) 为准。
 
+可运行的[Linear 训练 step/短链](../evaluation/docs/training_step.md)已在 workloads/compiler/evaluation 中实现，包含 mean MSE、SGD、梯度版本与生命周期，并通过可选 PyTorch 功能对照。本目录继续做场景导航，不复制基础模块模型；完整分布式/训练框架和性能校准仍待扩展。
+
 ## 设计对象
 
 | 对象 | 要回答的问题 |

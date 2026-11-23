@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-11-20",
+  "scope": "Source review only. No external project built or benchmarked. No private company assertions adopted as facts.",
+  "user_materials": [
+    {
+      "name": "Pasted text.txt",
+      "description": "User-provided Feishu aily generated AI compiler course interpretation",
+      "sha256": "17f413d217efa641b14929d90dcdbd5728d41bd0dcb90ba69bc1aa6f549052f3",
+      "bytes": 31297,
+      "line_count_including_blank_lines": 583,
+      "original_course_sources": "Not provided or independently established; treat embedded citations as leads"
+    },
+    {
+      "name": "Two inline edge-framework comparison screenshots",
+      "description": "TVM, IREE, ExecuTorch, LiteRT and ONNX Runtime Mobile table",
+      "original_url": null,
+      "capture_date": null,
+      "version_scope": null,
+      "handling": "Retain comparison dimensions; do not adopt unversioned PR counts, binary sizes or binary capability claims"
+    }
+  ],
+  "repository_and_paper_evidence": "open_source_snapshot_2026-11-20.json",
+  "technical_sources": [
+    {
+      "url": "https://mlir.llvm.org/docs/Quantization/",
+      "sha256": "f01539c8b9954243eec17579fbebc45f3a4612b753e3c058a180e774a610a5db",
+      "bytes": 33236,
+      "local_capture_completed_at_utc": "2026-11-20T08:48:41.009274+00:00",
+      "review_purpose": "Integer zero-point and real/integer domain conversion",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/sophgo/tpu-mlir/master/docs/developer_manual/source_en/10_layergroup.rst",
+      "sha256": "3044d8155a1d32ac28f7c5ece2b11e8b31dcad0e9dbebd617933cd64164cfe1d",
+      "bytes": 4638,
+      "local_capture_completed_at_utc": "2026-11-20T08:51:21.981464+00:00",
+      "review_purpose": "LMEM slicing, liveness, allocation and GMEM/LMEM traffic",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-ai-edge/LiteRT/main/litert/BUILD_YOUR_OWN_BACKEND.md",
+      "sha256": "0cee234113bfd573d2efb7607f7c1c2ec4d29af41aaa4c762601289d41d5931a",
+      "bytes": 55141,
+      "local_capture_completed_at_utc": "2026-11-20T08:51:22.127174+00:00",
+      "review_purpose": "AOT, on-device JIT, compiler/dispatch plugins and optional asynchronous interface",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pytorch/executorch/main/docs/source/compiler-memory-planning.md",
+      "sha256": "e86b4ae27c926a1cdea451717de3d9f7812ae60d9d3fd94191bf94945ef74ff0",
+      "bytes": 7815,
+      "local_capture_completed_at_utc": "2026-11-20T08:53:18.878718+00:00",
+      "review_purpose": "Symbolic shapes, ValueRange, upper-bound planning and device memory boundaries",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://onnxruntime.ai/docs/performance/model-optimizations/graph-optimizations.html",
+      "sha256": "f5d40c10450fa4face923bc07a87c68abeea914c32e365f20e5c1de947670cca",
+      "bytes": 55304,
+      "local_capture_completed_at_utc": "2026-11-20T08:48:40.180908+00:00",
+      "review_purpose": "Online/offline graph optimization is distinct from target-native code generation",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://www.iscaconf.org/isca2025/program/",
+      "sha256": "06b63670cee9c2474d5c160b695c8fe1c64650e2808fc21aa4fd5df712a91ffc",
+      "bytes": 224199,
+      "local_capture_completed_at_utc": "2026-11-20T08:48:53.292559+00:00",
+      "review_purpose": "Hybe title, authors and conference identity; performance claims not reproduced",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://microarch.org/micro58/program/",
+      "sha256": "39aaf31e6d862a7f9678dae455afab35392ff871a660899df31bc866e5e4273c",
+      "bytes": 117114,
+      "local_capture_completed_at_utc": "2026-11-20T08:48:45.848068+00:00",
+      "review_purpose": "Kelle title and conference identity; XgenSilicon attribution not confirmed",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://arxiv.org/abs/2104.05343",
+      "sha256": "1c187f01e4f4135c02c2346f6cb7ea88898b94622def18dfc02c4c6df6b49059",
+      "bytes": 41881,
+      "local_capture_completed_at_utc": "2026-11-20T08:51:22.213564+00:00",
+      "review_purpose": "2D training paper identity; historical reference only",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ModelEngine-Group/unified-cache-management/main/LICENSE",
+      "sha256": "29bd49964c1ab3bb2f9157d28718d304230ce50b6b27e874f2d3b3523397be11",
+      "bytes": 1110,
+      "local_capture_completed_at_utc": "2026-11-20T08:50:47.811014+00:00",
+      "review_purpose": "Observed standard MIT text; README wording differs",
+      "version_boundary": "Observed mutable web/default-branch content; content hash is not a pinned source revision"
+    }
+  ],
+  "unresolved_claims": [
+    "Hybe/Kelle source code and benchmark numbers not verified",
+    "XgenSilicon MICRO 2025 paper identity not confirmed",
+    "Unspecified NPU specifications and quantization accuracy percentages not adopted",
+    "ONNX Runtime GitHub metadata remains unresolved; official documentation reviewed"
+  ],
+  "priority_steering": "User said Optimus is not a focus. Both verified names retained as historical references, excluded from the first reading/reproduction batch."
+}

@@ -15,9 +15,28 @@ jobs:
       - run: python tools/check_structure.py
       - run: python tools/check_model_rules.py
       - run: python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+      - run: python -m unittest discover -s tests/workloads -p "test_*.py" -v
+      - run: python -m unittest discover -s compiler/tests -p "test_*.py" -v
       - run: python -m unittest discover -s tests/integration -p "test_*.py" -v
       - run: python -m example.adc_demo
       - run: python -m example.chipmodel_demo
       - run: python -m example.universal_demo --case adc
       - run: python -m example.universal_demo --case dma --set inputs.payload_bytes=64
+      - run: python -m example.linear_demo --output .build/linear-study
+      - run: python -m example.linear_demo --read .build/linear-study
+      - run: python -m example.training_demo --output .build/training-study
+      - run: python -m example.training_demo --read .build/training-study
       - run: python -m pip wheel . --no-deps --wheel-dir .build/wheels
+
+  training-torch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tools/requirements-training-torch.txt
+      - run: python -m pip install -r tools/requirements-training-torch.txt
+      - run: python -m unittest discover -s tests/integration -p "test_training_experiment.py" -v
+      - run: python -m example.training_demo --torch-reference --output .build/training-pytorch

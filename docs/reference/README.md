@@ -4,6 +4,11 @@
 
 | 文档 | 用途 |
 | --- | --- |
+| [开源项目调研与模块选型](open_source_landscape.md) | 102 个候选与 44 篇代表论文的首轮核对、模块对应、复用边界与精读计划 |
+| [开源候选全量清单与横向对照](open_source_comparison.md) | 13 个模块、22 个选型问题；同模块多候选，GitHub stars、维护信息、功能差异和共同验证问题 |
+| [2026-11-20 调研数据快照](data/open_source_snapshot_2026-11-20.json) | GitHub stars/维护信息、OpenAlex 引用记录、来源与版本/许可发现 |
+| [AI 软件语料审阅](ai_software_corpus_review.md) | 课程文本与端侧截图核查；编译、部署、量化、KV 和训练分层；新增候选与近期研究任务 |
+| [2026-11-20 语料来源记录](data/ai_software_sources_2026-11-20.json) | 用户文本身份、截图来源边界、技术纠错的官方来源与内容哈希 |
 | [顶层架构参数清单](../../ARCHITECTURE_PARAMETERS.md) | 新设计的参数筛选入口：术语、单位、关系、适用条件、来源与纠错 |
 | [layout_roi 手册审阅](layout_roi_review.md) | 原文统计、15 项审阅结论、7 个例子及完整走查修订、内容归属与源码核查边界 |
 | [结构参数手册](architecture_parameters.md) | 中英文名词、参数族、公开工具和来源 |

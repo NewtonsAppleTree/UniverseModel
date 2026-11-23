@@ -6,6 +6,10 @@
 
 ## 阅读入口
 
+- [Linear 训练短链、梯度/更新和外部参考](../evaluation/docs/training_step.md)
+
+- [当前线性算子与参考接口](UNITS.md)
+- [GEMM/MatVec 实验、独立调用与数值限制](../evaluation/docs/linear_mapping.md)
 - [模块设计](docs/design.md)
 - [顶层架构](../docs/architecture/design.md)
 - [公共契约](../docs/interfaces/contracts.md)

@@ -6,6 +6,10 @@
 
 ## 阅读入口
 
+- [训练阶段、显式转置与张量生命周期](src/sched/UNITS.md)
+
+- [线性分块/内存/解释执行入口](src/UNITS.md)
+- [完整线性实验与模型边界](../evaluation/docs/linear_mapping.md)
 - [模块设计](docs/design.md)
 - [分析职责与参数入口](UNITS.md)
 - [张量区域、切块与规约](docs/tiling_and_reduction.md)：需求传播、尾块、split-K、GQA/attention 状态和输出投影走查

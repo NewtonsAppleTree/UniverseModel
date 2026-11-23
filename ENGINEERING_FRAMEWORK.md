@@ -4,7 +4,7 @@
 
 Universal 的核心是**同一套工程接口允许选择不同任务、资源、组合范围与模型精度**。每个模块保留专业的数据类型和行为，只在配置、运行记录、单位与产物边界共享约定。用户可以只运行一个公式、一个组件或一段路径。
 
-本轮先落实工程基础；CIM MatVec 的 71-cycle 验收方案保留为后续局部台架任务。现有硬件行为覆盖与验证证据统一见 [STATUS](docs/STATUS.md)。
+工程基础已接入[线性算子实验](evaluation/docs/linear_mapping.md)：任务/计划/容量/功能/分析/记录可贯通且可独立调用；CIM MatVec 的 71-cycle 验收方案仍为后续局部台架任务。现有行为覆盖与验证证据统一见 [STATUS](docs/STATUS.md)。
 
 ## 1 系统设计的四种关系
 
@@ -48,18 +48,18 @@ flowchart LR
 
 | 模块 | 独立输入 | 主要输出 | 状态归属 | 下一项最小接入工作 |
 | --- | --- | --- | --- | --- |
-| contracts | 有版本的交换对象 | 校验过的值对象/诊断 | 不拥有业务状态 | 随实际需求增加能力、数据引用、计划契约；当前先用实验记录 |
+| contracts | 有版本的交换对象 | 校验过的值对象/诊断 | 不拥有业务状态 | 当前含实验记录及线性任务/计划；能力、一般图/数据引用按需求扩展 |
 | configuration | producer 参数定义、JSON、显式覆盖 | 冻结有效参数 | 只拥有草稿与解释记录 | 先复用严格 dataclass 解析；模板/来源链/迁移按需求加入 |
 | costmodel | 结构、动作量、PVT 条件、来源 profile | 条件延迟/能量/面积与覆盖说明 | 特征化数据，不复制硬件队列 | 定义一个条件查询函数，缺数据返回明确未知/越域 |
 | chipmodel | Params、映射后的操作/数据、边界条件 | 功能输出、资源工作量、局部估算 | 本组件资源与数值状态 | 现有单元通过小 adapter 接入记录；局部组合另验证 |
 | systemmodel | 芯片能力、主机/板卡资源、I/O 路径 | 节点能力、可用容量、路径约束 | 板卡/主机共享资源 | 先定义 Board/Node 描述与静态引用/容量检查 |
 | clustermodel | 节点能力、链路、拓扑与参与组 | 集群图、路由/割集约束 | 跨节点网络资源 | 先描述资源图与 group；通信算法归 runtime |
-| workloads | shape、语义轴、dtype、输入/种子 | Workload 描述、独立参考/工作量 | 任务数据与参考，不拥有硬件 | 小纯函数提供任务工作量/参考；大数据后续用引用 |
-| compiler | workload + 公共硬件能力 + 成本查询 | 合法映射、ROI、buffer/partial/操作计划 | 编译 IR 与计划 | 先定义最小计划生产/校验边界；可直接注入预制计划 |
+| workloads | shape、语义轴、dtype、输入/种子 | Workload 描述、独立参考/工作量 | 任务数据与参考，不拥有硬件 | 已有 GEMM/MatVec；下一步 Linear 前向/反向/更新及短链 |
+| compiler | workload + 公共硬件能力 + 成本查询 | 合法映射、ROI、buffer/partial/操作计划 | 编译 IR 与计划 | 已有线性计划/校验/容量/解释；后续按图生命周期和外部比较扩展 |
 | runtime | 显式计划/直接请求、已发生通知 | 派发/等待/追加操作 | 软件队列、stream、策略 | 先冻结提交/完成协议，再实现一种派发策略 |
 | simulator | 注入的组件/策略、初态、时间协议 | 目标时间、计数、终止诊断 | 全局时间与事件，组件拥有局部资源 | 先评审事件/释放/可见性契约；有争用需求再写引擎 |
 | artifacts | 生产方对象、内容引用、状态 | 不可变产物与来源清单 | 存储一致性，不判断数值正确 | 当前小记录本地保存；大数组、轨迹、存储后端随后扩展 |
-| evaluation | 实验问题、显式参数/输入、模型调用 | 运行记录、验证与比较 | 实验编排，不复制模型状态 | 当前单次运行；后续扫描先复用同一接口与失败口径 |
+| evaluation | 实验问题、显式参数/输入、模型调用 | 运行记录、验证与比较 | 实验编排，不复制模型状态 | 已有单次调用与有限线性候选比较；后续接外部校准/成本查询 |
 | ui | 同一参数定义、诊断、已保存结果 | 草稿修改、配置 diff、结果展示 | UI 草稿与视图 | 等基础参数接口稳定后做最小 CLI/表单；通过 evaluation 调用 |
 
 训练与推理共享 workload/plan/resource/result 边界。训练额外描述前向、反向、更新、activation/梯度/optimizer 活跃量；推理额外描述 prefill/decode、KV 布局、上下文和到达过程。它们在上层提出需求，硬件模型接收显式工作量；不按场景名预判瓶颈。
@@ -93,6 +93,7 @@ python -m example.universal_demo --case adc
 python -m example.universal_demo --case dma
 python -m example.universal_demo --case adc --set configuration.adc.lane_count=8
 python -m example.universal_demo --case dma --set inputs.payload_bytes=64 --output data/runs/dma-demo
+python -m example.linear_demo
 ```
 
 可用 `--config` 替换 JSON、`--source-revision` 显式记录代码来源。样例配置在 [ADC](config/experiments/universal_adc.json) / [DMA](config/experiments/universal_dma.json)，对应 producer 字段在 [example](example/README.md)。已有 `example/specs` 结构 JSON 继续按其自身 schema 使用。
@@ -105,15 +106,23 @@ python -m example.universal_demo --case dma --set inputs.payload_bytes=64 --outp
 python tools/check_model_rules.py
 python tools/check_structure.py
 python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+python -m unittest discover -s tests/workloads -p "test_*.py" -v
+python -m unittest discover -s compiler/tests -p "test_*.py" -v
 python -m unittest discover -s tests/integration -p "test_*.py" -v
 ```
 
-## 7 后续工程顺序
+## 7 后续工程接入
 
-1. 用当前接口逐步导出现有模块的可查询能力、字段、单位与覆盖边界；依据真实调用补充契约。
-2. 定义最小 workload、硬件能力与 plan 的独立输入/输出，加入局部引用/容量/依赖检查；继续支持直接参数和预制计划。
-3. 增加统一实验定义、有限参数扫描与已有产物分析，先验证身份、失败样本与比较口径。
-4. 在具体争用问题出现后，冻结提交/完成/可见性协议，再实现 runtime/simulator 的最小闭环。
-5. 选择 CIM MatVec 或 GEMM ROI 等局部台架检验通用边界，再扩展单层训练/推理账本、背压与物理校准。
+2026-11-23 训练路径已落实下列第 1/2 项的限定版本：float64 Linear/ReLU→mean MSE→反向→SGD、命名张量生命周期、旧权重版本约束及可选 PyTorch 功能参考。完整接口和限制见[训练指南](evaluation/docs/training_step.md)；成本/时序与一般图扩展仍待证据驱动，不改变下方 clustermodel 的模块安排。
+
+近期选题、优先级和验收门槛统一见[研究开发路线](docs/RESEARCH_ROADMAP.md)，外部工具选择见[开源项目调研](docs/reference/open_source_landscape.md)。线性首批功能/分析已实现，后续按证据缺口推进：
+
+2026-11-23当前先推进 [clustermodel独立开发](clustermodel/docs/development_plan.md)：公共只读端点、链路与图、交换容量/路由、资源组和通信账本；复用本框架配置、记录和产物接口。静态分析不依赖完整Node/runtime/simulator；外部通信后端和AI执行在后续门槛满足后接入。以下保留已有线性路径的后续接入事项。
+
+1. 在现有 GEMM/MatVec 上扩展 Linear 前向/反向/更新，定义梯度、权重版本、临时数据和完整工作量，保持独立参考。
+2. 用短算子链检验跨算子的驻留与生命周期；继续支持独立参数和预制计划，不提前固定全图 IR。
+3. 接入带来源与覆盖范围的条件成本查询，沿用有限候选比较和产物重分析，保留失败样本与未知成本。
+4. 用一个成熟外部工具建立交叉对照，按研究主张补充独立校准；重型依赖放可选 adapter/独立环境，公共契约保持标准库。
+5. 在具体争用问题出现后，冻结提交/完成/可见性协议，再实现或接入 runtime/simulator；按任务需要扩展单层训练/推理、节点与集群。
 
 每一步都交付可独立调用的函数与证据。候选模块保留设计入口；只有具备实际行为、公式与验收条件时才增加代码类。

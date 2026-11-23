@@ -1,6 +1,10 @@
 # compiler：语义保持与资源映射
 
+当前落地范围为[线性算子实验](../../evaluation/docs/linear_mapping.md)：两种显式分块策略、独立覆盖/归约/生命周期校验、三缓冲容量、逐行搬运及功能解释。只接收所需容量和公共线性值；一般 HardwareSpec、图 IR、自动求解、lowering 与动态时序仍为以下设计范围。
+
 ## 核心与依赖
+
+[训练首批](../../evaluation/docs/training_step.md)已增加固定短链 lowering、反向转置、双存储预算/生命周期与功能执行。阶段顺序表达依赖，不推进目标时间；完整图 IR 和任意模型编译仍为设计范围。
 
 最重要的是优化后的计划仍然完成同一语义并满足资源约束。compiler 依赖 contracts、costmodel，读取 HardwareSpec；不读取硬件内部状态、不依赖 simulator。输出静态计划，实际时序由 runtime 与资源竞争决定。
 

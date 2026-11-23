@@ -2,7 +2,9 @@
 
 先读根目录[项目使命](../PROJECT_MISSION.md)了解长期研究目标与顶层要求，再读[项目总览](PROJECT_OVERVIEW.md)了解模块怎样服务研究、输入输出和任务路线；查看[实现状态](STATUS.md)确认哪些能力已经可用。设计文档说明应当怎样工作，STATUS 记录实际完成情况。
 
-通用工程接口、各模块接入与实现顺序从[ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)进入。当前先完善可独立使用的工程框架；CIM array + DAC/ADC + 缓冲台架保留为后续验收。
+近期优先级和验收门槛从[研究开发路线](RESEARCH_ROADMAP.md)进入，选型依据见[开源项目调研](reference/open_source_landscape.md)。[首个线性实验](../evaluation/docs/linear_mapping.md)已覆盖任务、映射、校验和比较，后续补训练语义与外部基线校准；通用工程接口与接入规则见 [ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)。CIM array + DAC/ADC + 缓冲台架继续按局部验收方案推进。
+
+当前逐模块开发先从 [clustermodel](../clustermodel/README.md)进入：[逐目录开发与验收](../clustermodel/docs/development_plan.md)规定链路、图、交换容量、路由、资源组和集群账本的顺序；首批为独立分析设计，尚无集群执行模型。
 
 搭建组件台架或设计硬件接口时，再查[可组合组件与局部仿真规划](architecture/composable_simulation.md)；其公共事件接口与 BenchSpec 样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 
@@ -12,11 +14,12 @@
 docs/
   README.md              文档入口与维护规则
   PROJECT_OVERVIEW.md     整体逻辑 模块输入输出 任务路线
+  RESEARCH_ROADMAP.md     近期研究优先级 基线复现 开发与验收
   STATUS.md              当前实现状态 验证依据 下一步
   architecture/          架构规范 关系图 场景 验证门槛
   interfaces/            公共对象 生命周期 产物协议
   methods/               参数公式 实验方法 优化与手算案例
-  reference/             参数手册与异构背景参考
+  reference/             开源调研及数据快照 参数与异构背景参考
   decisions/             架构决策及选择理由
   exports/               由维护源生成的 Word 阅读版
   archive/               历史审视记录 不作为当前进度依据
@@ -30,6 +33,13 @@ docs/
 | 项目的使命、研究范围和顶层要求 | 根目录[PROJECT_MISSION.md](../PROJECT_MISSION.md)，使命正文的唯一维护源 |
 | 项目整体怎样运转 | [项目总览](PROJECT_OVERVIEW.md) |
 | 现在能运行什么 | [实现状态](STATUS.md) |
+| 怎样运行训练 step 与 PyTorch 数值对照 | [训练指南](../evaluation/docs/training_step.md)、[开发验收](development/training_step_plan.md) |
+| 怎样比较 GEMM 分块、缓冲容量与搬运量 | [线性实验指南](../evaluation/docs/linear_mapping.md)、[本轮开发与验收计划](development/linear_experiment_plan.md) |
+| 怎样逐文件夹开发集群模块 | [集群设计](../clustermodel/docs/design.md)、[逐目录任务与验收](../clustermodel/docs/development_plan.md)、[参数导航](../clustermodel/UNITS.md) |
+| 下一步先做什么、哪些模块先实现 | [研究开发路线](RESEARCH_ROADMAP.md)：首个实验、阶段计划和验收门槛 |
+| 各模块有哪些高影响力开源项目可参考 | [开源项目调研](reference/open_source_landscape.md)：stars、代表论文引用、维护变化与复用边界 |
+| 同一模块的多个开源项目如何横向比较 | [候选全量清单](reference/open_source_comparison.md)：102 个候选、22 组对照，GitHub 热度与学术影响并列 |
+| AI 编译课程、端侧框架表和训练项目对我们有什么用 | [软件语料审阅](reference/ai_software_corpus_review.md)：来源核查、模块映射、训练分层和实验建议 |
 | 设计时该选哪些参数、单位与公式 | 根目录[芯片架构与 AI 参数清单](../ARCHITECTURE_PARAMETERS.md)：计算、存储、互连、物理条件与训练/推理资源账本 |
 | 训练与推理场景从哪里进入 | [trainingArch](../trainingArch/README.md)、[inferArch](../inferArch/README.md)：各自的阶段、资源账本与参数入口 |
 | 怎样跳过完整链条只运行局部组件 | [可组合仿真规划](architecture/composable_simulation.md) |
@@ -62,7 +72,8 @@ docs/
 | 发生的变化 | 更新位置 |
 | --- | --- |
 | 长期使命、研究范围或顶层要求变化 | 根目录[PROJECT_MISSION.md](../PROJECT_MISSION.md)；同步 README 摘要、AGENTS 开发约束和总览中的模块解释，其他文档引用使命正文 |
-| 具体课题或近期优先级变化 | 对应课题与实验材料、[工程框架](../ENGINEERING_FRAMEWORK.md)的接入路线及 [STATUS](STATUS.md)的下一步；不在使命正文维护进度 |
+| 具体课题或近期优先级变化 | [研究开发路线](RESEARCH_ROADMAP.md)与对应实验材料；同步 [STATUS](STATUS.md)下一步摘要，接口接入规则由[工程框架](../ENGINEERING_FRAMEWORK.md)维护；不在使命正文维护进度 |
+| 外部项目选型或调研数据变化 | [开源调研](reference/open_source_landscape.md)与带日期的数据快照；保留来源、论文版本、许可和复现状态 |
 | 功能新增、部分可用或验证结果变化 | [STATUS.md](STATUS.md)：支持范围、核对日期、代码基线和验证入口；总览与模块 README 引用它 |
 | 模块职责、目录或允许依赖变化 | [架构设计](architecture/design.md)、[模块清单](architecture/modules.json)、[依赖图](architecture/diagrams.md)及受影响的模块设计；总览同步导航 |
 | 公共字段、单位或生命周期变化 | [公共契约](interfaces/contracts.md)及对应接口专题；模块设计引用共同定义 |

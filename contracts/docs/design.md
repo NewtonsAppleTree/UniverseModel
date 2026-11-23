@@ -2,7 +2,7 @@
 
 ## 核心与边界
 
-当前公共工程对象入口见[UNITS](../UNITS.md)：ExperimentSpec、Metric、RunRecord 与 canonical JSON/单位词汇。它们是完整硬件/计划/事件契约中的独立小边界；各模块仍使用专业 payload，接入设计见[工程框架](../../ENGINEERING_FRAMEWORK.md)。
+当前公共对象入口见[UNITS](../UNITS.md)：ExperimentSpec、Metric、RunRecord、canonical JSON/单位词汇，以及线性任务 LinearSpec/LinearInputs 与 LinearPlan/Tile 值。它们是完整工作负载/硬件/图计划/事件契约中的独立小边界；各模块仍使用专业 payload，接入设计见[工程框架](../../ENGINEERING_FRAMEWORK.md)。
 
 最重要的是不同模块对“同一对象、同一单位、同一次完成”理解一致。contracts 定义公共值对象、资源能力与端口协议，不组织实验，不包含硬件状态或编译优化逻辑；无业务依赖。
 

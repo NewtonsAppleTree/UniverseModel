@@ -2,6 +2,8 @@
 
 当前是场景设计文档，未定义 Python 类、可执行 schema 或参数默认值。通用术语/单位/公式以[顶层参数清单](../ARCHITECTURE_PARAMETERS.md#81-训练)为查阅入口；实际硬件字段见 [chipmodel/UNITS.md](../chipmodel/UNITS.md)。
 
+2026-11-23 基础模块已实现[Linear 训练短链](../evaluation/docs/training_step.md)：任务与状态在 contracts/workloads，静态生命周期/功能在 compiler，参考比较/记录在 evaluation。本目录仍为导航；下表是更广的候选职责，不将分布式/MFU/完整 step 性能列为已实现。
+
 | 候选分析职责（非已实现 Unit） | 输入参数与单位 | 输出与关键关系 |
 | --- | --- | --- |
 | 训练工作量 | 各算子 shape [element]、dtype [bit/element]、microbatch [sample]、累积次数 [次] | forward/backward/update 的 FLOP/op 与 B/step；不使用一个固定倍数替代所有算子 |

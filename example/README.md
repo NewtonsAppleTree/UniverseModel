@@ -1,5 +1,24 @@
 # 示例
 
+[`training_demo.py`](training_demo.py) 运行 Linear/ReLU 短链的前向、mean MSE、全部反向及 SGD，比较相同旧状态的有限映射，保留容量失败。`--torch-reference` 在可选 CPU PyTorch 环境做独立 autograd/SGD 校验；回读不需要该环境。命令和数值/存储/时间边界见[训练指南](../evaluation/docs/training_step.md)。
+
+```text
+python -m example.training_demo
+python -m example.training_demo --output .build/training-study
+python -m example.training_demo --read .build/training-study
+```
+
+[`linear_demo.py`](linear_demo.py) 比较同一 GEMM 的输出驻留/部分和回写方案，贯通 workload、显式映射、容量/流量、功能参考、MAC/DMA 分析与产物。默认三项数值校验通过，一项因容量不足留下失败记录；348/588/460 ns 是条件化资源下界。语义、手算、独立调用和限制见[线性实验指南](../evaluation/docs/linear_mapping.md)。
+
+```text
+python -m example.linear_demo
+python -m example.linear_demo --set hardware.scratch_capacity_bytes=256
+python -m example.linear_demo --output .build/linear-study
+python -m example.linear_demo --read .build/linear-study
+```
+
+输出目录必须全新，回读从校验过的 run bundle 重建汇总。至少一项数值通过且无数值不合格的已完成候选时退出 0；不可行候选仍保留。默认源码来源为 unrecorded，正式实验用 `--source-revision` 标明实际源码快照。
+
 [`universal_demo.py`](universal_demo.py) 使用同一工程接口独立调用 ADC 或 DMA：JSON → 冻结参数 → 注入函数 → 带单位记录 → 可选本地保存。配置字段仍采用原模型的专业类型；新增类只描述两个示例的参数/输入边界。
 
 ```text

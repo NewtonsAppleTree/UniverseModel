@@ -1,6 +1,10 @@
 # workloads：工作语义、输入与参考
 
+当前落地范围为[线性算子实验](../../evaluation/docs/linear_mapping.md)及下文的训练首批：稠密 GEMM/MatVec、稳定小输入生成、逻辑工作量、独立整数/有理数参考和显式质量结果。以下描述更广的目标职责，通用图、分布式训练状态及代表性 profile 不视为已实现。
+
 ## 核心与边界
+
+[训练首批](../../evaluation/docs/training_step.md)另提供固定 Linear/ReLU/identity 链、不可变状态、mean MSE/plain SGD 的完整工作量与精确反向参考；尚未实现通用 autograd、代表性训练数据或分布式语义。
 
 最重要的是先定义要完成的工作和允许的误差。workloads 依赖 contracts，拥有任务描述及独立参考；不依赖目标硬件模型。`kernels` 放单算子，`graphs` 放图，`reference` 放参考语义，`profiles` 放代表性形状/到达分布，`datasets` 放数据清单与适用说明。
 

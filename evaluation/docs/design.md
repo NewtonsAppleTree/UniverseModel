@@ -2,7 +2,7 @@
 
 ## 核心与依赖
 
-单次注入函数的工程运行入口见[runner](../experiments/runner/UNITS.md)与[通用框架](../../ENGINEERING_FRAMEWORK.md)。它返回有模式/单位/假设的快照记录；不推进目标时间。下面的扫描、校准与优化保留为后续设计。
+单次注入函数与有限线性候选比较入口见[runner](../experiments/runner/UNITS.md)和[通用框架](../../ENGINEERING_FRAMEWORK.md)。[线性实验](linear_mapping.md)已装配映射、参考、MAC/DMA 分析并能从产物重建比较；返回有模式/单位/假设的快照记录，不推进目标时间。一般扫描、外部校准与优化保留为后续设计。
 
 最重要的是在同一问题、约束和证据标准下比较方案。evaluation 是组合入口，可依赖除 ui 外的全部主模块，负责装配和运行编排；不成为硬件或策略状态的第二所有者。
 

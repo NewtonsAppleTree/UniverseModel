@@ -23,3 +23,18 @@ python -m unittest discover -s tests/integration -p "test_*.py" -v
 ```
 
 它验证工程接口，不代替硬件的数值或时序校核。结构检查还核对主模块 Python import，允许依赖以 modules.json 为单一维护定义。
+
+线性实验新增三层验证：[workloads](workloads/test_linear.py) 提供手算/精确参考、格式与身份边界；[compiler](../compiler/tests/test_linear_mapping.py) 检查尾块、覆盖、归约生命周期和容量/流量；[integration](integration/test_linear_experiment.py) 验证 MAC/DMA 时钟、未知能耗、数值失败、敏感性、记录和 CLI 回读。后者随现有 integration 命令运行，前两组单独运行：
+
+```text
+python -m unittest discover -s tests/workloads -p "test_*.py" -v
+python -m unittest discover -s compiler/tests -p "test_*.py" -v
+```
+
+本轮 27 项新增测试验证声明语义；尚未提供外部工具性能校准或训练执行证据。
+
+2026-11-23 训练批次另新增 23 项测试：[workloads](workloads/test_training.py) 7 项手算/归一化/有限差分/边界，[compiler](../compiler/tests/test_training.py) 8 项反向轴、ReLU、状态和生命周期/容量反例，[integration](integration/test_training_experiment.py) 6 项完整工作/记录/多形状/质量检查，以及 2 项可选 PyTorch autograd/SGD。它们使用上面的四组 discover 命令；默认共 108 项通过、2 项跳过，固定 PyTorch 环境额外通过这 2 项。外部 CPU 数值对照不是目标性能校准。
+
+```text
+.build/torch-crosscheck/Scripts/python.exe -m unittest discover -s tests/integration -p "test_training_experiment.py" -v
+```

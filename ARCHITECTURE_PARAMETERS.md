@@ -65,6 +65,21 @@
 
 最关心：完整工作量 O、各边界实际流量 D、峰值活跃容量、数值验收目标。Roofline 用于筛选瓶颈；依赖、小批次启动、队列、通信和资源共享仍可能进一步限制性能。
 
+### 2.1 当前线性映射实验采用的参数子集
+
+2026-11-20 的[线性实验](evaluation/docs/linear_mapping.md)采用正整数 M/N/K、row-major、INT8/INT64 或 float64。字段由 [workload](contracts/workload/UNITS.md)、[plan](contracts/plan/UNITS.md)、[memplan](compiler/src/memplan/UNITS.md) 与 [runner](evaluation/experiments/runner/UNITS.md) 维护。本节是该模型假设下的关系清单，不是所有数据流的通式。
+
+| 参数 / 派生量 | 单位 | 关系与边界 |
+| --- | --- | --- |
+| INT8 累加范围 | integer value | 保守要求 K·128²≤2⁶³−1；不对每份输入额外放宽，保证所有中间和适合 INT64 |
+| tile Tm/Tn/Tk 与尾块 | element | qM=ceil(M/Tm)、qN=ceil(N/Tn)、qK=ceil(K/Tk)；每步使用实际有效 extent，工作量仍为 MNK |
+| 三个 packed scratch arena | B | A=max_step(mk·b)、B=max_step(kn·b)、C=max_step(mn·c)；分配 A+B+C，峰值有效量 max_step(mk·b+kn·b+mn·c)，b/c 为输入/累加字节 |
+| A/B 重读与最终输出 | B | 每步重载 A/B 时，A 读=qN·MKb，B 读=qM·KNb，最终 C 写=MNc；不代表任意 cache/dataflow |
+| 部分和回写额外流量 | B | 每个 K 边界各读写一次 C，额外 2(qK−1)MNc；输出驻留无该流量 |
+| 外部请求与资源下界 | request、cycle、s | ROI 每行一条 DMA 请求；各域先换成秒，T_bound=max(T_MAC_ideal,T_DMA_serial)，乐观省略依赖停顿，不等于执行时延 |
+
+本实现未计 bank/port/地址对齐、缓存、双缓冲、外存/NoC 细时序或物理成本，能耗保持未知。max_macs/max_steps/max_transfers/max_elements 属宿主材料化与验证预算，不属于目标硬件参数。来源是上述明确假设下的逐项推导及独立手算测试，未做实机或电路校准。
+
 ## 3 计算与控制资源
 
 ### 3.1 通用执行单元
@@ -228,6 +243,24 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 
 最关心：每条边的实际流量、有效带宽、在途窗口、共享瓶颈、完成时的数据可见性。GPIO/UART/I2C 等只有出现在研究路径上才加入速率/事务开销模型；通常不影响主要 AI 数据路径。
 
+### 6.1 集群首批设计采用的参数子集
+
+2026-11-23 的 [clustermodel 开发设计](clustermodel/docs/development_plan.md)先采用静态端点/网络图、固定 P2P 路径与通信下界；以下是拟实现参数关系，尚无集群 Python 模型。具体字段与覆盖由[集群 UNITS](clustermodel/UNITS.md)及未来代码维护。
+
+| 参数关系 | 单位 | 首批约束与解释 |
+| --- | --- | --- |
+| 节点/端口/资源 ID 与 rank/group | 标识、引用 | NIC 属于节点；多 rank/端口/组引用同一共享容量时不复制带宽；组名不隐含通信量 |
+| 单向容量与双工共享 | B/s | 全双工分别定义正反向；半双工或共享 PHY 另用共同约束限制合计需求 |
+| 分包和计量基准 | B、B/s | 原始线路分支先计每包头尾/对齐后的帧字节W，除以同基准 R·η_coding/8；有效 payload 分支用D/B_payload，不能重复扣包开销 |
+| 帧字节与 PHY 编码 | B、bit | 集群首版 wire_bytes 特指含包头/填充的编码前帧字节；只有编码效率时不声称得到实际编码块/线路位数。有效 payload profile 的 wire bytes 可未知 |
+| 固定路径共享需求 | B、s | Q_r=Σ_i q_ir，T_lb=max_r(Q_r/C_r)；消息起点同时就绪，需求与服务率基准一致。约束账本不作为额外物理流量或能耗重复相加 |
+| 服务率来源与下界范围 | B/s、s | 拟合有效吞吐下的Q/C是条件模型界；实测平均吞吐不自动构成物理容量上界，硬件下界主张需独立上界依据 |
+| 指定有向割 | B、B/s、s | B_cut为S到外部边容量和，D_cut为固定路径实际过割量；D_cut/B_cut是当前路径下界，不等于全局最优二分带宽或算法无关通信界 |
+| 交换内部容量口径 | B/s | 明确每次转发计一次还是入口/出口分别计数；端口和不保证内部无阻塞，厂商双向汇总值须先转换口径 |
+| 边界完成与未知成本 | s、J | fabric交付到远端NIC不等于目标内存可见；无运行时长不能把背景W变成总J；未知保持None及原因 |
+
+消息跨多条链路按每条边分别计量；源注入/目标接收与全网链路字节之和不是同一口径。静态下界不得命名为实际交付时间或训练加速；排队、窗口、数值规约和完整任务指标按后续阶段验证。
+
 ## 7 时钟、电源、封装、热与成本
 
 ### 7.1 时间、能耗与物理可行性
@@ -268,6 +301,10 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 场景入口分别为 [trainingArch](trainingArch/README.md) 与 [inferArch](inferArch/README.md)，其参数导航见 [训练 UNITS](trainingArch/UNITS.md) / [推理 UNITS](inferArch/UNITS.md)。目前两者是文档入口，未实现独立分析器。它们组织场景假设、资源账本与指标，复用 workloads/compiler/runtime 的职责以及公共硬件模型，不复制底层资源参数。
 
 ### 8.1 训练
+
+2026-11-23 的[训练 step](evaluation/docs/training_step.md)已采用一个明确子集：float64、无 bias 的 Linear 链、隐层 ReLU/identity、mean MSE、plain SGD。W=[din,dout]；dW=AᵀdZ 的归约轴为 batch，dA=dZWᵀ 的归约轴为 dout。ReLU 在零处导数取 0，MSE 除以所有输出元素数 D=B·d_final，SGD 更新绑定旧 state 的版本和内容身份。
+
+该子集 P=Σdin·dout，完整 GEMM=3BP MAC；MSE 另计 4D+2 次标量算术，SGD 另计 2P 次，ReLU 前/反向各 B·Σhidden_width 次比较与选择，转置共 B·Σ各层输入宽+P 个元素。转置实际材料化，named backing 生命周期与 GEMM scratch 分开计量；辅助寄存器/服务未覆盖，完整 step 时间/能耗未知。字段在 [contracts](contracts/workload/UNITS.md)、[graphs](workloads/graphs/UNITS.md)、[sched](compiler/src/sched/UNITS.md) 和 [runner](evaluation/experiments/runner/UNITS.md)维护；依据是显式语义推导、手算/有限差分和 PyTorch 功能对照，尚非设备成本校准。
 
 | 参数 / 专业术语 | 单位 | 关键关系与使用条件 |
 | --- | --- | --- |
