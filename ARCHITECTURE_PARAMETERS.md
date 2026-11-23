@@ -2,7 +2,7 @@
 
 本清单用于设计查阅：先确定工作量和资源边界，再选计算、存储、互连及物理参数，最后计算时间、流量、容量、能耗和面积。它整合了已有参数手册与本次提供的两份术语材料，补充关键关系并修正容易误导建模的表述。核对日期：2026-11-06。
 
-**这里列的是候选设计参数，不是全部必填项，也不表示对应机制已经实现。** 实际字段与接口以 [chipmodel/UNITS.md](chipmodel/UNITS.md) 及其子目录为准，能力以 [STATUS](docs/STATUS.md) 为准。本清单不另建配置 schema，不为每个名词生成类，也不提供跨器件通用的“典型值”。
+**这里列的是候选设计参数，不是全部必填项，也不表示对应机制已经实现。** 实际字段与接口以各模块代码及UNITS为准，例如 [chipmodel](chipmodel/UNITS.md)、[clustermodel](clustermodel/UNITS.md)及其子目录；能力以 [STATUS](docs/STATUS.md) 为准。本清单不另建配置 schema，不为每个名词生成类，也不提供跨器件通用的“典型值”。
 
 ## 1 使用方法与边界
 
@@ -155,6 +155,8 @@ TMA 在本仓库表示可配置的张量搬运能力；TSU 保留为待定义操
 | 对象 / 专业术语 | 核心参数与单位 | 关键关系与边界 |
 | --- | --- | --- |
 | SRAM bank / Register File | bank 数、word/bank、bit/word、R/W/RW port、读写 L/II | payload 容量=banks·words_per_bank·word_bits/8 B；RF 也可由其他电路实现，不把它强制视作一种 SRAM 宏 |
+| SRAM 访问粒度（CH2规划） | 起始地址 a [B]、请求长度 D [B]、字长 w [B/word]、word/bank | 非空连续读触及 N=floor((a+D−1)/w)−floor(a/w)+1 个word；D=0时N=0。整word读的服务量为Nw，逻辑量仍为D；逐word映射bank，是否支持非对齐/掩码及请求合并须显式声明 |
+| SRAM 端口共享（CH2规划） | 每bank读/写word事务数、独立R/W或共用RW、L/II | 独立R和W分别受端口供给限制；同一RW端口承担读+写合计。L/II与初态决定局部服务，端口数不能当作实际可达吞吐；新增访问分析尚未实现 |
 | SRAM 外围 | 行列译码、WL/BL、预充、sense amp、write driver、MUX；s/J/mm² | 宏级成本若已覆盖外围，不再加 cell/decoder 等细项；bank 组织和多端口实现会改变面积与时序 |
 | SRAM 物理条件（按需） | 6T/8T/10T；cell area µm²；SNM/Vmin/retention V；leakage A | 6T 一般为交叉耦合锁存结构，不是时钟触发器；端口数不能单由晶体管数推断。SNM、assist、bitline swing 用于可行性/成本校准 |
 | Scratchpad / 显式缓冲 | 容量 B、bank mapping、allocation/alignment B、生命周期 | 没有 cache hit/miss 语义；地址冲突、生命周期重叠和 DMA 访问仍需描述 |
@@ -163,6 +165,8 @@ TMA 在本仓库表示可配置的张量搬运能力；TSU 保留为待定义操
 | Cache 行为（按需） | replacement、write-through/back、write-allocate、prefetch；MSHR/writeback entry | 缺失率、预取准确率/覆盖率、脏回写和伪共享是负载相关结果；必须计新增流量及 MSHR/端口竞争 |
 | AMAT（分析指标） | hit time、miss rate、增量 miss penalty | 单层阻塞近似 AMAT=t_hit+miss_rate·penalty；多层按局部缺失率递推。并行访存的程序时间不等于访问数×AMAT |
 | CAM / TCAM（按需） | entry、key bit、mask、search port、search L/II、J/search | 属于按内容匹配的结构/行为；底层可有不同实现，不简单归为“SRAM 类型” |
+
+2026-11-23 [chipmodel首包任务](chipmodel/docs/development_plan.md)选取上述访问/共享/容量关系，先做明确请求的静态计量与独立局部服务验证；实际API和字段待CH2实现时由代码及UNITS维护。上表规划关系不表示已有事件、槽生命周期或新SramParams字段。
 
 ### 5.3 DDR / LPDDR / GDDR / HBM / eDRAM
 
@@ -245,7 +249,7 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 
 ### 6.1 集群首批设计采用的参数子集
 
-2026-11-23 的 [clustermodel 开发设计](clustermodel/docs/development_plan.md)先采用静态端点/网络图、固定 P2P 路径与通信下界；以下是拟实现参数关系，尚无集群 Python 模型。具体字段与覆盖由[集群 UNITS](clustermodel/UNITS.md)及未来代码维护。
+2026-11-23 已完成 [clustermodel C1–C3基础](clustermodel/docs/foundation_usage.md)：公共端点/容量、链路/交换图、固定多跳路径、rank/group、共享需求账本、指定有向割和条件通信下界。动态执行/物理成本按研究需求扩展；字段由[集群 UNITS](clustermodel/UNITS.md)及代码维护。
 
 | 参数关系 | 单位 | 首批约束与解释 |
 | --- | --- | --- |
@@ -253,10 +257,15 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 | 单向容量与双工共享 | B/s | 全双工分别定义正反向；半双工或共享 PHY 另用共同约束限制合计需求 |
 | 分包和计量基准 | B、B/s | 原始线路分支先计每包头尾/对齐后的帧字节W，除以同基准 R·η_coding/8；有效 payload 分支用D/B_payload，不能重复扣包开销 |
 | 帧字节与 PHY 编码 | B、bit | 集群首版 wire_bytes 特指含包头/填充的编码前帧字节；只有编码效率时不声称得到实际编码块/线路位数。有效 payload profile 的 wire bytes 可未知 |
+| C1 profile范围与帧身份 | B、版本化哈希 | profile_min/max_payload_bytes约束整个非空消息，与单包max_payload_bytes区分；D=0为无工作查询。frame_format_id由分包/头尾/对齐生成，不含线路速率；不同表示不能混加 |
 | 固定路径共享需求 | B、s | Q_r=Σ_i q_ir，T_lb=max_r(Q_r/C_r)；消息起点同时就绪，需求与服务率基准一致。约束账本不作为额外物理流量或能耗重复相加 |
 | 服务率来源与下界范围 | B/s、s | 拟合有效吞吐下的Q/C是条件模型界；实测平均吞吐不自动构成物理容量上界，硬件下界主张需独立上界依据 |
 | 指定有向割 | B、B/s、s | B_cut为S到外部边容量和，D_cut为固定路径实际过割量；D_cut/B_cut是当前路径下界，不等于全局最优二分带宽或算法无关通信界 |
-| 交换内部容量口径 | B/s | 明确每次转发计一次还是入口/出口分别计数；端口和不保证内部无阻塞，厂商双向汇总值须先转换口径 |
+| 交换内部容量口径 | B/s | 当前每个显式 ingress→egress crossing 对内部约束计一次，payload计D、frame计出口W并匹配格式；厂商入口/出口汇总须先转换口径，端口和不保证内部无阻塞 |
+| leaf-spine方向数 | link | 对非空端点分区与完全leaf-spine互连，方向数=2·(端点数+leaf数·spine数)；端点/NIC共享容量仍单独约束 |
+| 最短路径候选 | hop、path | 计数最少物理hop的完整link序列；max_paths只限制枚举，truncated保留截断事实，候选数不倍增共享容量 |
+| 静态可用性选择 | ID集合 | 停用方向或owner关联方向的并集；保留安装资源与原始需求，不代表动态故障/收敛/修复 |
+| 逻辑需求矩阵 | B、message | rank/node/endpoint发送总量=接收总量=Σ原消息D；Σ声明group（含未分组）与Σ有向节点矩阵亦相同，同节点需求不等于免费服务 |
 | 边界完成与未知成本 | s、J | fabric交付到远端NIC不等于目标内存可见；无运行时长不能把背景W变成总J；未知保持None及原因 |
 
 消息跨多条链路按每条边分别计量；源注入/目标接收与全网链路字节之和不是同一口径。静态下界不得命名为实际交付时间或训练加速；排队、窗口、数值规约和完整任务指标按后续阶段验证。

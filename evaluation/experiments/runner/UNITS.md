@@ -16,7 +16,40 @@
 
 精确有理数参考为默认；显式选择 PyTorch 时延迟加载 CPU autograd/SGD，实际工具版本进入配置身份。`summarize_training` 从记录回读，不需要安装原参考后端。详情见[训练指南](../../docs/training_step.md)，完整验证见[集成测试](../../../tests/integration/test_training_experiment.py)。
 
+## 集群有限放置比较
+
+cluster.py提供ClusterStudy/PlacementCandidate、evaluate_cluster、run_study、summarize_records、write_study/read_study。候选共享图、组和固定P2P输入，只改变placement；装配/路径/profile失败在runner内部留档。记录含完整候选清单，回读拒绝缺候选或混用预算/输入/来源。最后写研究索引，底层使用既有run bundle，不另建硬件引擎。
+
+时间指标为资源、必要路径延迟、指定割及其max的条件下界[s]。帧量[B]和能量[J]无依据则None+原因。宿主时间独立。字段由下表生成，见[集群指南](../../../clustermodel/docs/foundation_usage.md)和[集成测试](../../../tests/integration/test_cluster_experiment.py)。
+
+ClusterStudy新增可选NetworkOutage，所有候选共享原图与停用条件。原图/条件先保存，再在每个callback内部生成静态视图；未知选择、失效显式路径和断路保留失败记录。成功payload增加network_overview、traffic_description、outage_view，原下界账本字段保留。summarize_records(include_overview=True)及CLI --overview只读取已保存观测；旧记录缺观测返回None，不重新执行。见[横向指南](../../../clustermodel/docs/breadth_usage.md)。
+
+集群回读还检查配置schema与字段、快照候选清单自身的重复、跨候选run_id唯一性，以及索引/条目的确切字段。旧版本同schema记录允许缺可选outage；不会为缺总览的旧观测重新执行模型。拒绝重复清单可防止集合化汇总掩盖候选身份冲突，验证见集群集成测试。
+
 <!-- model-fields:start -->
+
+### [cluster.py](cluster.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `PlacementCandidate` | `name` | `str` | 1（标识/枚举） | Unique candidate identity; never interpreted as a filesystem path. |
+| `PlacementCandidate` | `placements` | `tuple[RankPlacement, ...]` | —（结构/对象） | Requested placements; graph/group feasibility is checked inside the run. |
+| `ClusterStudy` | `graph` | `NetworkGraph` | —（结构/对象） | Identical node/fabric resource budget for all candidates. |
+| `ClusterStudy` | `traffic` | `TrafficInput` | —（结构/对象） | Identical data identities, lengths, routes/policy and requested cuts. |
+| `ClusterStudy` | `candidates` | `tuple[PlacementCandidate, ...]` | —（结构/对象） | Nonempty finite roster, including infeasible requested placements. |
+| `ClusterStudy` | `groups` | `tuple[CommunicationGroup, ...]` | —（结构/对象） | Shared logical membership and ordering. |
+| `ClusterStudy` | `outage` | `NetworkOutage \| None` | —（结构/对象） | Optional static channel/owner outage shared by every placement; original graph is retained. |
+| `ClusterStudy` | `schema_version` | `Literal['cluster-placement-study/v1']` | —（结构/对象） | Comparison input schema. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `PlacementCandidate` | One candidate changes rank placement only; shared graph, groups and messages define the comparison budget. |
+| `ClusterStudy` | A strict nonexecutable study declares a finite candidate roster and one common communication workload. |
+| `evaluate_cluster(cluster: ClusterSpec, traffic: TrafficInput)` | Adapt independent cluster analysis to standard metrics, preserving unknown costs and conditional lower bounds. |
+| `run_study(study: ClusterStudy, *, source_revision: str='unrecorded')` | Run every declared candidate with the same input/resource budget; no result-based filtering is performed. |
+| `summarize_records(records: tuple[RunRecord, ...], *, include_overview: bool=False)` | Reconstruct the complete roster from snapshots and reject mixed budgets, versions or missing candidate evidence. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Write all existing RunRecord bundles then a final study index; incomplete studies cannot silently lose failures. |
+| `read_study(directory: str \| Path)` | Verify a committed roster and each bundle's hashes; never execute the model while reading observations. |
 
 ### [linear.py](linear.py)
 

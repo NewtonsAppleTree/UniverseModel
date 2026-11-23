@@ -1,5 +1,17 @@
 # 示例
 
+新增六节点[leaf-spine配置](../config/experiments/cluster_leaf_spine.json)，可用`--config config/experiments/cluster_leaf_spine.json --overview`查看安装资源/方向可达性与需求矩阵。停用来源和失败回读见[横向指南](../clustermodel/docs/breadth_usage.md)。
+
+[`cluster_demo.py`](cluster_demo.py)运行四节点同预算放置比较，输出共享通信账本与条件下界，可保存完整候选（含失败）并校验回读；见[基础指南](../clustermodel/docs/foundation_usage.md)。
+
+[`network_demo.py`](network_demo.py)独立分析C1直连网络中的一个方向，默认1 MB、200 Gbit/s、2 μs固定延迟，孤立链路结果42 μs。使用显式[网络配置](../config/experiments/network_link.json)，保留未知能量和来源；用法及计量边界见[C1指南](../clustermodel/docs/c1_usage.md)。
+
+```text
+python -m example.network_demo
+python -m example.network_demo --output .build/network-c1
+python -m example.network_demo --read .build/network-c1
+```
+
 [`training_demo.py`](training_demo.py) 运行 Linear/ReLU 短链的前向、mean MSE、全部反向及 SGD，比较相同旧状态的有限映射，保留容量失败。`--torch-reference` 在可选 CPU PyTorch 环境做独立 autograd/SGD 校验；回读不需要该环境。命令和数值/存储/时间边界见[训练指南](../evaluation/docs/training_step.md)。
 
 ```text

@@ -1,0 +1,1714 @@
+{
+  "graph": {
+    "graph_id": "fabric",
+    "endpoints": [
+      {
+        "endpoint_id": "e0",
+        "node_id": "n0",
+        "port_id": "n0.p0",
+        "tx_constraint_ids": [
+          "n0.tx"
+        ],
+        "rx_constraint_ids": [
+          "n0.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e1",
+        "node_id": "n1",
+        "port_id": "n1.p0",
+        "tx_constraint_ids": [
+          "n1.tx"
+        ],
+        "rx_constraint_ids": [
+          "n1.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e2",
+        "node_id": "n2",
+        "port_id": "n2.p0",
+        "tx_constraint_ids": [
+          "n2.tx"
+        ],
+        "rx_constraint_ids": [
+          "n2.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e3",
+        "node_id": "n3",
+        "port_id": "n3.p0",
+        "tx_constraint_ids": [
+          "n3.tx"
+        ],
+        "rx_constraint_ids": [
+          "n3.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e4",
+        "node_id": "n4",
+        "port_id": "n4.p0",
+        "tx_constraint_ids": [
+          "n4.tx"
+        ],
+        "rx_constraint_ids": [
+          "n4.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e5",
+        "node_id": "n5",
+        "port_id": "n5.p0",
+        "tx_constraint_ids": [
+          "n5.tx"
+        ],
+        "rx_constraint_ids": [
+          "n5.rx"
+        ],
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one installed NIC per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      }
+    ],
+    "links": [
+      {
+        "link_id": "e0->l0",
+        "src_port_id": "n0.p0",
+        "dst_port_id": "l0:access:e0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e1->l0",
+        "src_port_id": "n1.p0",
+        "dst_port_id": "l0:access:e1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e2->l1",
+        "src_port_id": "n2.p0",
+        "dst_port_id": "l1:access:e2",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e3->l1",
+        "src_port_id": "n3.p0",
+        "dst_port_id": "l1:access:e3",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e4->l2",
+        "src_port_id": "n4.p0",
+        "dst_port_id": "l2:access:e4",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e5->l2",
+        "src_port_id": "n5.p0",
+        "dst_port_id": "l2:access:e5",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l0->e0",
+        "src_port_id": "l0:access:e0",
+        "dst_port_id": "n0.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l0->e1",
+        "src_port_id": "l0:access:e1",
+        "dst_port_id": "n1.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l0->s0",
+        "src_port_id": "l0:spine:s0",
+        "dst_port_id": "s0:leaf:l0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l0->s1",
+        "src_port_id": "l0:spine:s1",
+        "dst_port_id": "s1:leaf:l0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l1->e2",
+        "src_port_id": "l1:access:e2",
+        "dst_port_id": "n2.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l1->e3",
+        "src_port_id": "l1:access:e3",
+        "dst_port_id": "n3.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l1->s0",
+        "src_port_id": "l1:spine:s0",
+        "dst_port_id": "s0:leaf:l1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l1->s1",
+        "src_port_id": "l1:spine:s1",
+        "dst_port_id": "s1:leaf:l1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l2->e4",
+        "src_port_id": "l2:access:e4",
+        "dst_port_id": "n4.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l2->e5",
+        "src_port_id": "l2:access:e5",
+        "dst_port_id": "n5.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l2->s0",
+        "src_port_id": "l2:spine:s0",
+        "dst_port_id": "s0:leaf:l2",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "l2->s1",
+        "src_port_id": "l2:spine:s1",
+        "dst_port_id": "s1:leaf:l2",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s0->l0",
+        "src_port_id": "s0:leaf:l0",
+        "dst_port_id": "l0:spine:s0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s0->l1",
+        "src_port_id": "s0:leaf:l1",
+        "dst_port_id": "l1:spine:s0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s0->l2",
+        "src_port_id": "s0:leaf:l2",
+        "dst_port_id": "l2:spine:s0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s1->l0",
+        "src_port_id": "s1:leaf:l0",
+        "dst_port_id": "l0:spine:s1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s1->l1",
+        "src_port_id": "s1:leaf:l1",
+        "dst_port_id": "l1:spine:s1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "s1->l2",
+        "src_port_id": "s1:leaf:l2",
+        "dst_port_id": "l2:spine:s1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      }
+    ],
+    "constraints": [
+      {
+        "resource_id": "l0.internal",
+        "owner_id": "l0",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "l1.internal",
+        "owner_id": "l1",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "l2.internal",
+        "owner_id": "l2",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n0.rx",
+        "owner_id": "n0",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n0.tx",
+        "owner_id": "n0",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n1.rx",
+        "owner_id": "n1",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n1.tx",
+        "owner_id": "n1",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n2.rx",
+        "owner_id": "n2",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n2.tx",
+        "owner_id": "n2",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n3.rx",
+        "owner_id": "n3",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n3.tx",
+        "owner_id": "n3",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n4.rx",
+        "owner_id": "n4",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n4.tx",
+        "owner_id": "n4",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n5.rx",
+        "owner_id": "n5",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n5.tx",
+        "owner_id": "n5",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "independent NIC direction; not measured"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "s0.internal",
+        "owner_id": "s0",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "s1.internal",
+        "owner_id": "s1",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      }
+    ],
+    "switches": [
+      {
+        "switch_id": "l0",
+        "port_ids": [
+          "l0:access:e0",
+          "l0:access:e1",
+          "l0:spine:s0",
+          "l0:spine:s1"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "l0:access:e0",
+            "egress_port_id": "l0:access:e1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:access:e0",
+            "egress_port_id": "l0:spine:s0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:access:e0",
+            "egress_port_id": "l0:spine:s1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:access:e1",
+            "egress_port_id": "l0:access:e0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:access:e1",
+            "egress_port_id": "l0:spine:s0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:access:e1",
+            "egress_port_id": "l0:spine:s1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s0",
+            "egress_port_id": "l0:access:e0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s0",
+            "egress_port_id": "l0:access:e1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s0",
+            "egress_port_id": "l0:spine:s1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s1",
+            "egress_port_id": "l0:access:e0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s1",
+            "egress_port_id": "l0:access:e1",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l0:spine:s1",
+            "egress_port_id": "l0:spine:s0",
+            "constraint_ids": [
+              "l0.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      },
+      {
+        "switch_id": "l1",
+        "port_ids": [
+          "l1:access:e2",
+          "l1:access:e3",
+          "l1:spine:s0",
+          "l1:spine:s1"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "l1:access:e2",
+            "egress_port_id": "l1:access:e3",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:access:e2",
+            "egress_port_id": "l1:spine:s0",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:access:e2",
+            "egress_port_id": "l1:spine:s1",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:access:e3",
+            "egress_port_id": "l1:access:e2",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:access:e3",
+            "egress_port_id": "l1:spine:s0",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:access:e3",
+            "egress_port_id": "l1:spine:s1",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s0",
+            "egress_port_id": "l1:access:e2",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s0",
+            "egress_port_id": "l1:access:e3",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s0",
+            "egress_port_id": "l1:spine:s1",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s1",
+            "egress_port_id": "l1:access:e2",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s1",
+            "egress_port_id": "l1:access:e3",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l1:spine:s1",
+            "egress_port_id": "l1:spine:s0",
+            "constraint_ids": [
+              "l1.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      },
+      {
+        "switch_id": "l2",
+        "port_ids": [
+          "l2:access:e4",
+          "l2:access:e5",
+          "l2:spine:s0",
+          "l2:spine:s1"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "l2:access:e4",
+            "egress_port_id": "l2:access:e5",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:access:e4",
+            "egress_port_id": "l2:spine:s0",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:access:e4",
+            "egress_port_id": "l2:spine:s1",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:access:e5",
+            "egress_port_id": "l2:access:e4",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:access:e5",
+            "egress_port_id": "l2:spine:s0",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:access:e5",
+            "egress_port_id": "l2:spine:s1",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s0",
+            "egress_port_id": "l2:access:e4",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s0",
+            "egress_port_id": "l2:access:e5",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s0",
+            "egress_port_id": "l2:spine:s1",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s1",
+            "egress_port_id": "l2:access:e4",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s1",
+            "egress_port_id": "l2:access:e5",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "l2:spine:s1",
+            "egress_port_id": "l2:spine:s0",
+            "constraint_ids": [
+              "l2.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      },
+      {
+        "switch_id": "s0",
+        "port_ids": [
+          "s0:leaf:l0",
+          "s0:leaf:l1",
+          "s0:leaf:l2"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "s0:leaf:l0",
+            "egress_port_id": "s0:leaf:l1",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s0:leaf:l0",
+            "egress_port_id": "s0:leaf:l2",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s0:leaf:l1",
+            "egress_port_id": "s0:leaf:l0",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s0:leaf:l1",
+            "egress_port_id": "s0:leaf:l2",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s0:leaf:l2",
+            "egress_port_id": "s0:leaf:l0",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s0:leaf:l2",
+            "egress_port_id": "s0:leaf:l1",
+            "constraint_ids": [
+              "s0.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      },
+      {
+        "switch_id": "s1",
+        "port_ids": [
+          "s1:leaf:l0",
+          "s1:leaf:l1",
+          "s1:leaf:l2"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "s1:leaf:l0",
+            "egress_port_id": "s1:leaf:l1",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s1:leaf:l0",
+            "egress_port_id": "s1:leaf:l2",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s1:leaf:l1",
+            "egress_port_id": "s1:leaf:l0",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s1:leaf:l1",
+            "egress_port_id": "s1:leaf:l2",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s1:leaf:l2",
+            "egress_port_id": "s1:leaf:l0",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "s1:leaf:l2",
+            "egress_port_id": "s1:leaf:l1",
+            "constraint_ids": [
+              "s1.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:leaf-spine-breadth-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      }
+    ],
+    "schema_version": "routed-network-graph/v1"
+  },
+  "traffic": {
+    "messages": [
+      {
+        "message_id": "m0-1",
+        "src_rank": "r0",
+        "dst_rank": "r1",
+        "payload_bytes": 1048576,
+        "data_id": "buffer0-1",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m0-2",
+        "src_rank": "r0",
+        "dst_rank": "r2",
+        "payload_bytes": 1048576,
+        "data_id": "buffer0-2",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m0-3",
+        "src_rank": "r0",
+        "dst_rank": "r3",
+        "payload_bytes": 1048576,
+        "data_id": "buffer0-3",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m0-4",
+        "src_rank": "r0",
+        "dst_rank": "r4",
+        "payload_bytes": 1048576,
+        "data_id": "buffer0-4",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m0-5",
+        "src_rank": "r0",
+        "dst_rank": "r5",
+        "payload_bytes": 1048576,
+        "data_id": "buffer0-5",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1-0",
+        "src_rank": "r1",
+        "dst_rank": "r0",
+        "payload_bytes": 1048576,
+        "data_id": "buffer1-0",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1-2",
+        "src_rank": "r1",
+        "dst_rank": "r2",
+        "payload_bytes": 1048576,
+        "data_id": "buffer1-2",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1-3",
+        "src_rank": "r1",
+        "dst_rank": "r3",
+        "payload_bytes": 1048576,
+        "data_id": "buffer1-3",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1-4",
+        "src_rank": "r1",
+        "dst_rank": "r4",
+        "payload_bytes": 1048576,
+        "data_id": "buffer1-4",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1-5",
+        "src_rank": "r1",
+        "dst_rank": "r5",
+        "payload_bytes": 1048576,
+        "data_id": "buffer1-5",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m2-0",
+        "src_rank": "r2",
+        "dst_rank": "r0",
+        "payload_bytes": 1048576,
+        "data_id": "buffer2-0",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m2-1",
+        "src_rank": "r2",
+        "dst_rank": "r1",
+        "payload_bytes": 1048576,
+        "data_id": "buffer2-1",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m2-3",
+        "src_rank": "r2",
+        "dst_rank": "r3",
+        "payload_bytes": 1048576,
+        "data_id": "buffer2-3",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m2-4",
+        "src_rank": "r2",
+        "dst_rank": "r4",
+        "payload_bytes": 1048576,
+        "data_id": "buffer2-4",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m2-5",
+        "src_rank": "r2",
+        "dst_rank": "r5",
+        "payload_bytes": 1048576,
+        "data_id": "buffer2-5",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m3-0",
+        "src_rank": "r3",
+        "dst_rank": "r0",
+        "payload_bytes": 1048576,
+        "data_id": "buffer3-0",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m3-1",
+        "src_rank": "r3",
+        "dst_rank": "r1",
+        "payload_bytes": 1048576,
+        "data_id": "buffer3-1",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m3-2",
+        "src_rank": "r3",
+        "dst_rank": "r2",
+        "payload_bytes": 1048576,
+        "data_id": "buffer3-2",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m3-4",
+        "src_rank": "r3",
+        "dst_rank": "r4",
+        "payload_bytes": 1048576,
+        "data_id": "buffer3-4",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m3-5",
+        "src_rank": "r3",
+        "dst_rank": "r5",
+        "payload_bytes": 1048576,
+        "data_id": "buffer3-5",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m4-0",
+        "src_rank": "r4",
+        "dst_rank": "r0",
+        "payload_bytes": 1048576,
+        "data_id": "buffer4-0",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m4-1",
+        "src_rank": "r4",
+        "dst_rank": "r1",
+        "payload_bytes": 1048576,
+        "data_id": "buffer4-1",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m4-2",
+        "src_rank": "r4",
+        "dst_rank": "r2",
+        "payload_bytes": 1048576,
+        "data_id": "buffer4-2",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m4-3",
+        "src_rank": "r4",
+        "dst_rank": "r3",
+        "payload_bytes": 1048576,
+        "data_id": "buffer4-3",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m4-5",
+        "src_rank": "r4",
+        "dst_rank": "r5",
+        "payload_bytes": 1048576,
+        "data_id": "buffer4-5",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m5-0",
+        "src_rank": "r5",
+        "dst_rank": "r0",
+        "payload_bytes": 1048576,
+        "data_id": "buffer5-0",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m5-1",
+        "src_rank": "r5",
+        "dst_rank": "r1",
+        "payload_bytes": 1048576,
+        "data_id": "buffer5-1",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m5-2",
+        "src_rank": "r5",
+        "dst_rank": "r2",
+        "payload_bytes": 1048576,
+        "data_id": "buffer5-2",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m5-3",
+        "src_rank": "r5",
+        "dst_rank": "r3",
+        "payload_bytes": 1048576,
+        "data_id": "buffer5-3",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m5-4",
+        "src_rank": "r5",
+        "dst_rank": "r4",
+        "payload_bytes": 1048576,
+        "data_id": "buffer5-4",
+        "content_version": "synthetic-matrix/v1",
+        "group_id": "all-ranks",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      }
+    ],
+    "requested_cuts": [],
+    "schema_version": "cluster-traffic/v1"
+  },
+  "candidates": [
+    {
+      "name": "all_to_all_matrix",
+      "placements": [
+        {
+          "rank_id": "r0",
+          "node_id": "n0",
+          "endpoint_id": "e0"
+        },
+        {
+          "rank_id": "r1",
+          "node_id": "n1",
+          "endpoint_id": "e1"
+        },
+        {
+          "rank_id": "r2",
+          "node_id": "n2",
+          "endpoint_id": "e2"
+        },
+        {
+          "rank_id": "r3",
+          "node_id": "n3",
+          "endpoint_id": "e3"
+        },
+        {
+          "rank_id": "r4",
+          "node_id": "n4",
+          "endpoint_id": "e4"
+        },
+        {
+          "rank_id": "r5",
+          "node_id": "n5",
+          "endpoint_id": "e5"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "all-ranks",
+      "rank_ids": [
+        "r0",
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ]
+    }
+  ],
+  "outage": null,
+  "schema_version": "cluster-placement-study/v1"
+}

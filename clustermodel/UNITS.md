@@ -1,33 +1,28 @@
 # clustermodel Unit 与参数入口
 
-本目录负责跨节点网络、节点/端点引用与通信资源组。依据[项目使命](../PROJECT_MISSION.md)和[参数清单](../ARCHITECTURE_PARAMETERS.md)第 6、8 节设计；当前没有 Python Unit，以下均为候选能力。实现与证据见 [STATUS](../docs/STATUS.md)，完整边界见[设计](docs/design.md)，次序见[开发计划](docs/development_plan.md)。
+本轮基础开发、覆盖复核与收尾优化已完成，下一轮进入chipmodel；见[完成报告及交接](docs/completion.md)。
 
-## 目录导航
+跨节点网络基础分析已完成 C1–C3：端点/链路、交换转发、固定路由、rank/group、通信账本、条件下界与记录回读。依据[项目使命](../PROJECT_MISSION.md)和[参数清单](../ARCHITECTURE_PARAMETERS.md)第6节，证据见[基础指南](docs/foundation_usage.md)及[STATUS](../docs/STATUS.md)。本轮已完成[覆盖矩阵](docs/coverage.md)的基础复核与收尾优化。
 
-| 子目录 | 职责与计量 |
+| 子目录 | 职责与覆盖 |
 | --- | --- |
-| [fabric](fabric/UNITS.md) | 链路、交换容量、固定路由；拥有跨节点网络资源 |
-| [topology](topology/UNITS.md) | 有向端口图、连通与指定割；图本身不产生物理成本 |
-| [composition](composition/UNITS.md) | 节点/网络装配、rank/group、逐资源需求与下界 |
-| [docs](docs/UNITS.md) | 设计、阶段门槛与验证协议；无物理计量 |
+| [fabric](fabric/UNITS.md) | 单向链路服务、显式交换能力和固定路由 |
+| [topology](topology/UNITS.md) | 端口图、所有权/方向校验、可达性、指定割和构图函数 |
+| [composition](composition/UNITS.md) | rank/group、集群装配、逐消息/资源需求及条件下界 |
+| [docs](docs/UNITS.md) | 设计、独立验收、运行方法与证据导航 |
 
-## 公共端点边界（拟放 contracts/hardware）
+公共 NIC 快照/容量由 [contracts/hardware](../contracts/hardware/UNITS.md)维护。NIC 属节点，交换/共享介质归其明确 owner；多个 rank、端口、组引用同一容量时按同一资源累计。
 
-| 字段或对象 | 角色/单位 | 含义和约束 |
-| --- | --- | --- |
-| NetworkEndpointSpec | 输入；无单位 | 只读 NIC 边界快照；不拥有 NIC 队列或节点内存状态 |
-| node_id / endpoint_id / port_id | 输入；标识 | 所属节点、端点、物理端口唯一身份，引用必须存在 |
-| tx_constraint_ids / rx_constraint_ids | 输入；标识 tuple | 引用注入/接收及多端口共享容量；相同 ID 只能有一份定义 |
-| BandwidthConstraint.resource_id / owner_id | 输入；标识 | 唯一服务资源和所有者；重复引用不增容量 |
-| capacity_Bps / byte_basis | 输入；B/s、枚举 | 正有限服务率；字节基准为 payload 或指定链路帧表示，使用相同基准累计需求 |
-| source_ref / coverage | 输入；来源与边界 | 手工假设或 profile 身份、版本、适用条件和摘要覆盖；缺失不伪装成实测 |
+顺序：端点/容量与链路/交换参数 → NetworkGraph → 放置/组与 ClusterSpec → TrafficInput → analyze_traffic。任一下层可独立调用。配置/输入冻结，派生量只读，账本为函数局部变量，没有硬件队列或全局时钟。
 
-以上仅定义本模块需要的最小边界；代码实现后，公共字段在 contracts/hardware 的代码及 UNITS 唯一维护，本页只保留引用。节点模型未实现时可传显式快照；以后由 systemmodel 导出同一边界。
+单位：消息/帧 B、容量 B/s、线路 bit/s、延迟 s。wire_bytes 是 PHY 编码前帧字节。敏感量为消息矩阵/长度、放置/路由、共享 NIC/交换/上行容量、分包对齐。Q_r=Σq_ir，T_resource=max(Q_r/C_r)，再与必要路径延迟和指定割界取 max。
 
-## 系统约束与调用顺序
+未知帧量/能量为 None+原因；没有实际完成时间、AI质量或物理校准。同节点服务摘要尚未接入，正需求明确拒绝。collective 属 runtime，全局事件属 simulator。独立手算、守恒、共享反例、敏感性与回读验证当前范围。
 
-端点/链路参数 → 图与唯一资源校验 → 放置/组校验 → 固定路由 → 按基准累计服务需求 → 条件下界 → 可选运行记录。各步都可独立调用；analysis 不更新动态状态。
+横向扩展现有接口：topology补leaf-spine、安装资源/方向可达性、静态停用视图；routing补最短路径总数与有界候选；composition补rank/节点/端点/声明组和稀疏节点流量矩阵。调用入口及边界见[横向指南](docs/breadth_usage.md)。这些观测不增加物理资源，也不推导动态故障恢复或collective行为。
 
-输入参数、派生量、C4 执行状态和结果分开。时间用 s，速率区分 bit/s 与 B/s，容量/流量用 B；cycle 必须带时钟域。最敏感量是消息/路径、NIC 共享、上行与交换容量、包开销；是否产生性能收益取决于它们是否成为瓶颈。
+<!-- model-fields:start -->
 
-NIC/节点内路径归 systemmodel，collective 算法归 runtime，时间/事件归 simulator，网络局部资源归 fabric。未知物理成本保留 None 和原因。首批只验证结构、流量和分析下界，不覆盖真实传输、AI 数值质量或物理校准；验证依据为独立手算、守恒和边界反例。
+
+
+<!-- model-fields:end -->

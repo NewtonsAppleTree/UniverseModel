@@ -1,6 +1,8 @@
 # clustermodel：集群、交换网络与资源组
 
-设计日期：2026-11-23。本文落实[项目使命](../../PROJECT_MISSION.md)，细化既有模块边界。当前为开发设计，下述接口均为提案；完成情况由 [STATUS](../../docs/STATUS.md)及证据确认。开发次序见[开发计划](development_plan.md)，参数维护位置见 [UNITS](../UNITS.md)。
+设计及C1–C3基础实现日期：2026-11-23。本文落实[项目使命](../../PROJECT_MISSION.md)，细化模块边界。链路/交换、固定路由、rank/group、通信账本与条件下界已按[基础指南](foundation_usage.md)实现；C4/C5执行及AI/物理证据为研究扩展。状态见 [STATUS](../../docs/STATUS.md)，次序见[开发计划](development_plan.md)，字段见 [UNITS](../UNITS.md)。
+
+本轮按[覆盖矩阵](coverage.md)完成基础范围：固定P2P、多层leaf-spine、最短路径计数/候选、静态停用和集群需求总览，见[横向指南](breadth_usage.md)。调用内索引与复用优化保持原有输入/输出schema和计量语义，见[完成报告](completion.md)；下一轮进入chipmodel。
 
 ## 1 研究问题与首批范围
 
@@ -15,7 +17,7 @@
 
 **首批 C1–C3：静态资源图 + 固定路径 + 通信负载账本 + 分析下界。** 固定四个节点、两台交换机及同一组 P2P 消息，比较两种 rank 放置对共享上行的影响。这是通信基础设施验证实验，不能据此宣称训练加速或论文创新。
 
-支持手工图、直连/单交换机/小型两层网络、异构正带宽、全双工方向、显式共享约束、重叠通信组和单节点退化情况。交换机不默认具有硬件规约；自适应路由、包级拥塞/重传、故障恢复和多作业调度按具体课题加入。
+支持手工图、直连/单交换机/小型两层网络、异构正带宽、全双工方向、显式共享约束、重叠通信组和单节点退化情况。交换机不默认具有硬件规约；自适应路由、包级拥塞/重传、故障恢复和多作业调度按具体课题加入。静态停用视图已可移除指定方向/owner关联链路，但不模拟故障时序或恢复。
 
 ## 2 系统边界与资源所有权
 
@@ -32,13 +34,13 @@
 
 分别保存物理归属树、允许有环的连接图、参数推导 DAG、任务依赖 DAG。rack/pod 是放置或故障域标签；出现独立行为后再建模型。每个物理实例只有一个 owner，多个组可引用同一端点或带宽约束。
 
-同机通信由 systemmodel 提供路径。首批遇到同节点消息时，要求显式节点路径摘要；缺失则诊断 `unsupported_local_path`，不能把本地流量设为免费。空通信集可返回明确零流量/零通信下界，不代表节点计算时间为零。
+同机通信由 systemmodel 提供路径。当前未接入节点路径摘要，所有同节点正消息诊断 `unsupported_local_path`，不能把本地流量设为免费。空通信集可返回明确零流量/零通信下界，不代表节点计算时间为零。
 
 ## 3 不依赖完整节点和运行时的开发路径
 
 systemmodel/runtime/simulator 尚无可运行模型。C1–C3 接受手工假设或有来源 profile 提供的只读端点快照，不等待完整 Node。它只覆盖声明的 NIC 边界，设备内存到 NIC 和远端内存可见性没有自动获得覆盖。
 
-最低公共边界拟放在 `contracts/hardware/network.py`：`NetworkEndpointSpec` 和 `BandwidthConstraint` 只依赖标准库，表示 node/port/resource 身份、方向、计量基准、容量和来源条件。值对象负责结构校验，不为技术型号创建空类。首次实现同步 contracts 的 UNITS、版本和测试。
+最低公共边界已实现在 [contracts/hardware/network.py](../../contracts/hardware/network.py)：NetworkEndpointSpec 和 BandwidthConstraint 只依赖标准库，表示node/port/resource身份、方向、计量基准、容量和来源条件。值对象负责结构校验，字段和公共测试由[hardware UNITS](../../contracts/hardware/UNITS.md)导航。
 
 实际 import 保持 [modules.json](../../docs/architecture/modules.json)：clustermodel 只可依赖 contracts、systemmodel、costmodel。runtime/simulator 通过公共协议接收 evaluation 注入的组件。C1–C3 的专业分析输入留在集群模块，C4 按实际跨模块使用提取请求/事件契约。
 
@@ -59,20 +61,22 @@ flowchart LR
 
 ## 4 逐目录职责与依赖
 
-| 目录 | 首批候选文件与行为 | 独立输入 → 输出 | 验证要点 |
+| 目录 | 首批已实现文件与行为 | 独立输入 → 输出 | 验证要点 |
 | --- | --- | --- | --- |
 | fabric/links | `model.py`：序列化工作与孤立服务 | LinkParams + 长度 → LinkEstimate | 单位、尾包、方向、效率不重复扣除 |
 | topology | `graph.py`：引用/连接/指定割；`builders.py`：少量纯构图函数 | 端点、交换端口、边 → 图/可达性/割容量 | 允许环；拒绝悬空边、重复身份、非法端口占用 |
 | fabric/switches | `model.py`：端口及共享内部容量 | SwitchParams + 经过量 → 约束需求 | 全双工口径、内部超售与资源共享 |
 | fabric/routing | `paths.py`：显式路径、确定性最少跳 | 图 + 源/目标或边序列 → Route | 路径连续、方向正确、端点不充当中转 |
-| composition/groups | `model.py`：rank 放置和组成员 | Placement + GroupSpec → 校验引用 | 组内不重复；组间可重叠；多 rank 共享 NIC |
+| composition/groups | `model.py`：rank 放置和组成员 | RankPlacement + CommunicationGroup → 校验引用 | 组内不重复；组间可重叠；多 rank 共享 NIC |
 | composition/cluster | `model.py` 装配；`analysis.py` 账本/下界 | ClusterSpec + TrafficInput → TrafficAnalysis | 唯一资源；约束需求不冒充额外传输 |
 
 内部依赖从底层向上：links/公共端点 → topology；switches 提供交换端口与约束，由 topology 接纳；routing 只读图；groups 校验逻辑放置；cluster 装配。links/switches 不导入 cluster，topology 不调用 routing，group 不管理网络队列。
 
+NetworkGraph构造时调用validate_graph；get_link、reachable_endpoints、cut_capacity均可独立使用。direct-network-graph/v1保持C1直连范围；routed-network-graph/v1增加显式交换实例和内部连接。可达性遍历内部连接并在NIC停止，指定割接收完整node_ids和switch_ids。C3已聚合实际路径的共享需求，C4执行状态仍未接入。
+
 ## 5 参数、输入、状态和结果
 
-字段按[参数清单](../../ARCHITECTURE_PARAMETERS.md)第 6、8 节筛选，精确定义在各目录 UNITS 与首次实现中收敛。
+字段按[参数清单](../../ARCHITECTURE_PARAMETERS.md)第 6、8 节筛选，精确定义由代码和各目录 UNITS 生成表维护。
 
 | 类别 | 最小内容 | 约束 |
 | --- | --- | --- |
@@ -82,7 +86,7 @@ flowchart LR
 | 动态状态（C4） | 已接受请求、剩余服务、有限槽位、局部仲裁、epoch | 每次运行独立创建；全局事件归引擎，NIC 状态归 Node |
 | 结果 | 每消息/方向/资源账本、瓶颈约束、下界、诊断和覆盖 | C1–C3 不生成排队时间、实际交付时间或实际利用率 |
 
-候选函数为 `estimate_link(params, payload_bytes)`、`validate_graph(spec)`、`resolve_route(graph, request)`、`validate_groups(placements, groups, endpoints)`、`analyze_traffic(cluster, traffic)`。纯查询不得更新硬件状态，独立调用不需要 runner 或全图执行。
+独立函数为 `estimate_link(params, payload_bytes)`、`validate_graph(graph)`、`resolve_route(graph, src_endpoint_id, dst_endpoint_id, ...)`、`validate_groups(graph, placements, groups)`、`analyze_traffic(cluster, traffic)`。纯查询不更新硬件状态，不要求runner或完整执行链。
 
 记录沿用 `execute(configuration, inputs) -> (payload, tuple[Metric, ...])`。已有 `ExperimentSpec.mode="analytical"` 和 `Metric.kind="counter"/"lower_bound"/"estimated"` 足够；资源、方向、范围与 profile 条件放专业 payload，Metric 使用唯一名称及规范单位。`simulated` 只用于已接入并验证的 event 运行。
 
@@ -94,7 +98,7 @@ flowchart LR
 
 对资源 r：服务率 `C_r [B/s]`，消息 i 的服务需求 `q_ir [B]`，`Q_r = Σ_i q_ir`。多个端口共享 NIC、交换内部容量、半双工共享方向均通过同一约束 ID 表达。全双工两方向默认独立；显式共享约束才限制合计吞吐。
 
-对起点同时就绪、固定路径、无复制/压缩/重传的首批输入，`T_resource_lb = max_r(Q_r/C_r)`。可另报告每消息传播/必要处理延迟之和的下界；未证明串行关系时，延迟界与资源界取 max，不直接相加。
+对起点同时就绪、固定路径、无复制/压缩/重传的首批输入，`T_resource_lb = max_r(Q_r/C_r)`。另报告每消息传播与交换首数据处理延迟之和的下界；startup只属于孤立profile，不推断逐跳串行关系。延迟界、资源界与指定割界取max，不直接相加。
 
 这里的下界以声明的模型服务容量为条件。实测平均有效吞吐不能自动作为真实硬件容量上界；使用拟合服务率时说明适用条件，只有容量上界有独立依据时才进一步主张相应硬件下界。部分已知链路字节可分项列出，含未知项的全网总量保持未知。
 

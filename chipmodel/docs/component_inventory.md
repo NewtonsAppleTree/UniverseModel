@@ -2,7 +2,7 @@
 
 本清单逐一展开 chipmodel 的 composition、compute、control、interconnect、memory、packaging、registry 和 docs。现有目录能够容纳主要职责，但目录名称及上一版组件表尚不足以作为完整的单元清单；DDR/LPDDR/GDDR、控制器/PHY、处理器内部机制及管理单元需要显式列出。
 
-这里列出候选单元及职责，不表示已经实现，也不要求每次仿真全部启用。实际进度见 [STATUS](../../docs/STATUS.md)。首批仍选择 CIM array + DAC/ADC + 缓冲；其他单元按研究问题和边界需要加入。
+这里列出候选单元及职责，不表示已经实现，也不要求每次仿真全部启用。实际进度见 [STATUS](../../docs/STATUS.md)，当前顺序由[开发任务与验收计划](development_plan.md)维护：先完善资源契约、SRAM访问及搬运组合，再形成数字Tile和CIM局部台架；其他单元按研究问题和边界需要加入。
 
 共享输入输出与指标定义见[组件接口](../../docs/interfaces/component_protocols.md)，跨芯片、节点和集群的类型目录见[硬件组件目录](../../docs/reference/hardware_component_catalog.md)。下文建议的新子目录在首次有实现时再创建并同步 modules.json。
 

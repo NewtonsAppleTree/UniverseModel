@@ -4,7 +4,7 @@
 
 近期优先级和验收门槛从[研究开发路线](RESEARCH_ROADMAP.md)进入，选型依据见[开源项目调研](reference/open_source_landscape.md)。[首个线性实验](../evaluation/docs/linear_mapping.md)已覆盖任务、映射、校验和比较，后续补训练语义与外部基线校准；通用工程接口与接入规则见 [ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)。CIM array + DAC/ADC + 缓冲台架继续按局部验收方案推进。
 
-当前逐模块开发先从 [clustermodel](../clustermodel/README.md)进入：[逐目录开发与验收](../clustermodel/docs/development_plan.md)规定链路、图、交换容量、路由、资源组和集群账本的顺序；首批为独立分析设计，尚无集群执行模型。
+当前进入 [chipmodel开发任务梳理](../chipmodel/docs/development_plan.md)：逐目录核对现状，按研究问题、建模边界和证据安排首个实现包。此前clustermodel基础已完成，见[交接报告](../clustermodel/docs/completion.md)及[横向能力指南](../clustermodel/docs/breadth_usage.md)。
 
 搭建组件台架或设计硬件接口时，再查[可组合组件与局部仿真规划](architecture/composable_simulation.md)；其公共事件接口与 BenchSpec 样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 
@@ -36,6 +36,8 @@ docs/
 | 怎样运行训练 step 与 PyTorch 数值对照 | [训练指南](../evaluation/docs/training_step.md)、[开发验收](development/training_step_plan.md) |
 | 怎样比较 GEMM 分块、缓冲容量与搬运量 | [线性实验指南](../evaluation/docs/linear_mapping.md)、[本轮开发与验收计划](development/linear_experiment_plan.md) |
 | 怎样逐文件夹开发集群模块 | [集群设计](../clustermodel/docs/design.md)、[逐目录任务与验收](../clustermodel/docs/development_plan.md)、[参数导航](../clustermodel/UNITS.md) |
+| 怎样运行集群放置与账本分析 | [基础指南](../clustermodel/docs/foundation_usage.md)：四节点对照、共享资源、条件下界及回读 |
+| 怎样运行链路与直连拓扑分析 | [C1使用指南](../clustermodel/docs/c1_usage.md)：配置、42 μs手算、独立查询和保存/回读 |
 | 下一步先做什么、哪些模块先实现 | [研究开发路线](RESEARCH_ROADMAP.md)：首个实验、阶段计划和验收门槛 |
 | 各模块有哪些高影响力开源项目可参考 | [开源项目调研](reference/open_source_landscape.md)：stars、代表论文引用、维护变化与复用边界 |
 | 同一模块的多个开源项目如何横向比较 | [候选全量清单](reference/open_source_comparison.md)：102 个候选、22 组对照，GitHub 热度与学术影响并列 |

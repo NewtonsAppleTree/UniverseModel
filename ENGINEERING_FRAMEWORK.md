@@ -51,9 +51,9 @@ flowchart LR
 | contracts | 有版本的交换对象 | 校验过的值对象/诊断 | 不拥有业务状态 | 当前含实验记录及线性任务/计划；能力、一般图/数据引用按需求扩展 |
 | configuration | producer 参数定义、JSON、显式覆盖 | 冻结有效参数 | 只拥有草稿与解释记录 | 先复用严格 dataclass 解析；模板/来源链/迁移按需求加入 |
 | costmodel | 结构、动作量、PVT 条件、来源 profile | 条件延迟/能量/面积与覆盖说明 | 特征化数据，不复制硬件队列 | 定义一个条件查询函数，缺数据返回明确未知/越域 |
-| chipmodel | Params、映射后的操作/数据、边界条件 | 功能输出、资源工作量、局部估算 | 本组件资源与数值状态 | 现有单元通过小 adapter 接入记录；局部组合另验证 |
+| chipmodel | Params、映射后的操作/数据、边界条件 | 功能输出、资源工作量、局部估算 | 本组件资源与数值状态 | [任务计划](chipmodel/docs/development_plan.md)：契约/下界修复、SRAM访问、搬运账本与局部组合；沿用现有记录接口 |
 | systemmodel | 芯片能力、主机/板卡资源、I/O 路径 | 节点能力、可用容量、路径约束 | 板卡/主机共享资源 | 先定义 Board/Node 描述与静态引用/容量检查 |
-| clustermodel | 节点能力、链路、拓扑与参与组 | 集群图、路由/割集约束 | 跨节点网络资源 | 先描述资源图与 group；通信算法归 runtime |
+| clustermodel | 节点能力、链路、拓扑与参与组 | 集群图、路由/割集约束 | 跨节点网络资源 | 固定P2P及leaf-spine/路径候选/静态停用/总览基础与优化已完成；事件及节点内摘要按课题扩展 |
 | workloads | shape、语义轴、dtype、输入/种子 | Workload 描述、独立参考/工作量 | 任务数据与参考，不拥有硬件 | 已有 GEMM/MatVec；下一步 Linear 前向/反向/更新及短链 |
 | compiler | workload + 公共硬件能力 + 成本查询 | 合法映射、ROI、buffer/partial/操作计划 | 编译 IR 与计划 | 已有线性计划/校验/容量/解释；后续按图生命周期和外部比较扩展 |
 | runtime | 显式计划/直接请求、已发生通知 | 派发/等待/追加操作 | 软件队列、stream、策略 | 先冻结提交/完成协议，再实现一种派发策略 |
@@ -117,7 +117,7 @@ python -m unittest discover -s tests/integration -p "test_*.py" -v
 
 近期选题、优先级和验收门槛统一见[研究开发路线](docs/RESEARCH_ROADMAP.md)，外部工具选择见[开源项目调研](docs/reference/open_source_landscape.md)。线性首批功能/分析已实现，后续按证据缺口推进：
 
-2026-11-23当前先推进 [clustermodel独立开发](clustermodel/docs/development_plan.md)：公共只读端点、链路与图、交换容量/路由、资源组和通信账本；复用本框架配置、记录和产物接口。静态分析不依赖完整Node/runtime/simulator；外部通信后端和AI执行在后续门槛满足后接入。以下保留已有线性路径的后续接入事项。
+2026-11-23 [clustermodel基础及横向能力](clustermodel/docs/completion.md)已通过本框架：端点/容量、链路/交换图、路由与资源账本、静态停用、严格配置及记录保存/回读；独立静态查询不依赖完整Node/runtime/simulator。收尾优化保持schema与计量口径。当前进入[chipmodel任务计划](chipmodel/docs/development_plan.md)，继续复用专业模型与通用记录边界。外部后端与AI执行按后续证据门槛接入。以下保留已有线性路径的后续接入事项。
 
 1. 在现有 GEMM/MatVec 上扩展 Linear 前向/反向/更新，定义梯度、权重版本、临时数据和完整工作量，保持独立参考。
 2. 用短算子链检验跨算子的驻留与生命周期；继续支持独立参数和预制计划，不提前固定全图 IR。

@@ -1,14 +1,20 @@
-# composition：集群与逻辑资源组
+# composition：集群装配与逻辑组
 
-当前未实现，状态见 [STATUS](../../docs/STATUS.md)。组合层引用节点、端点和网络实例，保持资源唯一所有权；不复制设备/NIC，不产生额外物理能力。
+C3基础已实现，见 [STATUS](../../docs/STATUS.md)。组合层引用节点/端点/网络实例，保持唯一资源所有权，不产生额外NIC能力。
 
-| 子目录 | 候选行为 | 关键关系 |
+| 子目录 | 行为 | 关系 |
 | --- | --- | --- |
-| [groups](groups/UNITS.md) | rank 放置与通信组校验 | 逻辑成员 → 节点/设备/端点引用；组间允许重叠 |
-| [cluster](cluster/UNITS.md) | 装配、路径账本和下界 | 引用资源 → 每路径服务量 → 共享需求聚合 |
+| [groups](groups/UNITS.md) | rank放置与有序组校验 | 成员→节点/端点，组间可重叠 |
+| [cluster](cluster/UNITS.md) | 装配、逐路径账本和下界 | 固定消息→服务需求→唯一资源聚合 |
 
-组合参数为身份、引用和覆盖，无独立物理单位；数量由实际集合推导，不另设可冲突的 node_count×card_count 输入。消息 B、资源 B/s、时间 s 的具体定义由下层维护。
+顺序：资源图→placement/group→消息/路由→按基准累计工作→资源/延迟/指定割界。身份无物理单位，消息B、容量B/s、时间s。参数/输入与派生输出分开，账本为局部变量，无队列/时钟。
 
-顺序：资源定义/图校验 → placement/group 校验 → 消息与路由 → 需求累计 → 下界。查询不修改状态；动态执行归 fabric/systemmodel 与 simulator，软件通信策略归 runtime。
+敏感量为放置、消息矩阵和共享端点，group数量不能倍增带宽。无collective展开或节点内部路径摘要，空通信不表示计算免费。验证共享NIC/交换/上行、守恒、重叠组、失败和同预算放置，见[基础验收](../docs/foundation_usage.md)。
 
-关键敏感因素是 rank 放置、消息矩阵和共享端点，不能把 group 数作为带宽倍数。验证身份/引用、共享资源、同预算放置对照和摘要替换；依据[开发计划](../docs/development_plan.md)。
+逻辑流量总览可在路径分析前独立调用，按rank、node、endpoint和声明组核对同一需求的守恒；本地/不可达工作保留，不能与可行性结论混用。详见[cluster](cluster/UNITS.md)及[覆盖矩阵](../docs/coverage.md)。
+
+<!-- model-fields:start -->
+
+
+
+<!-- model-fields:end -->

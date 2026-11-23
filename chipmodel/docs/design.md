@@ -1,5 +1,7 @@
 # chipmodel：计算、存储、互连与封装
 
+本页维护架构方向和候选机制；当前实现任务、优先级与验收以[开发计划](development_plan.md)为准，已有能力与待实现范围由[STATUS](../../docs/STATUS.md)区分。
+
 ## 核心与层级
 
 最重要的是数据与计算能否在有限资源上合法发生。chipmodel 依赖 contracts、costmodel，拥有芯片与封装内部的资源状态；只包含软件模型。Core/Tile/Die/Package 通过组合建立实例，不能由目录数量推定硬件数量。

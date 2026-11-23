@@ -1,6 +1,6 @@
 # clustermodel 逐目录开发与验收计划
 
-日期：2026-11-23。依据[项目使命](../../PROJECT_MISSION.md)、[模块设计](design.md)、[工程框架](../../ENGINEERING_FRAMEWORK.md)及[模型规则](../../docs/development/model_rules.md)。本次交付设计和开发拆分，没有新增可运行模型；阶段完成情况以 [STATUS](../../docs/STATUS.md)为准。
+日期：2026-11-23。依据[项目使命](../../PROJECT_MISSION.md)、[设计](design.md)和[工程框架](../../ENGINEERING_FRAMEWORK.md)。C1–C3、横向覆盖与收尾优化已完成，见[完成报告](completion.md)。本文保留逐目录交付和后续研究门槛；下一轮进入chipmodel。状态以[STATUS](../../docs/STATUS.md)为准。
 
 ## 1 首批交付与范围
 
@@ -12,26 +12,36 @@
 
 ## 2 按文件夹推进
 
-所有 `.py` 名称均为拟建文件，首次实现时才创建。各级 UNITS 已提供参数和边界草案，代码落地后以声明行与生成区为字段维护源。
+C1–C3列出的 `.py` 文件均已实现，C4/C5仍为候选扩展位置。实际字段由代码及UNITS生成区维护。
 
-| 顺序 | 目录与拟建文件 | 交付行为 | 进入/退出条件 |
+| 顺序 | 目录与文件 | 交付行为 | 进入/退出条件 |
 | --- | --- | --- | --- |
 | C0 设计 | clustermodel/docs、各层 UNITS | 边界、接口、公式、手算夹具及阶段门槛 | 设计链接和规则检查通过；不计作模型完成 |
-| C1a 公共边界 | contracts/hardware/network.py | 只读端点和带宽约束，身份/单位/有限值校验 | 同步 contracts/hardware 与祖先 UNITS；不导入硬件 |
-| C1b 链路 | clustermodel/fabric/links/model.py | 两种互斥计量基准、消息服务量、孤立时间 | 线路/payload 不重复扣开销；尾包、零值、双工测试 |
-| C1c 拓扑 | clustermodel/topology/graph.py | 有向端口图、显式连接校验、可达性和指定割 | 两端点直连可独立分析；身份/方向/空割反例通过 |
-| C2a 交换能力 | clustermodel/fabric/switches/model.py | 端口与内部共享容量，按路径生成约束需求 | 多端口不能绕过内部带宽；全双工计数口径明确 |
-| C2b 路由 | clustermodel/fabric/routing/paths.py | 显式路径检查、最少跳确定性路由 | 路径连续且方向正确；等长路径稳定、不可达有诊断 |
-| C2c 构图夹具 | clustermodel/topology/builders.py | 直连、单交换机、两分区网络的纯构图函数 | 与手工同图一致；不为 ring/fat-tree 等各建空类 |
-| C3a 分组 | clustermodel/composition/groups/model.py | rank 放置、组内唯一、组间重叠和共享端点 | 多 rank 同 NIC 不增加容量；缺成员/端点被拒绝 |
-| C3b 集群 | clustermodel/composition/cluster/model.py、analysis.py | 引用装配、路径账本、共享需求与下界 | 下述四节点实验、独立手算、失败和空输入通过 |
-| C3c 工程接入 | evaluation/experiments/runner/cluster.py、example/cluster_demo.py、config/experiments/cluster_placement.json | 严格配置、有限放置对照、记录及回读 | 同输入预算、未知成本、失败记录可重建；不扩展通用 runner |
+| C1a 已实现 | contracts/hardware/network.py | 只读端点和带宽约束，身份/单位/有限值校验 | 公共契约测试、UNITS与标准库依赖 |
+| C1b 已实现 | clustermodel/fabric/links/model.py | 两种互斥计量基准、消息服务量、孤立时间 | 线路/payload不重复扣开销，尾包/零值/边界验证 |
+| C1c 已实现 | clustermodel/topology/graph.py | 直连有向端口图、显式连接校验、直接可达端点和指定节点割 | 两端点独立分析；身份/方向/空割/共享引用反例通过；交换转发已由C2扩展 |
+| C2a 已实现 | clustermodel/fabric/switches/model.py | 端口与内部共享容量，按路径生成约束需求 | 多端口不能绕过内部带宽；全双工计数口径明确 |
+| C2b 已实现 | clustermodel/fabric/routing/paths.py | 显式路径检查、最少跳确定性路由 | 路径连续且方向正确；等长路径稳定、不可达有诊断 |
+| C2c 已实现 | clustermodel/topology/builders.py | 直连、单交换机、两分区网络的纯构图函数 | 与手工同图一致；不为 ring/fat-tree 等各建空类 |
+| C3a 已实现 | clustermodel/composition/groups/model.py | rank 放置、组内唯一、组间重叠和共享端点 | 多 rank 同 NIC 不增加容量；缺成员/端点被拒绝 |
+| C3b 已实现 | clustermodel/composition/cluster/model.py、analysis.py | 引用装配、路径账本、共享需求与下界 | 下述四节点实验、独立手算、失败和空输入通过 |
+| C3c 已实现 | evaluation/experiments/runner/cluster.py、example/cluster_demo.py、config/experiments/cluster_placement.json | 严格配置、有限放置对照、记录及回读 | 同输入预算、未知成本、失败记录可重建；不扩展通用 runner |
 | C4 争用执行 | simulator/adapters、必要公共事件边界；按选型补 fabric 行为 | 一个固定版本后端或最小流级共享服务 | 生命周期、共享瓶颈、事件确定性、排空与外部范围对齐 |
 | C5 AI 接入 | workloads/reference、compiler、runtime/communication、evaluation | 一个 collective 或激活/KV 路径，带来源计算/通信输入 | 数值与完整账本先成立，再评估任务性能及质量 |
 
-当前第一项编码任务是 C1a–C1c：端点边界、单向链路和两端点图。不要等所有目录都填满才进行首次独立验证。C2/C3 接入时复用先前实例与公式。
+C1–C3基础分析链、leaf-spine构图、最短路径候选、静态停用/可达性视图和多层逻辑流量总览均已闭合，见[使用与验收](breadth_usage.md)。收尾补充调用内索引/缓存、割账本复用、独立路径参考和回读严格性；覆盖矩阵基础范围已验收，下一轮进入chipmodel。
 
-跨目录测试拟放 `tests/clustermodel/`，公共边界与记录往返另放对应契约/集成测试位置。新增业务实现同步测试导航和 CI；不因本次文档新增预先创建空测试、空类或不可运行示例。
+测试位于tests/contracts、tests/clustermodel、tests/integration/test_network_experiment.py及test_cluster_experiment.py。network_demo与cluster_demo复用通用runner和artifact；后者以完整候选索引保证保存后可校验回读。测试导航与CI已同步。
+
+## 2.1 本轮横向补充（已实现）
+
+| 目录 | 补充能力 | 独立验收 |
+| --- | --- | --- |
+| topology/builders.py | 非均匀leaf-spine、多spine、多轨端点 | 方向数、唯一归属、输入顺序无关和NIC共享 |
+| fabric/routing/paths.py | 最短路径计数、有界候选枚举 | 两条冗余路径、12条只返回1条、共享接入不倍增容量 |
+| topology/inspection.py、scenarios.py | 安装库存、指定源可达性、静态停用视图 | 方向不对称、节点/交换停用、保留原图与未服务需求 |
+| composition/cluster/traffic.py | rank/node/endpoint/group总览与稀疏流量矩阵 | 30条消息各层守恒、重叠组不重复、本地描述不冒充可行 |
+| evaluation/runner与cluster_demo | 原图/停用来源留档，--overview回读 | 成功/失败/旧结果兼容，停用条件不能混成同预算对照 |
 
 ## 3 可独立验收的最小输入输出
 
@@ -48,7 +58,7 @@
 
 ## 4 四节点放置实验：独立手算基准
 
-本节数值是**待实现验收的手算值**，不是实测、仿真输出或某型号参数。容量均为十进制 B/s；消息使用二进制 MiB。
+本节数值是**独立手算基准，现已由模型测试验证一致**，不是实测、事件仿真或某型号参数。容量用十进制B/s，消息用二进制MiB。
 
 网络：n0、n1 接交换机 sL；n2、n3 接 sR；sL 与 sR 之间有一条全双工上行。每个节点一条全双工接入和一个 NIC。所有方向均用显式边表示。
 
@@ -111,24 +121,26 @@ C5 的 collective 先验证数值与每 rank 字节，包含 p=1、p=2、尾分�
 
 每批都应有独立入口、参数/字段前置及行尾注释、目录和祖先 UNITS、边界/反例测试、STATUS 证据入口。物理未知、失败和未覆盖机制明确记录。C3 同步测试导航与 CI；C4/C5 另保存协议、外部版本和实验数据来源。
 
-当前文档检查命令：
+每批仓库检查命令：
 
 ```text
 python tools/check_model_rules.py
 python tools/check_structure.py
 ```
 
-实现测试和示例后，新增验收命令（目前尚不可运行）：
+基础模块可运行的业务检查：
 
 ```text
+python -m unittest discover -s tests/contracts -p "test_*.py" -v
 python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
 python -m unittest discover -s tests/integration -p "test_*.py" -v
+python -m example.network_demo
 python -m example.cluster_demo
 ```
 
-首批完成标志是四节点实验和所有独立入口有可重建证据；不是文件夹数量增加，也不意味着已完成事件、AI 质量或物理校准。
+首批四节点实验与独立入口现已有测试及可重建记录；C1–C3基础完成，不意味着已完成事件、AI质量或物理校准。当前证据见[基础指南](foundation_usage.md)及STATUS。
 
-## 8 本次设计检查记录
+## 8 C0设计时的历史检查记录
 
 2026-11-23：`python tools/check_structure.py` 通过（13个模块、146个Markdown文件、4份Word来源哈希）；四节点表、带宽敏感性及尾包数值通过独立有理数算术复核。本批无业务模型变更，因此没有把算术复核称为模型测试通过。
 

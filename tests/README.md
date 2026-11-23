@@ -6,6 +6,19 @@
 
 完整验收标准见[验证规范](../docs/architecture/validation.md)。
 
+集群收尾新增[独立路径参考与批量回归](clustermodel/test_closeout.py)5项，以及[回读严格性测试](integration/test_cluster_experiment.py)2项；覆盖360个端点对、不同长度/显式路径、profile替换、停用后恢复和重复候选/运行身份。网络相关测试累计103项；最终全回归结果见STATUS。宿主规模实验可用[benchmark_cluster.py](../tools/benchmark_cluster.py)，不把计时阈值写入正确性测试。
+
+此前横向新增[模型测试](clustermodel/test_breadth.py)18项、[集成测试](integration/test_cluster_breadth.py)6项，覆盖leaf-spine、最短路径候选、多轨共享、方向停用、需求矩阵与记录兼容；当时网络相关测试累计96项。
+
+C2/C3阶段新增[集群模型测试](clustermodel/test_cluster.py)23项及[实验集成测试](integration/test_cluster_experiment.py)10项，验证四节点精确值、共享NIC/交换/介质、双工/组/路由、帧基准、敏感性与完整候选回读。加上C1，共72项网络相关测试。
+
+C1网络39项测试：[公共契约](contracts/test_network.py)6项、[链路](clustermodel/test_links.py)13项、[直连图](clustermodel/test_topology.py)13项、[工程记录](integration/test_network_experiment.py)7项。验证独立手算、分包/基准、双工/共享引用、profile边界和保存回读；C1范围不包含交换路由，新增C2/C3测试覆盖静态交换路由和共享账本；仍无争用执行或物理校准。工程测试随integration运行，模型用：
+
+```text
+python -m unittest discover -s tests/contracts -p "test_*.py" -v
+python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
+```
+
 ADC 的独立阈值参考在 [test_adc.py](chipmodel/test_adc.py)；各子模块及系统关系测试在 [test_models.py](chipmodel/test_models.py)，覆盖工作量、GPU 驻留、CIM 功能链、DDR/突发、容量/布局、热模型、资源包络与计量范围。在仓库根目录用 Python 3.10+ 标准库执行：
 
 ```text

@@ -1,0 +1,130 @@
+{
+  "schema_version": "network-link-example/v1",
+  "configuration": {
+    "graph": {
+      "graph_id": "fabric",
+      "endpoints": [
+        {
+          "endpoint_id": "n0.nic",
+          "node_id": "n0",
+          "port_id": "n0.port",
+          "tx_constraint_ids": [
+            "n0.tx"
+          ],
+          "rx_constraint_ids": [
+            "n0.rx"
+          ],
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "External NIC port only; no RDMA or destination-memory visibility implied"
+          ]
+        },
+        {
+          "endpoint_id": "n1.nic",
+          "node_id": "n1",
+          "port_id": "n1.port",
+          "tx_constraint_ids": [
+            "n1.tx"
+          ],
+          "rx_constraint_ids": [
+            "n1.rx"
+          ],
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "External NIC port only; no RDMA or destination-memory visibility implied"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "link_id": "n0-n1",
+          "src_port_id": "n0.port",
+          "dst_port_id": "n1.port",
+          "rate_basis": "raw_line",
+          "startup_s": 0.000001,
+          "propagation_s": 0.000001,
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Ideal illustrative 200 Gbit/s direction; no queue, loss, or retransmission"
+          ],
+          "line_rate_bps": 200000000000,
+          "coding_efficiency": 1,
+          "max_payload_bytes": 4096,
+          "header_bytes": 0,
+          "trailer_bytes": 0,
+          "alignment_bytes": 1
+        },
+        {
+          "link_id": "n1-n0",
+          "src_port_id": "n1.port",
+          "dst_port_id": "n0.port",
+          "rate_basis": "raw_line",
+          "startup_s": 0.000001,
+          "propagation_s": 0.000001,
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Ideal illustrative 200 Gbit/s direction; no queue, loss, or retransmission"
+          ],
+          "line_rate_bps": 200000000000,
+          "coding_efficiency": 1,
+          "max_payload_bytes": 4096,
+          "header_bytes": 0,
+          "trailer_bytes": 0,
+          "alignment_bytes": 1
+        }
+      ],
+      "constraints": [
+        {
+          "resource_id": "n0.tx",
+          "owner_id": "n0",
+          "capacity_Bps": 25000000000,
+          "byte_basis": "payload",
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Assumed NIC boundary capacity; no queue or device-memory path"
+          ]
+        },
+        {
+          "resource_id": "n0.rx",
+          "owner_id": "n0",
+          "capacity_Bps": 25000000000,
+          "byte_basis": "payload",
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Assumed NIC boundary capacity; no queue or device-memory path"
+          ]
+        },
+        {
+          "resource_id": "n1.tx",
+          "owner_id": "n1",
+          "capacity_Bps": 25000000000,
+          "byte_basis": "payload",
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Assumed NIC boundary capacity; no queue or device-memory path"
+          ]
+        },
+        {
+          "resource_id": "n1.rx",
+          "owner_id": "n1",
+          "capacity_Bps": 25000000000,
+          "byte_basis": "payload",
+          "capacity_kind": "declared_ceiling",
+          "source_ref": "manual:c1-direct-link/v1",
+          "coverage": [
+            "Assumed NIC boundary capacity; no queue or device-memory path"
+          ]
+        }
+      ]
+    },
+    "link_id": "n0-n1"
+  },
+  "inputs": {
+    "payload_bytes": 1000000
+  }
+}

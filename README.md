@@ -10,7 +10,7 @@ UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支�
 
 实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
-当前逐模块开发从 [clustermodel](clustermodel/README.md)开始，按[开发与验收计划](clustermodel/docs/development_plan.md)先建设静态资源图、固定路由与通信分析，再按需接入争用执行和 AI 场景。
+已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前进入chipmodel**，已完成[开发任务梳理](chipmodel/docs/development_plan.md)：按研究问题、建模边界和证据安排资源契约、SRAM访问、搬运路径及局部组合，随后推进CIM与其他研究扩展。
 
 **设计查阅：[芯片架构与 AI 训练/推理参数清单](ARCHITECTURE_PARAMETERS.md)。** 按计算、存储、互连及物理条件筛选参数，列明中英文术语、单位、公式、模块归属和来源；包括 DDR/HBM/Flash、CIM 外围与训练/推理资源账本。
 

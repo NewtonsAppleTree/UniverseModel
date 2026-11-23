@@ -2,6 +2,8 @@
 
 本模块无硬件计量，不拥有模型状态。当前入口为[线性任务](workload/UNITS.md)、[线性计划](plan/UNITS.md)、[实验结果](results/UNITS.md)、[规范化与版本](versions/UNITS.md)、[指标单位](units/UNITS.md)。专业 payload 保留生产模块自己的 schema；通用资源/图计划/事件契约见[设计](docs/design.md)，不与已实现的窄范围线性值混淆。
 
+C1另提供[公共网络边界](hardware/UNITS.md)：只读NIC端点、带单位和来源的共享容量。它们不拥有硬件状态，跨对象归属/连线由clustermodel验证；不代表一般硬件或事件schema已经实现。
+
 关键约束是不可变身份、明确单位、执行模式/证据类型、未知成本与版本兼容。使用顺序：producer 对象 → 序列化/字段校验 → RunRecord → 下游保存；公式 `H=SHA256(canonical UTF-8)` 不构成物理正确性证明。验证见[工程测试](../tests/integration/test_framework.py)。
 
 <!-- model-fields:start -->

@@ -1,5 +1,93 @@
 # 实现状态
 
+## 2026-11-23 chipmodel 开发任务梳理
+
+当前进入chipmodel。[开发任务与验收计划](../chipmodel/docs/development_plan.md)已按“研究什么、怎样建模、如何证明”完成23份源码及各子目录的现状核对，明确CH1–CH10的研究问题、交付位置、依赖、证据和进入条件。首个实现包为CH1基础契约/下界修复 → CH2 SRAM访问与容量绑定 → CH3搬运路径账本 → CH4数字Tile对照；CH5复用这些基础推进CIM局部台架。CPU/GPU/NPU、外存、Die/Package及物理证据均有独立后续任务。
+
+额外探针确认两项待修问题：接受整数工作量2^53+1 B和初始额度2^53 B、速率1 B/s时，组合资源界返回0而精确包络式为1 s；ActionEstimate.dependencies接受字符串后拆成字符。两项均列入CH1，尚未修复。图/数据路径/源读与目标写的资源绑定仍属CH2–CH4待实现范围。
+
+本次现有chipmodel测试44项通过，chipmodel_demo运行通过：24 MAC、20 B输入、24 B输出、88 B槽预留、孤立阶段4/8/4 cycles，局部依赖下界16 ns。示例未覆盖SRAM/DRAM访问时序、背压与物理成本。源码哈希、环境、探针与示例结果保存在 `.build/chipmodel-planning-20261123`。本次交付是任务设计与文档同步，模型Python实现保持原状；后续能力不能以本次测试通过视为已完成。
+
+模型规则检查通过62个实现目录；结构检查通过13个模块、59份模块Python、157份Markdown及4份Word来源哈希，diff空白检查通过。顶层参数清单已标注CH2拟采用的word访问与RW共享关系为规划，未新增实际配置字段。
+
+## 2026-11-23 clustermodel 基础开发完成与收尾优化
+
+本轮完成clustermodel基础范围，**下一轮进入chipmodel**。[完成报告及交接](../clustermodel/docs/completion.md)逐目录列出已实现能力、优化、验收与下一轮接续安排；[覆盖矩阵](../clustermodel/docs/coverage.md)中的基础范围均已落实。C1–C3与横向能力共同支持独立链路/拓扑/路由/组查询、固定P2P账本、静态停用、流量总览及可回读实验。事件队列、节点内服务、真实collective和物理校准仍按课题证据需要扩展。
+
+收尾优化：查询使用当前不可变图的内部索引；一次分析复用相同路径和link/消息长度估算，多源可达性共享索引，构图预先汇总交换egress约束，指定割从方向账本归并。缓存不跨调用或图，保持输入/输出schema、资源身份、确定性选路和每次真实过割计费。回读补快照候选清单自身的重复、run_id唯一性、配置schema与索引字段检查，保留旧记录可选字段兼容。
+
+新增7项测试（模型5、工程2），其中独立原始端口路径枚举验证12组图的360个端点对。最终全回归运行213项：211项通过、2项可选PyTorch测试因默认环境未安装而跳过。分组为contracts 6、clustermodel 72、chipmodel 44、workloads 16、compiler 17、integration 58（其中2项跳过）；网络相关累计103项通过。模型规则覆盖62个实现目录；结构检查通过13模块、59份模块Python、156份Markdown及4份Word来源哈希。本地验证不表示远端CI已执行。
+
+Windows/Python 3.12.4宿主基准预热1次、测量3次：64节点/512条重复端点对消息的分析中位数1.1663→0.01816 s；32节点/992条全互发消息0.4780→0.05125 s；Python分配峰值分别降低45.2%/27.3%。完整图/输入/分析结果/总览哈希优化前后相等。这里只度量模型程序开销，不是目标网络加速或物理证据；脚本与限制见[完成报告](../clustermodel/docs/completion.md)。
+
+单链路、四节点放置、leaf-spine、单spine停用、双spine不可达五组CLI记录均保存/回读一致，四组历史记录回读通过。原有手算结果保持：42 μs孤立链路；四节点21.47483648/5.36870912 ms资源界；六节点113,246,208 frame B和0.67108864 ms资源界。双spine停用保留原需求与失败原因。
+
+本地产物位于 `.build/cluster-closeout-20261123`，保存源码、基准、测试、案例和wheel验证记录。来源为`b47550e9f39c93cacc8faeb01cff6f0f046a2705+python-config-sha256:b7191129cb93a37c264a0277e7102a17f30688d1dd280984dd7fb323c85a51d7`，覆盖94个仓库Python、实验JSON和pyproject文件，排除文档/构建产物。`.build/cluster-closeout-wheels`中的wheel构建通过，57份打包Python源码与工作区相同，并在`python -I`隔离解释器中通过路由、分析、静态停用、runner和回读验证。本轮没有修改chipmodel实现。
+
+## 2026-11-23 clustermodel 广度复核与横向扩展（历史批次）
+
+按用户要求，本轮重点继续为clustermodel，采用“先全面覆盖，再细化机制”的顺序。新增[12维覆盖矩阵](../clustermodel/docs/coverage.md)，逐项列明研究用途、模块责任、可运行基础与深化条件；不把固定P2P示例的完成等同于全部集群能力已实现。
+
+本批补充四组可独立调用的横向能力：[leaf-spine、拓扑库存/方向可达性、静态停用视图](../clustermodel/topology/UNITS.md)，[最短路径精确计数及有界候选](../clustermodel/fabric/routing/UNITS.md)，[rank/node/endpoint/group和节点矩阵需求总览](../clustermodel/composition/cluster/UNITS.md)。实验配置可保存共享outage来源与原图，成功payload新增总览；CLI的--overview只显示保存观测，旧记录缺新观测时不重算。
+
+六节点、三leaf、双spine的30条1 MiB合成P2P需求验证：逻辑量31,457,280 B，各节点发送/接收各5 MiB；链路帧量113,246,208 B；固定字典序路由资源界0.67108864 ms。跨leaf有两条最短路径，共享接入/NIC，不把路径数乘容量。停用一个spine后在新静态图查询可保留一条路径，本例工作量/界不变；两个spine停用后保留原始需求并保存不可达失败。没有故障收敛/恢复时延或概率可靠性结论。
+
+新增24项测试（模型18、工程6）通过，网络相关测试累计96项。本轮相关回归为clustermodel 67项通过、integration 56项运行（54项通过、2项可选PyTorch因环境缺失跳过）；其他模块历史验证见下方，不把其旧结果称为本批重跑。模型规则覆盖62个实现目录，结构检查通过13个模块、59份模块Python实现、155份Markdown及4份Word来源哈希。
+
+已保存基线、单spine停用与不可达三组记录，成功/失败回读一致，并验证上一阶段旧bundle可读取。产物位于 `.build/cluster-breadth-20261123`，含source_snapshot.json与validation.json；来源为`b47550e9f39c93cacc8faeb01cff6f0f046a2705+python-config-sha256:93c441970815f4a83071074f0f5f4980cc7f906f4aa43c430da06c68a91b9eec`，覆盖92个Python、实验JSON与pyproject文件，排除文档/构建产物。wheel位于 `.build/cluster-breadth-wheels`，13份相关源码与工作区一致，在隔离解释器中验证拓扑、多路径、静态停用和分析。CI加入leaf-spine保存/回读，本地验证不代表远端CI运行。
+
+```text
+python -m example.cluster_demo --config config/experiments/cluster_leaf_spine.json --overview
+python -m example.cluster_demo --read .build/cluster-breadth-20261123/baseline --overview
+python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
+python -m unittest discover -s tests/integration -p "test_cluster*.py" -v
+python tools/check_model_rules.py
+python tools/check_structure.py
+```
+
+本轮未进入chipmodel。后续深度按证据缺口选择：节点内部资源/本地服务由systemmodel补边界，collective数值与任务语义由上层提供，动态队列/可见性由事件后端验证，物理性能/能量由校准支持。当前静态模型明确保留未知量与未覆盖机制，见[横向指南](../clustermodel/docs/breadth_usage.md)。
+
+## 2026-11-23 clustermodel C1–C3基础阶段记录
+
+已完成[链路/交换与固定路由](../clustermodel/fabric/UNITS.md)、[端口图/指定割/构图](../clustermodel/topology/UNITS.md)、[rank/group与集群分析](../clustermodel/composition/UNITS.md)，以及[四节点配置、比较与保存回读](../clustermodel/docs/foundation_usage.md)。C1直连schema继续可用，交换图显式采用routed-network-graph/v1；NIC、交换、共享介质各有唯一owner/容量，没有第二份NIC或事件引擎。
+
+固定同资源预算与两条128 MiB消息：跨分区A的帧量805,306,368 B、资源界21.47483648 ms；分区内B为536,870,912 B与5.36870912 ms。上行需求268,435,456/0 B，NIC最大界均为5.36870912 ms。独立常数验证一致，4倍是条件下界之比，不是训练或实测加速。
+
+每消息保留路径、逐hop profile与各容量约束需求；交换每次crossing计一次，重复过割逐次计量，多rank/端口/组共享同一NIC容量。必要传播/处理界与资源/割界取max，不叠加完整消息逐hop序列化。未知帧量/完整能量保持None与原因。同节点服务摘要未接入；相关需求明确失败。当前不覆盖争用执行、目标内存可见、collective数值、完整AI质量或物理校准。
+
+本次新增33项C2/C3测试（模型23、工程10），连同C1共有72项网络相关测试。此次全回归运行182项：180项通过，2项可选PyTorch测试因默认环境未安装而跳过；分组为contracts 6、clustermodel 49、integration 50、chipmodel 44、workloads 16、compiler 17。两个规则检查通过：62个实现目录，13个模块、56份模块Python实现、153份Markdown和4份Word来源哈希。CI加入cluster保存/回读，本地通过不等同远端CI已执行。
+
+wheel已构建，并核对10份相关模型/adapter源码与工作区一致；在隔离解释器中从解包wheel运行四节点配置得到相同下界。实际CLI保存/回读结果完全相同，产物位于 `.build/cluster-foundation-20261123`，wheel位于 `.build/cluster-foundation-wheels`。产物保存`source_snapshot.json`，代码来源为`b47550e9f39c93cacc8faeb01cff6f0f046a2705+python-config-sha256:f533ac8de52de0a8acf35020ba182f65dbcfec279d360f36f136f9d50a6cb037`；快照覆盖86个仓库Python、实验JSON与pyproject文件，不包含文档与构建产物。
+
+```text
+python -m example.cluster_demo
+python -m example.cluster_demo --read .build/cluster-foundation-20261123
+python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
+python -m unittest discover -s tests/integration -p "test_*.py" -v
+python tools/check_model_rules.py
+python tools/check_structure.py
+```
+
+本节保留C1–C3阶段验收记录。后续横向能力与收尾优化已完成，最新交付状态见本文开头。
+
+## 2026-11-23 集群C1历史记录
+
+完成[公共端点与共享容量](../contracts/hardware/UNITS.md)、[单向链路](../clustermodel/fabric/links/UNITS.md)、[直连拓扑](../clustermodel/topology/UNITS.md)。冻结/版本/单位/来源、raw_line与effective_payload互斥、精确尾包、profile范围、未知线量、端口归属与双工连接、直接可达查询和指定有向节点割已实现。交换机/内部转发、自动路由、rank/group、共享业务需求账本与事件执行尚未实现。
+
+[C1示例](../clustermodel/docs/c1_usage.md)复用严格配置、通用runner及本地bundle。默认1 MB消息在显式200 Gbit/s方向上的序列化40 μs，加启动/传播各1 μs得到孤立链路42 μs；该时间不含NIC、共享排队、软件launch或目的内存可见。总能量未知；输入/有效参数/来源和失败记录可保存/回读。
+
+本批新增39项测试通过（contracts 6、links 13、topology 13、integration 7）。完整integration回归运行40项，其中38项通过、2项可选PyTorch测试因默认环境未安装而跳过。57个实现目录的模型规则检查及结构/允许依赖/链接/4份Word来源哈希通过，wheel构建通过并核对三个C1模型源码与工作区一致；CI已加入契约/集群测试和network示例保存/回读，尚不代表远端CI结果。核对时源码基线为`b47550e`加当前工作区；示例source_revision默认unrecorded。
+
+```text
+python -m example.network_demo
+python -m example.network_demo --output .build/network-c1
+python -m example.network_demo --read .build/network-c1
+python -m unittest discover -s tests/contracts -p "test_*.py" -v
+python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
+```
+
+C1完成时的下一步为C2交换与路由；现已完成C2/C3，以上数字保留为当时范围。最新能力与验证见本文开头和[基础指南](../clustermodel/docs/foundation_usage.md)。
+
 ## 2026-11-23 训练实现补充
 
 在 `5ebefa1` + 当前工作区完成 [Linear 训练 step 与短链](../evaluation/docs/training_step.md)：float64、无 bias、Linear/ReLU/identity、mean MSE、全部 dW/dX 与 plain SGD。梯度绑定旧权重版本/内容身份，更新返回不可变新状态；显式转置、保存激活和命名张量生命周期进入独立 backing 容量检查，GEMM scratch 另计。
@@ -18,7 +106,7 @@ python -m example.training_demo --read .build/training-study
 
 ## 既有设计更新与线性首批记录
 
-最近设计更新：2026-11-23，按当前逐模块开发顺序细化 [clustermodel 设计](../clustermodel/docs/design.md)、[逐目录开发与验收](../clustermodel/docs/development_plan.md)及10个目录的 UNITS。首批为静态端点/资源图、固定路由、通信账本和时间下界；本批仅修改文档，未新增集群 Python 模型、事件执行或校准证据。下方2026-11-20代码核对记录保持其原范围。
+C0历史设计记录（2026-11-23）：细化 [clustermodel设计](../clustermodel/docs/design.md)、[开发验收](../clustermodel/docs/development_plan.md)及10个UNITS目录；当时仅修改文档，未新增集群模型。当前C1–C3实现证据见本文开头；下方2026-11-20代码记录保持原范围。
 
 本设计批次检查：结构检查通过；模型规则检查发现其他训练开发路径的UNITS缺失/生成表待同步，见[检查记录](../clustermodel/docs/development_plan.md)。未将历史业务测试通过记录扩展为当前整个工作区已通过。
 
@@ -56,7 +144,7 @@ python -m example.training_demo --read .build/training-study
 | 配置与 UI | 严格 JSON → 冻结嵌套 dataclass、默认/文件/调用覆盖、producer 构造校验可用；无模板继承、公式解释器、YAML、迁移或 UI | [配置入口](../configuration/UNITS.md)、[配置设计](../configuration/docs/design.md)、[UI 设计](../ui/docs/design.md) |
 | 未实现的编译/硬件机制 | 完整 IR/图划分/自动求解/lowering 未实现；细化 CPU/GPU、协议/一致性、PHY 等按研究问题加入 | [单元覆盖清单](../chipmodel/docs/component_inventory.md)、[Unit 类与参数设计](../chipmodel/docs/unit_model_design.md) |
 | runtime 与 simulator | 无可运行的请求执行和事件引擎 | [运行时设计](../runtime/docs/design.md)、[仿真器设计](../simulator/docs/design.md) |
-| clustermodel | 逐目录设计、参数与手算验收方案已细化；端点/链路/图/组/通信分析及执行均未实现 | [Unit 导航](../clustermodel/UNITS.md)、[C1–C5开发计划](../clustermodel/docs/development_plan.md) |
+| clustermodel | 固定P2P基础与leaf-spine、多路径查询、静态停用/可达性、需求总览可用；本轮先广度后深度 | [覆盖矩阵](../clustermodel/docs/coverage.md)、[横向指南](../clustermodel/docs/breadth_usage.md)、[Unit](../clustermodel/UNITS.md) |
 | 实验与产物 | 单次/有限候选与小数据本地 bundle 可用；run.json + 最终 manifest，拒绝覆盖，读取重做哈希/身份/结构校验；无一般搜索器、blob/轨迹、checkpoint 恢复 | [实验入口](../evaluation/UNITS.md)、[产物入口](../artifacts/UNITS.md)、[产物规范](interfaces/artifacts.md) |
 | Python 工程打包 | pyproject 声明 Python 3.10+ 与 13 模块查找范围；wheel 构建通过，新增 workloads/compiler 实现，运行代码无外部依赖 | [pyproject.toml](../pyproject.toml)、[工程使用](../ENGINEERING_FRAMEWORK.md) |
 | 文档构建 | 已有四个维护中的 Word 构建配置 | [构建清单](tools/documents.json)、[构建脚本](tools/build_docx.py) |
@@ -93,7 +181,7 @@ python docs/tools/build_docx.py --document overview
 
 长期目标按[项目使命](../PROJECT_MISSION.md)执行；近期优先级与验收统一见[研究开发路线](RESEARCH_ROADMAP.md)，本节保留下一步摘要，具体课题另有实验材料，不写入使命正文。
 
-当前先推进 clustermodel 的独立分析路径：C1 公共端点/链路/图 → C2 交换容量/路由 → C3 资源组/集群账本/实验回读。首个编码批次是只读端点边界、单向链路和两端点图，不等待完整 Node 或事件引擎；四节点放置对照的手算值仅作为待实现验收。C4 争用执行与 C5 AI场景按证据需求进入，详见[开发计划](../clustermodel/docs/development_plan.md)。
+本轮重点保持clustermodel：先按[覆盖矩阵](../clustermodel/docs/coverage.md)检查12个维度的基础能力、外部边界和验证证据，再按具体研究问题深化队列/窗口、策略/任务依赖或物理校准。已补leaf-spine、多路径、静态可用性与需求矩阵。chipmodel留到后续轮，本轮未修改其实现。
 
 既有线性路径的后续任务保留：Linear 前向/反向/更新及短算子链、梯度与状态版本、固定版本 PyTorch 功能对照、Timeloop/Accelergy及ZigZag/SCALE-Sim共同可比案例、带来源条件成本和误差报告。按实际复现决定适配，接口规则见[工程框架](../ENGINEERING_FRAMEWORK.md)。
 

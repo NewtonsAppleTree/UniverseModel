@@ -6,6 +6,8 @@
 
 公共实验记录、规范化与指标单位的代码入口见 [UNITS.md](UNITS.md)；通用接入见[工程框架](../ENGINEERING_FRAMEWORK.md)。
 
+[hardware](hardware/UNITS.md)现有C1网络端点与带宽约束，保持标准库依赖、不可变身份和显式单位/来源；没有NIC队列或执行状态。
+
 ## 阅读入口
 
 - [模块设计](docs/design.md)

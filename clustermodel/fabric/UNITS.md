@@ -1,13 +1,21 @@
 # fabric：跨节点网络资源
 
-当前为设计入口，无已实现 Unit；状态见 [STATUS](../../docs/STATUS.md)。fabric 拥有链路和交换内部资源，引用节点的 NIC 端口，不拥有 collective 策略或全局事件队列。
+拥有跨节点链路与交换转发能力，引用节点 NIC 端口；C1–C2 基础已实现，见 [STATUS](../../docs/STATUS.md)。
 
-| 子目录 | 候选 Unit / 行为 | 独立输入 → 输出 |
+| 子目录 | Unit / 行为 | 输入 → 输出 |
 | --- | --- | --- |
-| [links](links/UNITS.md) | LinkParams、LinkEstimate / estimate_link | 方向与速率 profile、长度 → 服务量和孤立时间 |
-| [switches](switches/UNITS.md) | SwitchParams / 共享容量查询 | 端口、内部资源、经过量 → 带宽约束需求 |
-| [routing](routing/UNITS.md) | Route / 路径选择和验证 | 图、源/目标或显式边序列 → 固定路径 |
+| [links](links/UNITS.md) | LinkParams、LinkEstimate / estimate_link | 方向/profile、长度 → 服务量与孤立时间 |
+| [switches](switches/UNITS.md) | SwitchParams、SwitchConnection | 端口/内部连接 → 转发与共享约束引用 |
+| [routing](routing/UNITS.md) | Route / resolve_route、validate_route | 图、端点、显式边或策略 → 固定路径 |
 
-参数以子目录为维护源：链路 B/s、延迟 s、消息 B、共享容量 B/s；fabric 层只组合引用，没有额外面积/能量/带宽。多个路径引用同一资源 ID 时累计需求，不能增添容量。
+单位 B、B/s、s；父目录无额外物理带宽或成本。顺序：参数 → 图 → 路由 → 消息账本。每次交换 crossing 按 payload 或出口帧计一次内部服务，方向只有显式共享 ID 才合计需求。
 
-调用顺序为资源定义 → 端口图 → 路由 → 服务量；动态流速/仲裁在 C4 按需求加入，局部状态与纯分析分开。关键敏感量是速率基准、共享上行、交换内部容量、分包与路由热点。验证使用单链路、双流共享、双工和 incast；首批无包级拥塞、重传或硬件规约。依据见[模块设计](../docs/design.md)及 M04/M06 [数学方法](../../docs/methods/parameters_and_math.md)。
+小消息对分包/孤立启动敏感，大消息对链路/交换共享率敏感。没有队列、仲裁、窗口、规约或动态公平性状态。验证字节基准、尾包、显式转发、确定性路径和共享需求；依据[设计](../docs/design.md)及[基础验收](../docs/foundation_usage.md)。
+
+路径广度现覆盖最短路径总数与有界候选枚举；动态分流未实现。候选共享的NIC、接入和交换约束继续按原资源身份计量，详见[routing](routing/UNITS.md)。
+
+<!-- model-fields:start -->
+
+
+
+<!-- model-fields:end -->

@@ -1,5 +1,7 @@
 # contracts：公共语义与协议
 
+2026-11-23 C1新增[网络公共边界](../hardware/UNITS.md)：NetworkEndpointSpec与BandwidthConstraint，分别表示NIC端口快照及唯一共享服务容量。它们只做值/单位/来源校验；集群图验证引用与所有权，不引入一般硬件或事件schema。
+
 ## 核心与边界
 
 当前公共对象入口见[UNITS](../UNITS.md)：ExperimentSpec、Metric、RunRecord、canonical JSON/单位词汇，以及线性任务 LinearSpec/LinearInputs 与 LinearPlan/Tile 值。它们是完整工作负载/硬件/图计划/事件契约中的独立小边界；各模块仍使用专业 payload，接入设计见[工程框架](../../ENGINEERING_FRAMEWORK.md)。

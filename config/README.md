@@ -2,6 +2,12 @@
 
 本目录存配置，解析逻辑在 configuration。可用 schema 与实验配置的完成情况见[实现状态](../docs/STATUS.md)。
 
+[cluster_leaf_spine.json](experiments/cluster_leaf_spine.json)声明六节点、三leaf、双spine与30条1 MiB合成需求，可选outage保存静态停用条件；见[横向指南](../clustermodel/docs/breadth_usage.md)。
+
+[cluster_placement.json](experiments/cluster_placement.json)提供C1–C3四节点ClusterStudy：相同图/组/消息，显式A/B放置，计量与来源进入记录。见[基础指南](../clustermodel/docs/foundation_usage.md)。
+
+[network_link.json](experiments/network_link.json)是C1可运行的NetworkCase，包含只读NIC端点/约束、两个物理方向、所选链路及独立消息输入；字段由contracts/clustermodel的冻结dataclass解释，见[C1指南](../clustermodel/docs/c1_usage.md)。示例参数均为显式手工假设。
+
 | 目录 | 内容 |
 | --- | --- |
 | hardware/components | 可复用组件模板与能力参数 |

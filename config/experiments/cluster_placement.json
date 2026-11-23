@@ -1,0 +1,672 @@
+{
+  "graph": {
+    "graph_id": "fabric",
+    "endpoints": [
+      {
+        "endpoint_id": "e0",
+        "node_id": "n0",
+        "port_id": "n0.p0",
+        "tx_constraint_ids": [
+          "n0.tx"
+        ],
+        "rx_constraint_ids": [
+          "n0.rx"
+        ],
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one shared NIC tx/rx capacity per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e1",
+        "node_id": "n1",
+        "port_id": "n1.p0",
+        "tx_constraint_ids": [
+          "n1.tx"
+        ],
+        "rx_constraint_ids": [
+          "n1.rx"
+        ],
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one shared NIC tx/rx capacity per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e2",
+        "node_id": "n2",
+        "port_id": "n2.p0",
+        "tx_constraint_ids": [
+          "n2.tx"
+        ],
+        "rx_constraint_ids": [
+          "n2.rx"
+        ],
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one shared NIC tx/rx capacity per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      },
+      {
+        "endpoint_id": "e3",
+        "node_id": "n3",
+        "port_id": "n3.p0",
+        "tx_constraint_ids": [
+          "n3.tx"
+        ],
+        "rx_constraint_ids": [
+          "n3.rx"
+        ],
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one shared NIC tx/rx capacity per node"
+        ],
+        "schema_version": "network-endpoint/v1"
+      }
+    ],
+    "links": [
+      {
+        "link_id": "e0->sL",
+        "src_port_id": "n0.p0",
+        "dst_port_id": "sL:e0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e1->sL",
+        "src_port_id": "n1.p0",
+        "dst_port_id": "sL:e1",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e2->sR",
+        "src_port_id": "n2.p0",
+        "dst_port_id": "sR:e2",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "e3->sR",
+        "src_port_id": "n3.p0",
+        "dst_port_id": "sR:e3",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sL->e0",
+        "src_port_id": "sL:e0",
+        "dst_port_id": "n0.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sL->e1",
+        "src_port_id": "sL:e1",
+        "dst_port_id": "n1.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sL->sR",
+        "src_port_id": "sL:sR",
+        "dst_port_id": "sR:sL",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sR->e2",
+        "src_port_id": "sR:e2",
+        "dst_port_id": "n2.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sR->e3",
+        "src_port_id": "sR:e3",
+        "dst_port_id": "n3.p0",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 200000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      },
+      {
+        "link_id": "sR->sL",
+        "src_port_id": "sR:sL",
+        "dst_port_id": "sL:sR",
+        "rate_basis": "raw_line",
+        "startup_s": 0.0,
+        "propagation_s": 0.0,
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "ideal fixture: coding=1; no header/trailer; alignment=1; not measured"
+        ],
+        "line_rate_bps": 100000000000.0,
+        "coding_efficiency": 1.0,
+        "max_payload_bytes": 4096,
+        "header_bytes": 0,
+        "trailer_bytes": 0,
+        "alignment_bytes": 1,
+        "payload_bandwidth_Bps": null,
+        "profile_min_payload_bytes": 1,
+        "profile_max_payload_bytes": null,
+        "shared_constraint_ids": [],
+        "schema_version": "network-link/v1"
+      }
+    ],
+    "constraints": [
+      {
+        "resource_id": "n0.rx",
+        "owner_id": "n0",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n0.tx",
+        "owner_id": "n0",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n1.rx",
+        "owner_id": "n1",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n1.tx",
+        "owner_id": "n1",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n2.rx",
+        "owner_id": "n2",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n2.tx",
+        "owner_id": "n2",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n3.rx",
+        "owner_id": "n3",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "n3.tx",
+        "owner_id": "n3",
+        "capacity_Bps": 25000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "declared independent NIC direction; no software or DMA costs"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "sL.internal",
+        "owner_id": "sL",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      },
+      {
+        "resource_id": "sR.internal",
+        "owner_id": "sR",
+        "capacity_Bps": 100000000000.0,
+        "byte_basis": "payload",
+        "capacity_kind": "declared_ceiling",
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "one payload charge per switch crossing"
+        ],
+        "frame_format_id": null,
+        "schema_version": "network-bandwidth/v1"
+      }
+    ],
+    "switches": [
+      {
+        "switch_id": "sL",
+        "port_ids": [
+          "sL:e0",
+          "sL:e1",
+          "sL:sR"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "sL:e0",
+            "egress_port_id": "sL:e1",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sL:e0",
+            "egress_port_id": "sL:sR",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sL:e1",
+            "egress_port_id": "sL:e0",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sL:e1",
+            "egress_port_id": "sL:sR",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sL:sR",
+            "egress_port_id": "sL:e0",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sL:sR",
+            "egress_port_id": "sL:e1",
+            "constraint_ids": [
+              "sL.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      },
+      {
+        "switch_id": "sR",
+        "port_ids": [
+          "sR:e2",
+          "sR:e3",
+          "sR:sL"
+        ],
+        "connections": [
+          {
+            "ingress_port_id": "sR:e2",
+            "egress_port_id": "sR:e3",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sR:e2",
+            "egress_port_id": "sR:sL",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sR:e3",
+            "egress_port_id": "sR:e2",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sR:e3",
+            "egress_port_id": "sR:sL",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sR:sL",
+            "egress_port_id": "sR:e2",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          },
+          {
+            "ingress_port_id": "sR:sL",
+            "egress_port_id": "sR:e3",
+            "constraint_ids": [
+              "sR.internal"
+            ]
+          }
+        ],
+        "forwarding_latency_s": 0.0,
+        "source_ref": "manual:four-node-resource-fixture/v1",
+        "coverage": [
+          "explicit crossbar; no queue or multicast reduction"
+        ],
+        "schema_version": "network-switch/v1"
+      }
+    ],
+    "schema_version": "routed-network-graph/v1"
+  },
+  "traffic": {
+    "messages": [
+      {
+        "message_id": "m0",
+        "src_rank": "r0",
+        "dst_rank": "r1",
+        "payload_bytes": 134217728,
+        "data_id": "buffer0",
+        "content_version": "fixture/v1",
+        "group_id": "g0",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      },
+      {
+        "message_id": "m1",
+        "src_rank": "r2",
+        "dst_rank": "r3",
+        "payload_bytes": 134217728,
+        "data_id": "buffer1",
+        "content_version": "fixture/v1",
+        "group_id": "g1",
+        "explicit_link_ids": null,
+        "route_policy": "shortest-hop-lex/v1"
+      }
+    ],
+    "requested_cuts": [
+      {
+        "cut_id": "left_to_right",
+        "node_ids": [
+          "n0",
+          "n1"
+        ],
+        "switch_ids": [
+          "sL"
+        ]
+      }
+    ],
+    "schema_version": "cluster-traffic/v1"
+  },
+  "candidates": [
+    {
+      "name": "A_cross_partition",
+      "placements": [
+        {
+          "rank_id": "r0",
+          "node_id": "n0",
+          "endpoint_id": "e0"
+        },
+        {
+          "rank_id": "r1",
+          "node_id": "n2",
+          "endpoint_id": "e2"
+        },
+        {
+          "rank_id": "r2",
+          "node_id": "n1",
+          "endpoint_id": "e1"
+        },
+        {
+          "rank_id": "r3",
+          "node_id": "n3",
+          "endpoint_id": "e3"
+        }
+      ]
+    },
+    {
+      "name": "B_within_partition",
+      "placements": [
+        {
+          "rank_id": "r0",
+          "node_id": "n0",
+          "endpoint_id": "e0"
+        },
+        {
+          "rank_id": "r1",
+          "node_id": "n1",
+          "endpoint_id": "e1"
+        },
+        {
+          "rank_id": "r2",
+          "node_id": "n2",
+          "endpoint_id": "e2"
+        },
+        {
+          "rank_id": "r3",
+          "node_id": "n3",
+          "endpoint_id": "e3"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "g0",
+      "rank_ids": [
+        "r0",
+        "r1"
+      ]
+    },
+    {
+      "group_id": "g1",
+      "rank_ids": [
+        "r2",
+        "r3"
+      ]
+    }
+  ],
+  "schema_version": "cluster-placement-study/v1"
+}

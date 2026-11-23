@@ -4,6 +4,7 @@
 
 | 入口 | 维护对象 |
 | --- | --- |
+| [开发任务与验收计划](development_plan.md) | 现状盘点、研究问题、实现边界、证据、优先级与首包验收 |
 | [系统级设计](system_model_design.md) | 工作/状态/操作/资源/连接/物理条件的关系 |
 | [Unit 设计](unit_model_design.md) | 类型/参数/状态/接口规则及仍需考虑的问题 |
 | [候选单元清单](component_inventory.md) | 各硬件族的候选机制与归属 |
