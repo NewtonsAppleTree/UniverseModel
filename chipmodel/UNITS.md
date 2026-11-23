@@ -4,7 +4,7 @@
 
 设计时先用[顶层参数清单](../ARCHITECTURE_PARAMETERS.md)筛选相关物理量和关系；本页及子目录的生成表维护实际代码字段与接口，两者不重复维护配置定义。
 
-当前开发顺序和待实现范围见[开发任务与验收计划](docs/development_plan.md)。本页列已有模型字段；计划中的SRAM事务、共享RW端口和路径账本尚未成为已实现能力。
+当前开发顺序和待实现范围见[开发任务与验收计划](docs/development_plan.md)。CH1–CH4已实现：精确中间量下界、SRAM事务/共享RW、搬运路径账本和数字Tile，见[基础用法与证据](docs/foundation_usage.md)。CH5也已完成电导编码、完整数值链、共享读出与有限保持台架，见[CIM指南](docs/cim_bench.md)；CH6的CPU/GPU/NPU能力与限制已接入，见[指南](docs/compute_capabilities.md)；CH7–CH9仍按计划推进。
 
 | 子模块 | Unit 与系统责任 | 最关键的参数/边界 |
 | --- | --- | --- |
@@ -51,6 +51,8 @@
 | `real(name: str, value: float, *, minimum: float \| None=None)` | 归一有限实数；不接受单位字符串、bool 或隐式数组标量。 |
 | `positive(name: str, value: float)` | 校验严格正的物理量；拒绝零频率、零时间常数和浮点下溢到零。 |
 | `identifier(name: str, value: str)` | 校验显式身份/协议名称；名称不隐含任何厂商能力。 |
+| `typed_tuple(name: str, values: object, kind: type \| tuple[type, ...])` | 只接受有限 list/tuple 并冻结成员；字符串、映射和惰性迭代器不是模型输入序列。 |
+| `finite_fraction(name: str, value: Fraction)` | 精确有理中间量只在输出边界转 binary64；正值下溢和溢出必须显式失败。 |
 | `ceil_div(n: int, d: int)` | 整数向上取整 ceil(n/d)；n≥0、d>0，避免大整数先转 float。 |
 | `ClockDomain` | 固定时钟域：Tclk=1/f；不同 domain 的 cycle 数不能直接相加。 |
 | `ClockDomain.period_s` | 时钟周期 Tclk=1/f [s]。 |

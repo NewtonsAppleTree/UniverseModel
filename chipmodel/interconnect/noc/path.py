@@ -21,12 +21,29 @@ class NoCPathParams:
 
 
 # 给定 H>0、F=ceil((payload+header)/flit_bytes)，尾 flit 在 H*(Lr+Ll)+(F−1)II 完成。
-def estimate_noc_time(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int,
-                      hops: int) -> float:
+def estimate_noc(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int,
+                 hops: int) -> "NoCEstimate":
     count("payload_bytes", payload_bytes, 0)
     count("hops", hops)
     if payload_bytes == 0:
-        return 0.0
+        return NoCEstimate(0, 0, 0, 0, 0, 0.0)
     flits = ceil_div(payload_bytes + p.header_bytes, p.flit_bytes)
     cycles = hops * (p.router_latency_cycles + p.link_latency_cycles) + (flits - 1) * p.flit_ii_cycles
-    return clock.seconds(cycles)
+    return NoCEstimate(1, p.header_bytes, flits, flits * p.flit_bytes, cycles, clock.seconds(cycles))
+
+
+# 逐路径 packet/flit 计量；每 hop 都占同样 flit 数，时间不重复序列化整包。
+@dataclass(frozen=True, slots=True)
+class NoCEstimate:
+    packet_count: int  # 非空请求恰为一个 packet [packet]。
+    protocol_bytes: int  # 本包头部长度 [B]。
+    flit_count: int  # ceil((payload+header)/flit_bytes) [flit]。
+    service_bytes: int  # flit_count*flit_bytes [B]；含末 flit padding。
+    completion_cycles: int  # H*(Lr+Ll)+(F-1)*II [cycle]。
+    completion_time_s: float  # completion_cycles/f_noc [s]。
+
+
+# 保留原独立时间 API，计量与时间由同一公式维护。
+def estimate_noc_time(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int,
+                      hops: int) -> float:
+    return estimate_noc(p, clock, payload_bytes=payload_bytes, hops=hops).completion_time_s

@@ -8,6 +8,8 @@ SampleHoldLimits 只检查同时保留样本数与样本年龄；单位分别是
 
 先确定量纲/编码 → 显式参数 → 校验与派生 → 单个或批量转换/静态有效性检查。数值结果不代表目标硬件已完成事件。所有物理速度、功率与误差需要外部特征化，不能从位数猜测。
 
+[CH5台架](../../../composition/tile/UNITS.md)已提供每样本TIA捕获、ADC接收与完成时间的分析轨迹。外部hold在ADC接收时释放；有效期按捕获到接收年龄检查，ADC内部在途槽另行验证。MUX setup与IIeff=max(ADC II,MUX settling)、码值暂存/输出累加容量均显式。现阶段每行一个持续DAC，不隐含复用DAC后的行保持。无跨phase事件/背压，细节见[指南](../../../docs/cim_bench.md)。
+
 <!-- model-fields:start -->
 
 ### [adc.py](adc.py)

@@ -4,6 +4,12 @@
 
 关键关系是每次尝试独立、输入内容身份一致可比较、源码/初态变化改变解释。没有新的硬件计量或队列状态。接口与验证由 runner 及[工程框架](../../ENGINEERING_FRAMEWORK.md)维护。
 
+数字Tile已通过[runner适配](runner/UNITS.md)接入相同记录接口，支持显式地址、共享bank、固定路径、容量失败与同输入资源敏感性。
+
+CIM局部台架复用[runner](runner/UNITS.md)进行固定数据的差分位置比较、ADC资源/精度消融、失败留档及完整候选回读；不将局部整数质量解释成AI任务质量。
+
+CH6计算能力实验通过ComputeStudy保存CPU阶段/GPU驻留/NPU服务的分组案例；资源或工作单因素变化自动检查，格式不支持和启动未知/不可行分别留档。接口与复现见[指南](../../chipmodel/docs/compute_capabilities.md)。
+
 <!-- model-fields:start -->
 
 

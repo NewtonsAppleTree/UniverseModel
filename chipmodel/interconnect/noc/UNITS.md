@@ -6,6 +6,8 @@ F=ceil((payload+header)/flit_bytes)，C=H*(Lrouter+Llink)+(F−1)*II。头 flit 
 
 最关心路由长度、窄链路、flit 粒度与共享端口。公式要求专用、同构、持续可用路径且无背压；没有 packet 分段、虚通道、credit 回程、仲裁或拥塞。不同链路参数或多时钟域应分段建模，不能直接把不同域 cycles 相加。
 
+`estimate_noc`额外返回packet、protocol bytes、flit、service bytes与cycles，`estimate_noc_time`保留原API。每hop承担F次flit服务；路径内尾flit序列化只计一次。组合通过[transfer.py](../../composition/transfer.py)共享同一方向link ID；profile不同的多hop须新增bridge模型。
+
 <!-- model-fields:start -->
 
 ### [path.py](path.py)
@@ -17,10 +19,18 @@ F=ceil((payload+header)/flit_bytes)，C=H*(Lrouter+Llink)+(F−1)*II。头 flit 
 | `NoCPathParams` | `router_latency_cycles` | `int` | cycle | 每 hop 的头 flit 路由器延迟 [cycle]。 |
 | `NoCPathParams` | `link_latency_cycles` | `int` | cycle | 每 hop 的头 flit 链路延迟 [cycle]。 |
 | `NoCPathParams` | `flit_ii_cycles` | `int` | cycle/flit | 每 hop 允许的连续 flit 间隔 [cycle/flit]。 |
+| `NoCEstimate` | `packet_count` | `int` | packet | 非空请求恰为一个 packet [packet]。 |
+| `NoCEstimate` | `protocol_bytes` | `int` | B | 本包头部长度 [B]。 |
+| `NoCEstimate` | `flit_count` | `int` | flit | ceil((payload+header)/flit_bytes) [flit]。 |
+| `NoCEstimate` | `service_bytes` | `int` | B | flit_count*flit_bytes [B]；含末 flit padding。 |
+| `NoCEstimate` | `completion_cycles` | `int` | cycle | H*(Lr+Ll)+(F-1)*II [cycle]。 |
+| `NoCEstimate` | `completion_time_s` | `float` | s | completion_cycles/f_noc [s]。 |
 
 | 类型 / 接口 | 用途、公式与边界 |
 | --- | --- |
 | `NoCPathParams` | 每 hop 的固定头部时延与稳态 flit 发起间隔；buffer/VC 竞争未计入。 |
-| `estimate_noc_time(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int, hops: int)` | 给定 H>0、F=ceil((payload+header)/flit_bytes)，尾 flit 在 H*(Lr+Ll)+(F−1)II 完成。 |
+| `estimate_noc(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int, hops: int)` | 给定 H>0、F=ceil((payload+header)/flit_bytes)，尾 flit 在 H*(Lr+Ll)+(F−1)II 完成。 |
+| `NoCEstimate` | 逐路径 packet/flit 计量；每 hop 都占同样 flit 数，时间不重复序列化整包。 |
+| `estimate_noc_time(p: NoCPathParams, clock: ClockDomain, *, payload_bytes: int, hops: int)` | 保留原独立时间 API，计量与时间由同一公式维护。 |
 
 <!-- model-fields:end -->

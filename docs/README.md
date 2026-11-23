@@ -4,7 +4,7 @@
 
 近期优先级和验收门槛从[研究开发路线](RESEARCH_ROADMAP.md)进入，选型依据见[开源项目调研](reference/open_source_landscape.md)。[首个线性实验](../evaluation/docs/linear_mapping.md)已覆盖任务、映射、校验和比较，后续补训练语义与外部基线校准；通用工程接口与接入规则见 [ENGINEERING_FRAMEWORK.md](../ENGINEERING_FRAMEWORK.md)。CIM array + DAC/ADC + 缓冲台架继续按局部验收方案推进。
 
-当前进入 [chipmodel开发任务梳理](../chipmodel/docs/development_plan.md)：逐目录核对现状，按研究问题、建模边界和证据安排首个实现包。此前clustermodel基础已完成，见[交接报告](../clustermodel/docs/completion.md)及[横向能力指南](../clustermodel/docs/breadth_usage.md)。
+当前已完成 [chipmodel CH1–CH4首包](../chipmodel/docs/foundation_usage.md)：契约/精度、SRAM访问、搬运账本、数字Tile同预算对照及敏感性；[CH5 CIM局部台架](../chipmodel/docs/cim_bench.md)也已完成数值链、共享ADC/保持检查与同输入对照；[CH6计算能力解释](../chipmodel/docs/compute_capabilities.md)已接续CPU/GPU/NPU的限制、格式与供数对照；下一项按[开发计划](../chipmodel/docs/development_plan.md)推进CH7外存与缓存接入。此前clustermodel基础已完成，见[交接报告](../clustermodel/docs/completion.md)及[横向能力指南](../clustermodel/docs/breadth_usage.md)。
 
 搭建组件台架或设计硬件接口时，再查[可组合组件与局部仿真规划](architecture/composable_simulation.md)；其公共事件接口与 BenchSpec 样例仍为设计提案。独立 ADC 的代码与运行方法见[模型说明](../chipmodel/docs/adc_model.md)。
 

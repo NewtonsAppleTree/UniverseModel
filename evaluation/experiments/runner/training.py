@@ -77,6 +77,8 @@ class TrainingStudy:
 # Compare the whole step; only the GEMM subset has target service estimates, while full-step time remains unknown.
 def evaluate_training(params: TrainingExperiment, inputs: tuple[TrainingState, TrainingInputs]) -> tuple[object, tuple[Metric, ...]]:
     state, data = inputs
+    if params.hardware.tile_backend is not None:
+        raise ValueError("training Tile address mapping is not implemented; use the declared MAC/DMA-only backend")
     if params.hardware.operand_dtype != "float64":
         raise ValueError("training requires explicit float64 hardware capability")
     result, plan = execute_training(params.workload, state, data, params.learning_rate, params.candidate.tile,

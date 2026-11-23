@@ -1,0 +1,463 @@
+{
+  "cases": [
+    {
+      "family": "cpu",
+      "group": "cpu_stages",
+      "model": {
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "decode_uops_per_cycle": 6,
+          "execution_ii_cycles": 2,
+          "execution_lanes": 8,
+          "fetch_uops_per_cycle": 4,
+          "issue_uops_per_cycle": 3,
+          "retire_uops_per_cycle": 2
+        },
+        "profile_source": "Analytical homogeneous uop fixture CH6/v1; no device calibration",
+        "uop_class": "scalar-add/v1"
+      },
+      "name": "cpu_baseline",
+      "role": "baseline",
+      "work": {
+        "executed_uops": 25,
+        "uop_class": "scalar-add/v1"
+      }
+    },
+    {
+      "family": "cpu",
+      "group": "cpu_stages",
+      "model": {
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "decode_uops_per_cycle": 6,
+          "execution_ii_cycles": 2,
+          "execution_lanes": 16,
+          "fetch_uops_per_cycle": 4,
+          "issue_uops_per_cycle": 3,
+          "retire_uops_per_cycle": 2
+        },
+        "profile_source": "Analytical homogeneous uop fixture CH6/v1; no device calibration",
+        "uop_class": "scalar-add/v1"
+      },
+      "name": "cpu_ports_x2",
+      "role": "resource_ablation",
+      "work": {
+        "executed_uops": 25,
+        "uop_class": "scalar-add/v1"
+      }
+    },
+    {
+      "family": "cpu",
+      "group": "cpu_stages",
+      "model": {
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "decode_uops_per_cycle": 6,
+          "execution_ii_cycles": 2,
+          "execution_lanes": 8,
+          "fetch_uops_per_cycle": 4,
+          "issue_uops_per_cycle": 3,
+          "retire_uops_per_cycle": 8
+        },
+        "profile_source": "Analytical homogeneous uop fixture CH6/v1; no device calibration",
+        "uop_class": "scalar-add/v1"
+      },
+      "name": "cpu_retire_x4",
+      "role": "resource_ablation",
+      "work": {
+        "executed_uops": 25,
+        "uop_class": "scalar-add/v1"
+      }
+    },
+    {
+      "family": "cpu",
+      "group": "cpu_stages",
+      "model": {
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "decode_uops_per_cycle": 6,
+          "execution_ii_cycles": 2,
+          "execution_lanes": 8,
+          "fetch_uops_per_cycle": 4,
+          "issue_uops_per_cycle": 3,
+          "retire_uops_per_cycle": 2
+        },
+        "profile_source": "Analytical homogeneous uop fixture CH6/v1; no device calibration",
+        "uop_class": "scalar-add/v1"
+      },
+      "name": "cpu_wrong_uop",
+      "role": "boundary",
+      "work": {
+        "executed_uops": 25,
+        "uop_class": "multiply/v1"
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_residency",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 1024,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_baseline",
+      "role": "baseline",
+      "work": {
+        "registers_per_thread": 64,
+        "shared_memory_bytes": 16384,
+        "threads": 256
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_residency",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 1024,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 131072,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_registers_x2",
+      "role": "resource_ablation",
+      "work": {
+        "registers_per_thread": 64,
+        "shared_memory_bytes": 16384,
+        "threads": 256
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_residency",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 1024,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 131072,
+        "warp_size": 32
+      },
+      "name": "gpu_shared_x2",
+      "role": "resource_ablation",
+      "work": {
+        "registers_per_thread": 64,
+        "shared_memory_bytes": 16384,
+        "threads": 256
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_residency",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 128,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_launch_rejected",
+      "role": "boundary",
+      "work": {
+        "registers_per_thread": 64,
+        "shared_memory_bytes": 16384,
+        "threads": 256
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_residency",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": null,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_launch_unknown",
+      "role": "boundary",
+      "work": {
+        "registers_per_thread": 64,
+        "shared_memory_bytes": 16384,
+        "threads": 256
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_tail",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 1024,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_tail_33",
+      "role": "baseline",
+      "work": {
+        "registers_per_thread": 1,
+        "shared_memory_bytes": 1,
+        "threads": 33
+      }
+    },
+    {
+      "family": "gpu",
+      "group": "gpu_tail",
+      "model": {
+        "allocation_policy": "padded-warp-block-quantum/v1",
+        "max_blocks_per_sm": 16,
+        "max_registers_per_block": 65536,
+        "max_registers_per_thread": 255,
+        "max_shared_bytes_per_block": 49152,
+        "max_threads_per_block": 1024,
+        "max_threads_per_sm": 2048,
+        "max_warps_per_sm": 64,
+        "profile_source": "Analytical padded-warp block allocation CH6/v1; not a vendor profile",
+        "register_allocation_quantum": 256,
+        "registers_per_sm": 65536,
+        "shared_allocation_quantum_bytes": 256,
+        "shared_memory_bytes": 65536,
+        "warp_size": 32
+      },
+      "name": "gpu_tail_64",
+      "role": "workload_ablation",
+      "work": {
+        "registers_per_thread": 1,
+        "shared_memory_bytes": 1,
+        "threads": 64
+      }
+    },
+    {
+      "family": "npu",
+      "group": "npu_service",
+      "model": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "initiation_interval_cycles": 2,
+          "lane_count": 4,
+          "latency_cycles": 3
+        },
+        "profile_source": "Analytical signed INT8/INT64 MAC fixture CH6/v1; no calibration"
+      },
+      "name": "npu_baseline",
+      "role": "baseline",
+      "work": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "executed_macs": 9,
+        "logical_macs": 7
+      }
+    },
+    {
+      "family": "npu",
+      "group": "npu_service",
+      "model": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "initiation_interval_cycles": 2,
+          "lane_count": 8,
+          "latency_cycles": 3
+        },
+        "profile_source": "Analytical signed INT8/INT64 MAC fixture CH6/v1; no calibration"
+      },
+      "name": "npu_lanes_x2",
+      "role": "resource_ablation",
+      "work": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "executed_macs": 9,
+        "logical_macs": 7
+      }
+    },
+    {
+      "family": "npu",
+      "group": "npu_service",
+      "model": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "initiation_interval_cycles": 2,
+          "lane_count": 4,
+          "latency_cycles": 3
+        },
+        "profile_source": "Analytical signed INT8/INT64 MAC fixture CH6/v1; no calibration"
+      },
+      "name": "npu_more_padding",
+      "role": "workload_ablation",
+      "work": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "executed_macs": 12,
+        "logical_macs": 7
+      }
+    },
+    {
+      "family": "npu",
+      "group": "npu_service",
+      "model": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "initiation_interval_cycles": 2,
+          "lane_count": 4,
+          "latency_cycles": 3
+        },
+        "profile_source": "Analytical signed INT8/INT64 MAC fixture CH6/v1; no calibration"
+      },
+      "name": "npu_wrong_accumulator",
+      "role": "boundary",
+      "work": {
+        "arithmetic": {
+          "accumulator_format": "int32",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int32"
+        },
+        "executed_macs": 9,
+        "logical_macs": 7
+      }
+    },
+    {
+      "family": "npu",
+      "group": "npu_service",
+      "model": {
+        "arithmetic": null,
+        "clock": {
+          "domain_id": "compute",
+          "frequency_hz": 1000000000.0
+        },
+        "params": {
+          "initiation_interval_cycles": 2,
+          "lane_count": 4,
+          "latency_cycles": 3
+        },
+        "profile_source": "Analytical signed INT8/INT64 MAC fixture CH6/v1; no calibration"
+      },
+      "name": "npu_undeclared_format",
+      "role": "boundary",
+      "work": {
+        "arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "executed_macs": 9,
+        "logical_macs": 7
+      }
+    }
+  ],
+  "schema_version": "compute-capacity-study/v1"
+}

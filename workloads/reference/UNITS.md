@@ -12,7 +12,17 @@
 
 原生 float64 中间舍入与精确链可能不同，数值不合格是独立结果。ReLU exact 零点梯度为 0，不把折点有限差分作为唯一依据。矩形/mean 归一化/中心差分见[训练测试](../../tests/workloads/test_training.py)，可选 PyTorch autograd 另提供独立实现证据。
 
+## 通用整数MatVec参考
+
+`reference_integer_matvec(vector, matrix, max_macs=...)`不依赖硬件，逐列使用Python整数精确点积。允许一般有符号整数，拒绝bool/浮点/错误shape；不执行量化或硬件溢出。max_macs是宿主上限。CIM实验独立应用输出格式后比较，证据见[测试](../../tests/workloads/test_integer_matvec.py)。
+
 <!-- model-fields:start -->
+
+### [integer_matvec.py](integer_matvec.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `reference_integer_matvec(vector: tuple[int, ...], matrix: tuple[tuple[int, ...], ...], *, max_macs: int=1000000)` | 独立检查输入并按列做精确乘加；不量化、不截断，也不应用硬件输出溢出策略。 |
 
 ### [linear.py](linear.py)
 

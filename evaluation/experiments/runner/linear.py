@@ -7,6 +7,7 @@ from typing import Literal
 from chipmodel.common import ClockDomain, PipelineParams
 from chipmodel.compute.npu.mac import MacArray
 from chipmodel.control.data_movement import DmaParams, estimate_dma
+from chipmodel.composition.tile.digital import analyze_tile
 from compiler.src.interpret.linear import execute_plan
 from compiler.src.memplan.linear import count_traffic, plan_memory
 from compiler.src.tiling.linear import build_plan
@@ -15,6 +16,7 @@ from contracts.results.experiment import ExperimentSpec, Metric, RunRecord
 from contracts.versions.json_codec import content_hash, parse_json
 from contracts.workload.linear import LinearInputs, LinearSpec, input_identity, positive_int
 from evaluation.experiments.runner.single import run_experiment
+from evaluation.experiments.runner.tile_mapping import LinearTileBackend, map_linear_tile
 from workloads.kernels.linear import describe_work, generate_inputs
 from workloads.reference.linear import compare_output, reference_linear
 
@@ -28,6 +30,7 @@ class LinearHardware:
     mac: PipelineParams  # MAC lanes P and service L/II [lane, cycle]; supplied assumptions, not calibration.
     dma_clock: ClockDomain  # Single DMA channel clock f_dma [Hz].
     dma: DmaParams  # Row-request DMA service parameters; external DRAM/NoC are not added implicitly.
+    tile_backend: LinearTileBackend | None = None  # 可选逐地址 SRAM/路径分析；None 保留原 MAC/DMA 摘要边界。
 
     # Reject unsupported formats, invalid capacity and objects without declared hardware semantics.
     def __post_init__(self) -> None:
@@ -38,6 +41,15 @@ class LinearHardware:
                            ("dma_clock", ClockDomain), ("dma", DmaParams)):
             if not isinstance(getattr(self, name), kind):
                 raise TypeError(f"{name} must be {kind.__name__}")
+        if self.tile_backend is not None:
+            if not isinstance(self.tile_backend, LinearTileBackend):
+                raise TypeError("tile_backend must be LinearTileBackend")
+            tile = self.tile_backend.tile
+            memory = next(m for m in tile.resources.memories if m.resource_id == tile.scratch_id)
+            channel = next(c for c in tile.resources.channels if c.resource_id == self.tile_backend.channel_id)
+            if (tile.mac, tile.compute_clock, memory.capacity_bytes, channel.params, channel.clock) != (
+                    self.mac, self.compute_clock, self.scratch_capacity_bytes, self.dma, self.dma_clock):
+                raise ValueError("linear and tile hardware budgets must match")
 
 
 # One candidate is explicit; unsuccessful capacity checks remain part of the comparison.
@@ -122,6 +134,11 @@ def evaluate_mapping(params: LinearExperiment, inputs: LinearInputs) -> tuple[ob
                      for request in traffic.transfers)
     dma_time = hardware.dma_clock.seconds(dma_cycles)
     bound = max(compute.completion_time_s, dma_time)
+    tile_work, tile_analysis = None, None
+    if hardware.tile_backend is not None:
+        tile_work = map_linear_tile(hardware.tile_backend, spec, plan, memory, traffic)
+        tile_analysis = analyze_tile(hardware.tile_backend.tile, tile_work)
+        bound = tile_analysis.lower_bound_s
     metrics = (
         Metric(name="executed_macs", value=traffic.executed_macs, unit="MAC", kind="counter"),
         Metric(name="external_payload", value=traffic.external_bytes, unit="byte", kind="counter"),
@@ -135,7 +152,8 @@ def evaluate_mapping(params: LinearExperiment, inputs: LinearInputs) -> tuple[ob
     return {"input_identity": identity, "plan_identity": content_hash(plan), "plan": plan,
             "logical_work": describe_work(spec), "memory": memory, "traffic": traffic,
             "output": actual, "reference": reference, "validation": validation,
-            "ideal_compute": compute, "serial_dma_cycles": dma_cycles}, metrics
+            "ideal_compute": compute, "serial_dma_cycles": dma_cycles,
+            "tile_work": tile_work, "tile_analysis": tile_analysis}, metrics
 
 
 # The runner receives structured generation provenance alongside the mapping; it does not execute strings.
@@ -150,15 +168,21 @@ def run_study(study: LinearStudy, *, source_revision: str = "unrecorded") -> tup
     for candidate in study.candidates:
         params = LinearExperiment(workload=study.workload, hardware=study.hardware, candidate=candidate,
                                   max_macs=study.max_macs, atol=study.atol, rtol=study.rtol)
-        spec = ExperimentSpec(experiment_id=candidate.name, implementation_id="linear-mapping-analysis/v1",
+        tile_backend = study.hardware.tile_backend
+        spec = ExperimentSpec(experiment_id=candidate.name, implementation_id=("linear-tile-analysis/v1" if tile_backend
+                                                                                 else "linear-mapping-analysis/v1"),
                               mode="analytical", source_revision=source_revision, assumptions=(
                                   "Dense row-major positive extents; INT8/INT64 or binary64 without FMA",
                                   "Three byte-packed disjoint scratch arenas; A/B reloaded per update",
                                   "One serial DMA channel; one request per external tensor row; no alignment penalty",
                                   "MAC capability and service parameters are assumptions, not measured calibration",
-                                  "Resource lower bound permits ideal overlap and omits dependency stalls, DRAM/NoC latency",
+                                  "Resource lower bound permits ideal overlap and omits undeclared dependency stalls",
                                   "No event execution, full-system timing or physical energy claim",
-                              ))
+                              ) + (("Explicit scalar A/B reads per MAC; C register residency only within each K slice",
+                                    "SRAM word transactions include DMA and compute; no implicit request coalescing",
+                                    "Tile paths are explicit; external memory service may remain unknown",
+                                    f"Service profile source: {tile_backend.profile_source}") if tile_backend else
+                                   ("External memory and NoC service are omitted",)))
         configuration = {"mapping": params, "input_generator": {"version": "sha256-index-v1", "seed": study.seed}}
         records.append(run_experiment(spec, configuration, inputs, _evaluate_generated))
     return tuple(records)
@@ -179,5 +203,10 @@ def summarize_records(records: tuple[RunRecord, ...]) -> tuple[dict[str, object]
                        + payload["traffic"]["output_write_bytes"], scratch_bytes=payload["memory"]["allocation_bytes"],
                        resource_lower_bound_s=next(metric.value for metric in record.metrics
                                                   if metric.name == "resource_time_lower_bound"))
+            if payload.get("tile_analysis") is not None:
+                tile = payload["tile_analysis"]
+                row.update(bottlenecks=tile["bottlenecks"], bank_reads=tile["scratch_service"]["bank_reads"],
+                           bank_writes=tile["scratch_service"]["bank_writes"],
+                           unknown_costs=tile["transfer"]["unknown_costs"])
         rows.append(row)
     return tuple(rows)

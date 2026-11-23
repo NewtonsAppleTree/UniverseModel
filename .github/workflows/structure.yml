@@ -32,6 +32,12 @@ jobs:
       - run: python -m example.cluster_demo --read .build/cluster-breadth --overview
       - run: python -m example.linear_demo --output .build/linear-study
       - run: python -m example.linear_demo --read .build/linear-study
+      - run: python -m example.digital_tile_demo --output .build/digital-tile-study
+      - run: python -m example.digital_tile_demo --read .build/digital-tile-study
+      - run: python -m example.cim_demo --output .build/cim-study
+      - run: python -m example.cim_demo --read .build/cim-study
+      - run: python -m example.compute_demo --output .build/compute-study
+      - run: python -m example.compute_demo --read .build/compute-study
       - run: python -m example.training_demo --output .build/training-study
       - run: python -m example.training_demo --read .build/training-study
       - run: python -m pip wheel . --no-deps --wheel-dir .build/wheels

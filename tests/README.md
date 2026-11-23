@@ -1,10 +1,16 @@
 # 验证归属
 
+CH6新增[计算能力模型测试](chipmodel/test_compute_capabilities.py)与[计算能力集成测试](integration/test_compute_experiment.py)，涵盖CPU阶段槽枚举、GPU资源消耗/启动限额、NPU签名/尾批、完整单因素协议及Tile供数/不重复计费。运行方式沿用chipmodel和integration的独立discover命令，边界和证据见[指南](../chipmodel/docs/compute_capabilities.md)。
+
 本目录按 contracts、configuration、costmodel、chipmodel、systemmodel、clustermodel、workloads、runtime、simulator、artifacts、evaluation、ui 与 integration 划分。compiler 的阶段验证保留在 compiler/tests。
 
 本目录规定测试归属，已完成的验证与可运行命令见[实现状态](../docs/STATUS.md)。功能与时序实现时，优先增加独立参考、容量/端口/因果反例、可手算争用与完整复现案例，避免仅重复代码行为。
 
 完整验收标准见[验证规范](../docs/architecture/validation.md)。
+
+CH5新增[CIM模型测试](chipmodel/test_cim.py)、[独立整数参考测试](workloads/test_integer_matvec.py)和[CIM实验测试](integration/test_cim_experiment.py)：80组随机整数矩阵×两种差分、不同矩形、精确电压/码值、ADC尾批/尾slice、样本年龄与内部/外部容量、资源II、量化/溢出/源身份和完整保存回读。证据与复现见[CIM指南](../chipmodel/docs/cim_bench.md)。
+
+chipmodel CH1–CH4新增[基础模型测试](chipmodel/test_foundation.py)与[数字Tile集成测试](integration/test_digital_tile.py)：有理数精度、逐byte独立地址枚举、共享端口/路径账本、预留/owner反例、相同输入功能/流量、单因素瓶颈迁移及完整候选回读。复现与边界见[指南](../chipmodel/docs/foundation_usage.md)。
 
 集群收尾新增[独立路径参考与批量回归](clustermodel/test_closeout.py)5项，以及[回读严格性测试](integration/test_cluster_experiment.py)2项；覆盖360个端点对、不同长度/显式路径、profile替换、停用后恢复和重复候选/运行身份。网络相关测试累计103项；最终全回归结果见STATUS。宿主规模实验可用[benchmark_cluster.py](../tools/benchmark_cluster.py)，不把计时阈值写入正确性测试。
 

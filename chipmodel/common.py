@@ -44,6 +44,27 @@ def identifier(name: str, value: str) -> str:
     return value
 
 
+# 只接受有限 list/tuple 并冻结成员；字符串、映射和惰性迭代器不是模型输入序列。
+def typed_tuple(name: str, values: object, kind: type | tuple[type, ...]) -> tuple:
+    if not isinstance(values, (list, tuple)):
+        raise TypeError(f"{name} must be a list or tuple")
+    if any(not isinstance(value, kind) for value in values):
+        label = kind.__name__ if isinstance(kind, type) else "/".join(option.__name__ for option in kind)
+        raise TypeError(f"{name} members must be {label}")
+    return tuple(values)
+
+
+# 精确有理中间量只在输出边界转 binary64；正值下溢和溢出必须显式失败。
+def finite_fraction(name: str, value: Fraction) -> float:
+    try:
+        result = real(name, float(value), minimum=0)
+    except OverflowError as exc:
+        raise ValueError(f"{name} exceeds binary64 range") from exc
+    if value > 0 and result == 0:
+        raise ValueError(f"{name} positive value underflows binary64")
+    return result
+
+
 # 整数向上取整 ceil(n/d)；n≥0、d>0，避免大整数先转 float。
 def ceil_div(n: int, d: int) -> int:
     count("n", n, 0)

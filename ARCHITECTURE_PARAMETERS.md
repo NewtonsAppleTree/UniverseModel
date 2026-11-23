@@ -78,7 +78,7 @@
 | 部分和回写额外流量 | B | 每个 K 边界各读写一次 C，额外 2(qK−1)MNc；输出驻留无该流量 |
 | 外部请求与资源下界 | request、cycle、s | ROI 每行一条 DMA 请求；各域先换成秒，T_bound=max(T_MAC_ideal,T_DMA_serial)，乐观省略依赖停顿，不等于执行时延 |
 
-本实现未计 bank/port/地址对齐、缓存、双缓冲、外存/NoC 细时序或物理成本，能耗保持未知。max_macs/max_steps/max_transfers/max_elements 属宿主材料化与验证预算，不属于目标硬件参数。来源是上述明确假设下的逐项推导及独立手算测试，未做实机或电路校准。
+原MAC/DMA摘要未计 bank/port/地址对齐。可选[数字Tile适配](chipmodel/docs/foundation_usage.md)现已加入显式地址word/bank/端口计量、buffer backing与NoC路径；本地策略每MAC读A/B、每K slice读写C（首slice初始化免读），不能从DMA流量推导复用。缓存、双缓冲事件、外存服务与物理成本仍未覆盖，能耗保持未知。max_macs/max_steps/max_transfers/max_elements 属宿主材料化与验证预算，不属于目标硬件参数。来源是上述明确假设下的逐项推导及独立手算测试，未做实机或电路校准。
 
 ## 3 计算与控制资源
 
@@ -96,6 +96,18 @@
 | 设/标：脉动阵列 Systolic Array、PE 网格、注入与归约 | row×column、element/cycle、cycle | 时间由映射、PE 的 L/II、边缘供数、传播、填充/排空及 tile 边界决定；R×C 不能直接推导任意矩阵的实际 MAC/cycle |
 | 设/标：累加器 Accumulator、归约树 Reduction Tree | bit、input、level、cycle | 非负整数 K 项乘积需容纳 K·x_max·w_max；unsigned 位宽≥ceil(log2(K·x_max·w_max+1))。有符号/浮点用各自范围与舍入规则 |
 | 观：执行利用率、形状利用率、供数/依赖停顿 | 比例、cycle | 分开统计实际执行/可服务工作、padding 浪费、等待原因；不能用一个“利用率”同时修正容量、带宽和能耗 |
+
+CH6的[计算能力接口](chipmodel/docs/compute_capabilities.md)已采用以下关系；字段和实际可选值仍在生产代码/各目录UNITS维护：
+
+| 参数 / 派生量 | 单位 | 已实现关系与边界 |
+| --- | --- | --- |
+| CPU所选μop类、阶段P/II与有限W | uop、cycle | 操作身份显式匹配；稳态min(P/II)，精确有理比较全部瓶颈。每阶段跨度max(ceil(W/P)−1,0)II，cycle0允许P槽；省略延迟/依赖，不能当作程序时间 |
+| GPU单block/每线程限制与SM线程槽 | thread、register、B | 除block/warp/register/shared预算外，显式检查单block线程/寄存器/shared和每线程寄存器上限；未提供限额为None而非无限，已知不可行优先返回False |
+| GPU分配规则、尾warp与有效线程 | thread slot、比例 | padded-warp-block-quantum/v1先补齐warp再按block量化；tail=padded−threads，thread_slot_efficiency=threads/padded，不等于执行利用率；其他厂商分配规则需另建模型 |
+| NPU操作/格式服务签名 | 枚举 | 区分integer_mac、float_mul_add、float_fma及FP16/BF16等格式；累加和输出显式，当前output=accumulator，无隐式转换；每个档位绑定一种签名和P/L/II/来源 |
+| NPU逻辑/实际/额外工作及尾槽 | MAC、MAC slot、比例 | 当前稠密范围executed≥logical≥0；extra=executed−logical，slots=ceil(executed/P)P，tail=slots−executed；填槽率与有效工作比例分开，空分母None |
+
+以上为声明条件下的容量/服务分析。CPU/GPU执行、NPU依赖/反馈调度和数值舍入/溢出没有通过这些公式验证；未知时间/能耗保留未知。数字Tile格式检查复用同一MAC服务，不能增加第二份计算成本。
 
 ### 3.2 处理器内部与硬件命令
 
@@ -125,10 +137,15 @@ TMA 在本仓库表示可配置的张量搬运能力；TSU 保留为待定义操
 | 标/设：TIA 跨阻、偏置、输出范围 | Ω、V | V_out=V_offset+I·R_TIA；R_TIA 可带符号以表达反相。限幅、噪声与带宽不能由此理想式自动得到 |
 | 设/标：ADC 分辨率 N、量程、lane、L/II | bit、V、lane、cycle | K=2^N，ΔV=(V_max−V_min)/K；当前均匀 offset-binary ADC 按 bin 量化并限到 0..K−1，V_max 归最高码。批次时间按第 3 节 |
 | 设/标：DAC 位数、输出范围、建立与负载 | bit、V、s、F/A | 当前端点对齐 DAC：V(q)=V_min+q·(V_max−V_min)/(2^N−1)。以参考电压/2^N 定义 LSB 的器件需采用其传递函数，不能混用 |
+| 推：CH5电导编码与数字恢复 | S/digit、V、integer | G=Gmin+digit·ΔG；1-bit DAC为0/Vread；ADC中点Vhat=Vmin+(q+1/2)ΔV，经已知偏置/基线和Vread·ΔG·Rtia恢复整数部分和，ties-to-even；数字差分先减两路重建值。移位b+s·Bcell，最终有符号溢出与量化误差分开 |
+| 推：CH5外围动作 | DAC-update、array-read、sample、operation | phase=Bin·s；DAC更新R·phase（差分对共享驱动），阵列读s·d·Bin，ADC/TIA样本C·phase·d_adc；数字原语=每码重建+数字差分每列减法+每列融合requantize/shift-add，不推导真实电路吞吐 |
+| 推：CH5保持与共享ADC | sample、code、cycle、s | 每行持续DAC；TIA捕获→ADC接收年龄≤保持期，外部hold≥S，码值暂存≥S，累加槽≥C；ADC在发起时内部采样，IIeff=max(IIadc,Lmux)，内部槽≥min(ceil(S/P),ceil(Ladc/IIeff))。phase串行但资源跨phase仍须满足II |
 | 设/标：MUX 共享、sample/hold、采样与保持 | column/ADC、sample、s、V/s | 共享增加读出次数；保持容量≥尚未消费样本数，样本年龄≤有效保持时间；采样、settling、转换和切换的重叠关系显式给出 |
 | 标：INL/DNL、噪声、SNDR/SINAD、ENOB | LSB、V_rms、dB、bit | 满量程正弦常用 ENOB=(SINAD−1.76)/6.02；非满量程需按测试幅度修正，并记录输入频率/带宽。理想量化 σ=Δ/√12 依赖均匀误差假设，不是完整 CIM 误差模型 [R6] |
 | 设/标：数字移位累加、符号恢复、re-quantization | bit、shift、operation、cycle | 输出=Σ_k partial_k·2^shift_k，再按声明的溢出/舍入策略处理；中途截断与最终截断不等价 |
 | 标：program/verify、读噪声、变异、漂移、校准 | pulse、s、J、S；分布参数 | 器件间/同器件逐次变化分开；写入失败/重试、漂移随时间温度、校准开销按技术启用。训练权重更新必须计写代价与寿命 |
+
+CH5实际字段、局部策略与同输入证据见[CIM指南](chipmodel/docs/cim_bench.md)；中间无限精度是数值参考语义，未校准编程/能耗不能当作零。
 
 最关心：有效逻辑矩阵、编码放大、活跃行数、列输出动态范围、ADC 服务率/精度、外围共享、数据驻留和写入成本。阵列面积与能耗必须说明是否含外围；参考 [R10] 的分层建模边界，不直接移植其预测参数。
 
@@ -155,8 +172,8 @@ TMA 在本仓库表示可配置的张量搬运能力；TSU 保留为待定义操
 | 对象 / 专业术语 | 核心参数与单位 | 关键关系与边界 |
 | --- | --- | --- |
 | SRAM bank / Register File | bank 数、word/bank、bit/word、R/W/RW port、读写 L/II | payload 容量=banks·words_per_bank·word_bits/8 B；RF 也可由其他电路实现，不把它强制视作一种 SRAM 宏 |
-| SRAM 访问粒度（CH2规划） | 起始地址 a [B]、请求长度 D [B]、字长 w [B/word]、word/bank | 非空连续读触及 N=floor((a+D−1)/w)−floor(a/w)+1 个word；D=0时N=0。整word读的服务量为Nw，逻辑量仍为D；逐word映射bank，是否支持非对齐/掩码及请求合并须显式声明 |
-| SRAM 端口共享（CH2规划） | 每bank读/写word事务数、独立R/W或共用RW、L/II | 独立R和W分别受端口供给限制；同一RW端口承担读+写合计。L/II与初态决定局部服务，端口数不能当作实际可达吞吐；新增访问分析尚未实现 |
+| SRAM 访问粒度（CH2已实现） | 起始地址 a [B]、请求长度 D [B]、字长 w [B/word]、word/bank | 非空连续读触及 N=floor((a+D−1)/w)−floor(a/w)+1 个word；D=0时N=0。整word读的服务量为Nw，逻辑量仍为D；逐word映射bank，是否支持非对齐/掩码及请求合并须显式声明 |
+| SRAM 端口共享（CH2已实现） | 每bank读/写word事务数、独立R/W或共用RW、L/II | 独立R和W分别受端口供给限制；同一RW端口承担读+写合计。L/II与初态决定局部服务，端口数不能当作实际可达吞吐；独立R/W取G=max(ceil(R/Pr),ceil(W/Pw))，共用RW取G=ceil((R+W)/P)，隔离C=L+(G−1)II；混合专用与共享暂不支持 |
 | SRAM 外围 | 行列译码、WL/BL、预充、sense amp、write driver、MUX；s/J/mm² | 宏级成本若已覆盖外围，不再加 cell/decoder 等细项；bank 组织和多端口实现会改变面积与时序 |
 | SRAM 物理条件（按需） | 6T/8T/10T；cell area µm²；SNM/Vmin/retention V；leakage A | 6T 一般为交叉耦合锁存结构，不是时钟触发器；端口数不能单由晶体管数推断。SNM、assist、bitline swing 用于可行性/成本校准 |
 | Scratchpad / 显式缓冲 | 容量 B、bank mapping、allocation/alignment B、生命周期 | 没有 cache hit/miss 语义；地址冲突、生命周期重叠和 DMA 访问仍需描述 |
@@ -166,7 +183,7 @@ TMA 在本仓库表示可配置的张量搬运能力；TSU 保留为待定义操
 | AMAT（分析指标） | hit time、miss rate、增量 miss penalty | 单层阻塞近似 AMAT=t_hit+miss_rate·penalty；多层按局部缺失率递推。并行访存的程序时间不等于访问数×AMAT |
 | CAM / TCAM（按需） | entry、key bit、mask、search port、search L/II、J/search | 属于按内容匹配的结构/行为；底层可有不同实现，不简单归为“SRAM 类型” |
 
-2026-11-23 [chipmodel首包任务](chipmodel/docs/development_plan.md)选取上述访问/共享/容量关系，先做明确请求的静态计量与独立局部服务验证；实际API和字段待CH2实现时由代码及UNITS维护。上表规划关系不表示已有事件、槽生命周期或新SramParams字段。
+2026-11-23 [chipmodel首包](chipmodel/docs/foundation_usage.md)已实现上述静态访问/共享/容量关系。supports_byte_write明确掩码写能力，每条请求独立word计量；BufferReservation以唯一backing的半开区间校验重叠/容量。实际字段由代码及UNITS维护，没有事件或槽生命周期。
 
 ### 5.3 DDR / LPDDR / GDDR / HBM / eDRAM
 
@@ -240,6 +257,7 @@ SRAM/DRAM 不使用 Flash 的 P/E 寿命指标；“刷新次数≈擦写耐久�
 | 设：仲裁/流控/路由/QoS | 策略；weight、B/s、s | RR/priority、credit/ready-valid、虚拟通道隔离、路由/死锁约束显式配置。带宽/延迟保证须有流量约束和调度依据 |
 | 标/观：误码、重传、FEC、链路功耗 | BER、packet error、J/bit、W、s | 原始 BER 不能直接等于丢包概率；重试及 FEC 影响开销与尾延迟。重试次数、独立/相关错误假设要明确 |
 | 设/标：D2D、UCIe/BoW/AIB、SerDes | 版本/profile、lane、B/s、s、J/bit | 使用具体协议模式、编码、速率与封装条件；不能把某代 PCIe/UCIe 的固定开销复制到其他代际 |
+| 推：显式搬运资源账本（CH3） | B、word、cycle、flit、wire bit、s | 唯一backing/owner、DMA、定向path；源读/DMA/链路/目标写分项，服务摘要与内部模型互斥。NoC只支持同构同钟路径，D2D只支持单链路；源/通道/路径/目标取已知隔离时间最大值，明确的完成依赖才相加，未知外存成本保留原因 |
 | 设/标：DMA、scatter/gather、TMA | channel、descriptor、B/burst、在途 request、启动 s | 独立服务摘要 T≈T_start+D/B_service；显式拆出源存储/链路/目的存储后，应按依赖与共享资源组合，避免再计一遍摘要时间 |
 | 设：张量地址生成、layout transform | shape、stride B、tile、swizzle、边界策略 | 描述源/目标、padding、转置、越界行为；逻辑字节、访存 transaction 与总线传输字节分别统计 |
 | 设/标：MMU/TLB/IOMMU、页表遍历（按需） | address bit、page B、entry、walker、s | TLB reach 的简单形式=entry·page_bytes；多页大小/关联度另算。翻译 miss 产生额外访问，DMA 地址空间与权限边界明确 |

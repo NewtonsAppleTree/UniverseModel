@@ -6,6 +6,8 @@ ConductanceArray 拥有冻结的 G[R,C] 初态，接收 R 个电压，返回 C �
 
 构造参数 → 校验/冻结矩阵 → evaluate → 按需要做跨阻适配。矩阵从外部 list 深拷贝成 tuple，原输入修改不改变阵列。G 为非负；负权重需差分编码，不能直接塞负电导。当前无 program/reset 动态状态。
 
+CH5的[电导编码](../matvec.py)按位slice生成真实ConductanceArray初态，支持非零Gmin；共享ADC不减少两支路cell活动。阵列读取时序和稳定电流假设由[局部台架](../../../composition/tile/UNITS.md)显式提供。程序矩阵的创建不提供编程耗时/能耗证据。
+
 <!-- model-fields:start -->
 
 ### [conductance.py](conductance.py)

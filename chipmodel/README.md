@@ -4,7 +4,7 @@
 
 实现进度统一见[实现状态](../docs/STATUS.md)；本页说明职责与目录。
 
-当前进入chipmodel开发任务梳理阶段。[开发任务与验收计划](docs/development_plan.md)已核对现有实现，并按“研究什么、怎样建模、如何证明”安排首包：基础契约与下界 → SRAM访问 → 搬运路径账本 → 数字Tile对照，再复用这些能力推进CIM局部台架及其他研究扩展。
+CH1–CH4首包已实现并验证：基础契约与下界、SRAM访问、搬运路径账本和数字Tile对照。见[基础用法与证据](docs/foundation_usage.md)；CH5也已实现完整CIM数值链、资源/精度对照和有限样本保持，见[CIM指南](docs/cim_bench.md)；[CH6能力解释](docs/compute_capabilities.md)已实现CPU阶段、GPU驻留/启动和NPU格式/尾批对照；后续按[开发计划](docs/development_plan.md)推进CH7外存与缓存接入。
 
 ## 阅读入口
 

@@ -4,6 +4,9 @@
 
 | 入口 | 维护对象 |
 | --- | --- |
+| [计算能力与瓶颈解释](compute_capabilities.md) | CH6的CPU阶段、GPU驻留/启动、NPU格式/尾批、供数消融与复现 |
+| [CIM完整局部台架](cim_bench.md) | CH5数值/资源/保持模型、精度与资源消融、独立证据与复现 |
+| [基础实现与研究用法](foundation_usage.md) | CH1–CH4模型边界、独立接口、固定预算对照、敏感性与复现 |
 | [开发任务与验收计划](development_plan.md) | 现状盘点、研究问题、实现边界、证据、优先级与首包验收 |
 | [系统级设计](system_model_design.md) | 工作/状态/操作/资源/连接/物理条件的关系 |
 | [Unit 设计](unit_model_design.md) | 类型/参数/状态/接口规则及仍需考虑的问题 |

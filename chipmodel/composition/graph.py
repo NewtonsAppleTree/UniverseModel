@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from chipmodel.common import identifier
+from chipmodel.common import identifier, typed_tuple
 
 
 # 一个静态端口的边界契约；协议身份必须包含双方约定的编码/shape 语义。
@@ -35,7 +35,7 @@ class ResourceNode:
         for name in ("parent_id", "model_id"):
             if getattr(self, name) is not None:
                 identifier(name, getattr(self, name))
-        object.__setattr__(self, "ports", tuple(self.ports))
+        object.__setattr__(self, "ports", typed_tuple("ports", self.ports, Port))
         if len({p.name for p in self.ports}) != len(self.ports):
             raise ValueError("duplicate port name")
 
@@ -48,9 +48,18 @@ class Connection:
     target_id: str  # 目标实例身份。
     target_port: str  # 目标 input 端口名。
 
+    # 端点身份在构造时校验，存在性和协议兼容在装配时校验。
+    def __post_init__(self) -> None:
+        for name in ("source_id", "source_port", "target_id", "target_port"):
+            identifier(name, getattr(self, name))
+
 
 # 校验唯一身份、无环包含与端口兼容；允许局部多根资源及 ring 等有环连接。
 def validate_graph(nodes: tuple[ResourceNode, ...], connections: tuple[Connection, ...]) -> None:
+    nodes = typed_tuple("nodes", nodes, ResourceNode)
+    connections = typed_tuple("connections", connections, Connection)
+    if len(set(connections)) != len(connections):
+        raise ValueError("duplicate connection")
     index = {node.instance_id: node for node in nodes}
     if len(index) != len(nodes):
         raise ValueError("duplicate instance_id")
@@ -77,6 +86,10 @@ def validate_graph(nodes: tuple[ResourceNode, ...], connections: tuple[Connectio
 
 # 同一指标口径中选择摘要或内部细模型；祖先和后代不可同时成为收费方。
 def validate_model_selection(nodes: tuple[ResourceNode, ...], selected_ids: tuple[str, ...]) -> None:
+    nodes = typed_tuple("nodes", nodes, ResourceNode)
+    selected_ids = typed_tuple("selected_ids", selected_ids, str)
+    for selected_id in selected_ids:
+        identifier("selected_id", selected_id)
     validate_graph(nodes, ())
     index = {node.instance_id: node for node in nodes}
     selected = set(selected_ids)

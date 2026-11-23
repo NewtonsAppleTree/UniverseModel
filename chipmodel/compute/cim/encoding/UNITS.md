@@ -8,6 +8,8 @@ BitSerialParams 明确 input bits、权重 magnitude bits、cell bits、差分�
 
 最关心符号表达、求差位置、切片位权和累加宽度。稀疏跳过、权重编程与实际切片调度未实现；真实执行的次数需要由映射/事件模型确认。
 
+[完整数值链](../matvec.py)已把位切片动作与实际电导程序/输入bit关联，ADC码经中点与电气增益恢复部分和，再复用shift_accumulate；不得把码值直接视作权重点积。零输入相位仍完整计费，尾slice保留未使用物理位。字段、示例和独立参考见[指南](../../../docs/cim_bench.md)。
+
 <!-- model-fields:start -->
 
 ### [accumulate.py](accumulate.py)

@@ -1,0 +1,214 @@
+{
+  "schema_version": "cim-study/v1",
+  "tile": {
+    "numeric": {
+      "encoding": {
+        "input_bits": 3,
+        "magnitude_bits": 3,
+        "cell_bits": 2,
+        "differential": true,
+        "subtract_before_adc": true
+      },
+      "array": {
+        "rows": 2,
+        "columns": 3,
+        "conductance_min_s": 0.000244140625,
+        "conductance_max_s": 0.00390625,
+        "max_abs_input_v": 0.25
+      },
+      "conductance_step_s": 0.0009765625,
+      "dac": {
+        "resolution_bits": 1,
+        "output_min_v": 0,
+        "output_max_v": 0.25
+      },
+      "tia_gain_ohm": 1024,
+      "tia_offset_v": 0,
+      "adc": {
+        "resolution_bits": 6,
+        "lane_count": 2,
+        "conversion_cycles": 3,
+        "initiation_interval_cycles": 1,
+        "input_min_v": -2.03125,
+        "input_max_v": 1.96875
+      },
+      "output_bits": 16,
+      "overflow": "error"
+    },
+    "nodes": [
+      {
+        "instance_id": "cim",
+        "parent_id": null,
+        "model_id": null
+      },
+      {
+        "instance_id": "cim/slice0/plus",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/slice0/minus",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/slice1/plus",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/slice1/minus",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/dac",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/tia",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/adc",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/hold",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      },
+      {
+        "instance_id": "cim/digital",
+        "parent_id": "cim",
+        "model_id": "cim-detail/v1"
+      }
+    ],
+    "array_resource_ids": [
+      "cim/slice0/plus",
+      "cim/slice0/minus",
+      "cim/slice1/plus",
+      "cim/slice1/minus"
+    ],
+    "array_pipeline": {
+      "lane_count": 1,
+      "latency_cycles": 2,
+      "initiation_interval_cycles": 1
+    },
+    "array_clock": {
+      "domain_id": "array",
+      "frequency_hz": 1000000000.0
+    },
+    "dac": {
+      "resource_id": "cim/dac",
+      "pipeline": {
+        "lane_count": 2,
+        "latency_cycles": 2,
+        "initiation_interval_cycles": 1
+      },
+      "clock": {
+        "domain_id": "dac",
+        "frequency_hz": 1000000000.0
+      }
+    },
+    "tia": {
+      "resource_id": "cim/tia",
+      "pipeline": {
+        "lane_count": 1,
+        "latency_cycles": 1,
+        "initiation_interval_cycles": 1
+      },
+      "clock": {
+        "domain_id": "tia",
+        "frequency_hz": 1000000000.0
+      }
+    },
+    "adc_resource_id": "cim/adc",
+    "adc_clock": {
+      "domain_id": "adc",
+      "frequency_hz": 1000000000.0
+    },
+    "mux_settle_cycles": 1,
+    "adc_inflight_per_lane": 3,
+    "hold_resource_id": "cim/hold",
+    "hold": {
+      "slot_count": 6,
+      "valid_duration_s": 2e-08
+    },
+    "digital": {
+      "resource_id": "cim/digital",
+      "pipeline": {
+        "lane_count": 1,
+        "latency_cycles": 1,
+        "initiation_interval_cycles": 1
+      },
+      "clock": {
+        "domain_id": "digital",
+        "frequency_hz": 1000000000.0
+      }
+    },
+    "code_buffer_slots": 6,
+    "accumulator_slots": 3,
+    "profile_source": "cim-binary-exact-fixture/v1: illustrative conductance/voltage and stage assumptions; no device calibration"
+  },
+  "inputs": {
+    "work_id": "matvec-fixture",
+    "input_codes": [
+      3,
+      5
+    ],
+    "weights": [
+      [
+        1,
+        -2,
+        5
+      ],
+      [
+        -3,
+        4,
+        -1
+      ]
+    ]
+  },
+  "candidates": [
+    {
+      "name": "analog_difference",
+      "category": "baseline"
+    },
+    {
+      "name": "digital_difference",
+      "category": "mapping",
+      "subtract_before_adc": false
+    },
+    {
+      "name": "adc_lanes_x2",
+      "category": "resource_ablation",
+      "adc_lane_count": 4
+    },
+    {
+      "name": "adc_clock_div4",
+      "category": "resource_ablation",
+      "adc_frequency_hz": 250000000.0
+    },
+    {
+      "name": "adc_2bit",
+      "category": "precision_ablation",
+      "adc_resolution_bits": 2
+    },
+    {
+      "name": "hold_too_small",
+      "category": "boundary",
+      "hold_slot_count": 2
+    },
+    {
+      "name": "hold_expires",
+      "category": "boundary",
+      "hold_valid_duration_s": 1e-09
+    }
+  ],
+  "max_cell_evaluations": 1000000,
+  "max_abs_error": 0
+}

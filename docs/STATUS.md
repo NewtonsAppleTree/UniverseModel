@@ -1,6 +1,75 @@
 # 实现状态
 
-## 2026-11-23 chipmodel 开发任务梳理
+## 2026-11-23 chipmodel CH6计算能力与瓶颈解释完成
+
+已按[项目使命](../PROJECT_MISSION.md)和[开发计划](../chipmodel/docs/development_plan.md)完成CH6。研究问题、独立接口、公式、适用域、反例与复现命令见[计算能力指南](../chipmodel/docs/compute_capabilities.md)。本包扩展CPU/GPU/NPU的能力解释，并将NPU格式检查接入现有数字Tile；下一包为**CH7外存与缓存接入**。
+
+| 范围 | 已实现能力与证据 | 保留边界 |
+| --- | --- | --- |
+| CPU | 显式同类μop身份、每阶段速率、精确并列瓶颈、有限工作发起跨度；60组逐cycle槽枚举与大整数边界 | 跨度不含阶段延迟/依赖；程序执行时间未知，不宣称IPC或ISA执行 |
+| GPU | 各项SM驻留容量、单block启动违反项、限额缺失状态、尾warp槽与有效线程比例；80组逐block消耗枚举 | 固定padded-warp-block-quantum/v1规则；True只表示本模型静态可容纳，occupancy不等于吞吐 |
+| NPU | 操作/操作数/累加/输出签名匹配，区分FP16/BF16及融合/非融合；逻辑/实际/额外MAC、尾批和L/II服务 | 只描述已声明服务能力，不执行数值舍入/溢出验证；依赖反馈、实际执行与能耗未知 |
+| Tile组合 | 显式能力与工作请求双向匹配；Linear按任务语义生成签名；mac_analysis复用已计费MAC服务 | 旧两侧未声明的调用仍可使用原账本，但不声称已验证格式能力；无新增隐式转换服务 |
+| 研究记录 | 四组16案例，基线/资源/工作消融/边界分开；单数值改动与固定另一侧自动检查；完整名单保存/回读 | CPU/GPU/NPU各自解释专业指标，不作跨架构统一性能排名；分析成功不等于任务质量或设备可行 |
+
+CPU夹具为25μop：稳态2 μop/cycle、retire限制，有限跨度下界12 ns；执行端口8→16无收益，提交宽度2→8后迁移到issue限制、3 μop/cycle与8 ns跨度下界。GPU的256线程/64 register/thread/16 KiB shared/block同时受register/shared约束为4 blocks；只翻倍其中一项仍为4 blocks。33/64线程案例具有相同0.5 occupancy，有效线程槽比例分别33/64和1。
+
+NPU夹具为逻辑7、实际9 MAC，P=4/L=3/II=2：12发起槽、3尾空槽、7 cycles孤立服务；P增至8后是16槽、7尾空槽、5 cycles。增加padding至实际12 MAC填满槽但有效工作比例下降，不能据填槽率宣称收益。数字Tile的同输入140 MAC、314 B流量对照中，MAC lanes翻倍使孤立服务35→18 ns，整体资源下界仍348 ns；开启格式解释前后输出、地址/bank账本、资源贡献和下界一致，无重复计费。正确选择binary64 profile的MatVec继续通过独立数值参考。
+
+本包新增20项测试（chipmodel 12、integration 8）。全仓库回归286项：284通过、2项可选PyTorch因当前默认环境未安装而跳过；分组contracts 6、clustermodel 72、chipmodel 90、workloads 19、compiler 17、integration 82（其中2跳过）。模型规则通过62个实现目录；结构检查通过13模块、68份模块Python、160份Markdown及4份Word来源哈希；diff空白检查和旧chipmodel_demo通过。CI已加入compute_demo保存/回读；本地结果不等同远端CI执行。
+
+本地证据目录为 `.build/chipmodel-compute-20261123`。`source.json`保存115份Python/实验JSON/pyproject的逐文件哈希与环境；源码身份为 `5ede4cf19dc57271c020ff15a14df74f7b677245+python-config-sha256:deb59761e2691e894092ab4c3fa4d7de581cd7c6bdbdd7c8defc161c36ced02e`，包含未提交工作区源码，不包含文档/构建产物。`validation.json`与分组日志保存测试；`compute/`、`digital_tile/`、`cim/`及对应summary和`studies_audit.json`保存三组实验及回读一致性。
+
+计算能力16案例为13次分析成功、3次不支持操作/格式的失败；成功结果另含1个GPU已知启动不可行和1个限额未知。数字Tile六组24次为18成功/6容量失败；复跑CIM七候选为5次执行成功（4次数值验证通过/1次质量失败）、2次保持失败。所有案例均保存，不过滤失败或未知状态。
+
+wheel位于 `.build/chipmodel-compute-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256为 `7b68df5ef04da3128d365b13abfd72586dbb10da2d3e1062ea059bff68a80565`。66份打包Python源码与工作区逐字节一致；`python -I`从解包目录导入39份实际依赖模块，验证完整计算能力对照/回读、数字Tile同输入供数反例以及CIM汇总一致性。`audit.json`、`wheel_build.log`、`wheel_smoke.py`和`wheel_smoke.log`保留验证细节。
+
+本包没有程序/kernel执行、厂商GPU分配特例、混合CPU端口调度、脉动/tensor执行或器件校准主张。能力档位需真实来源后才可用于具体硬件结论，执行时间/物理成本缺口继续显式保留。CH7按实际访问问题接续DRAM组织/地址/profile、NAND服务与传输边界及缓存行为。
+
+## 2026-11-23 chipmodel CH5完整CIM局部台架完成（历史批次）
+
+已按[项目使命](../PROJECT_MISSION.md)与[开发计划](../chipmodel/docs/development_plan.md)完成CH5。研究问题、生产接口、参数关系、策略边界、对照结果和复现命令见[CIM台架指南](../chipmodel/docs/cim_bench.md)。本包支持固定输入/权重下的差分位置、ADC共享、量化精度与保持可行性研究；下一包为**CH6计算能力与瓶颈解释**。
+
+| 层次 | 已实现能力 | 证据与边界 |
+| --- | --- | --- |
+| 独立数值链 | 电导切片/差分编码→DAC→完整矩形阵列→TIA→ADC→码值重建/移位累加；保留非零Gmin、尾slice、最终error/saturate/wrap | 独立整数参考、80组随机矩阵×两种求差位置、不同矩形/单列/尾批、手算电流/电压/ADC；无符号输入，未引入噪声/线阻/漂移 |
+| 局部组合 | 唯一资源owner和模型选择、逐资源动作账本、独立时钟/L/II、MUX、外部保持/内部ADC在途/码值/累加容量 | Fraction日历保留跨phase发起约束；逐样本TIA捕获→ADC接收年龄；精确期限边界与L<II反例；每行需持续驱动DAC |
+| 性能口径 | 分开输出资源服务下界、串行phase策略依赖界与该策略分析时间 | ADC增多而数字瓶颈不变、ADC降频后的瓶颈迁移；无事件执行、跨phase流水或器件时序主张 |
+| 研究记录 | 同输入完整七候选、独立功能验证、资源/精度消融、失败记录、源码/输入/电导初态/数值和时序轨迹 | 保存/回读一致；拒绝混来源/预算/输入、重复或遗漏候选；回读不执行模型，运行成功与数值质量分开 |
+
+默认夹具为 `x=(3,5)`、`W=((1,-2,5),(-3,4,-1))`，独立精确结果 `(-12,14,10)`。基线为6 MAC、4个2×3阵列、48个物理权重bit、6个phase、12次DAC更新、12次阵列读与72次cell动作。ADC前模拟求差为18次转换/36次数字操作，资源下界36 ns，串行策略时间108 ns；相同预算的ADC后数字求差保持相同输出，转换/数字操作为36/72，资源下界72 ns、策略时间168 ns。
+
+ADC lanes从2增至4时，数字资源下界仍36 ns，策略时间降至102 ns；ADC时钟降至250 MHz时，ADC界44 ns成为限制，策略时间198 ns。ADC降至2 bit时程序成功但输出为 `(50,58,54)`，最大误差62且没有ADC越量程，明确判为质量失败；保持槽6→2和有效期20→1 ns分别触发容量/年龄失败。七候选共5次执行成功（4次数值验证通过、1次质量失败）和2次执行失败，均保留记录。上述时间仅适用于声明的分析策略与服务假设。
+
+新增28项测试：chipmodel 17、workloads独立整数参考3、集成8。全仓库回归266项：264通过、2项可选PyTorch因当前环境未安装而跳过；分组contracts 6、clustermodel 72、chipmodel 78、workloads 19、compiler 17、integration 74（其中2跳过）。模型规则通过62个实现目录；结构检查通过13模块、67份模块Python、159份Markdown及4份Word来源哈希；diff空白检查和旧chipmodel_demo通过。CI已接入CIM保存/回读；本地验证不等同远端CI结果。
+
+本地证据位于 `.build/chipmodel-cim-20261123`：`source.json`覆盖110份Python/实验JSON/pyproject并保存环境和逐文件哈希；`validation.json`与各组日志记录回归；`study/`、`study_summary.json`和`study_audit.json`保留完整实验；`audit.json`、`wheel_build.log`、`wheel_smoke.py`及`wheel_smoke.log`记录打包验证。源码身份为 `5ede4cf19dc57271c020ff15a14df74f7b677245+python-config-sha256:f33f483bbb85dbc1fbaf8bac79f53763616b6237cda0753fbc71526e97869535`；该快照包含未提交工作区源码，不含文档与构建产物。
+
+wheel位于 `.build/chipmodel-cim-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256为 `206cf38a3cd4e9bffb365f8542d681ecd7dc25f6ee67df7799e05d0efcbabf37`。65份打包Python源码逐字节匹配工作区；`python -I`从解包目录导入24份实际依赖模块，独立数值/资源分析、七候选与保存/回读通过，汇总与工作区实验完全一致。
+
+读取能耗、权重编程时间/能耗保持 `None + reason`；权重与输入已驻留，外部搬运、DAC负载、器件误差与物理可行性仍需按研究证据补充。数值中间累加使用Python整数，不代表已实现无限位宽硬件。本包没有实现既有71-cycle流水提案，也不宣称AI任务质量收益或实机加速。CH6接续CPU/GPU/NPU的能力与限制解释，复用本包和数字Tile证据；CH7–CH9仍按课题需要开发。
+
+## 2026-11-23 chipmodel CH1–CH4首包完成（历史批次）
+
+已按[项目使命](../PROJECT_MISSION.md)与[任务计划](../chipmodel/docs/development_plan.md)执行首包，实际接口、参数关系、研究比较和复现命令见[基础指南](../chipmodel/docs/foundation_usage.md)。本包完成基础契约、SRAM访问与容量绑定、显式搬运账本、数字Tile/Linear适配；不表示chipmodel全部后续研究任务已完成。
+
+| 任务 | 实现与证据 | 当前边界 |
+| --- | --- | --- |
+| CH1 契约与下界 | 修复G1/G2；需求/credit用Fraction中间量，2^53+1−2^53保留1 s；直接/JSON一致；序列、身份、成员、图、依赖、单位与模型选择检查 | 输出binary64近似，溢出/正值下溢报错；无区间算术或调度器 |
+| CH2 SRAM/预留 | 显式SramAccess，逻辑B与word服务分开，逐bank读写计量；独立R/W或共享RW、L/II、显式byte-enable；BufferReservation检查共同backing区间 | 无存储内容/动态队列/槽生命周期/预留别名，混合专用与共享端口未支持 |
+| CH3 搬运账本 | 源读、串行DMA通道、显式有向路径、目标写；唯一owner、工作单位、协议计数与共享资源贡献；NoC导出packet/flit/service bytes | 同构同钟NoC、单D2D或显式直达；异构bridge、可见性、背压未实现；外存可为未知服务边界 |
+| CH4 数字Tile | 独立DigitalTile/TileWork；合并本地/DMA访问并校验预留；evaluation从Linear计划生成显式地址；INT8/INT64与小型binary64/MatVec参考，固定预算和单因素敏感性 | 本地策略scalar-ab-register-c/v1；计算/搬运理想重叠仅用于下界，训练Tile地址适配明确拒绝，能耗未知 |
+| CH10 工程落实 | 严格配置、实际输入/计划/地址/来源/假设记录、失败样本、六组完整名单保存/回读；UNITS/参数清单/入口及CI同步 | 本地验证不等同远端CI或物理性能证据 |
+
+5×7×4、140 MAC的同输入实验：2×2×3驻留/重载部分和方案均通过整数参考，预留均44 B，外部流量分别314/954 B，条件下界348/588 ns，当前均受DMA约束。1×2×3方案预留25 B、370 B、460 ns；完整tile需223 B而预算64 B，作为失败记录保留。MAC lanes加倍不能突破DMA界；降低MAC/SRAM时钟或固定容量改成单bank显示瓶颈迁移。六组共24次运行，18成功、6容量失败，保存与回读结果一致。
+
+新增25项测试（17芯片模型、8数字Tile集成）。全仓库回归238项：236通过，2项可选PyTorch因当前默认环境未安装而跳过；分组contracts 6、clustermodel 72、chipmodel 61、workloads 16、compiler 17、integration 66（其中2跳过）。独立证据包括60组有理包络参考、逐byte枚举word/bank、共享端口、17 B双hop和D2D手算、路径/owner/容量反例、本地标量访问、敏感性与完整候选回读。模型规则通过62个目录；结构检查通过13模块、63份模块Python、158份Markdown及4份Word来源哈希；diff空白检查通过，旧chipmodel_demo仍通过。
+
+本地证据保存在 `.build/chipmodel-foundation-20261123`：source.json（101份Python/实验JSON/pyproject来源）、validation.json及分组日志、comparison/的完整记录、comparison_summary.json、audit.json与wheel_smoke.log。源码身份为 `5ede4cf19dc57271c020ff15a14df74f7b677245+python-config-sha256:e9d94fefd3716412e0f0aaee822062fc687ee25e7ca8e7b82d097f63c1c1debf`。wheel构建成功，61份打包Python源码与工作区一致；`python -I`隔离导入通过G1、数字Tile三成功/一容量失败与bank计量验证。
+
+下一包为**CH5 CIM完整局部台架**：串接数字码→DAC→电导阵列→TIA→ADC→累加，统一动作与资源身份，验证编码、ADC共享及保持约束。CH6–CH9继续按研究问题和证据需要进入；本包不宣称事件完成时间、AI任务质量提升、器件性能或物理能耗结论。
+
+## 2026-11-23 chipmodel 开发任务梳理（执行前历史记录）
 
 当前进入chipmodel。[开发任务与验收计划](../chipmodel/docs/development_plan.md)已按“研究什么、怎样建模、如何证明”完成23份源码及各子目录的现状核对，明确CH1–CH10的研究问题、交付位置、依赖、证据和进入条件。首个实现包为CH1基础契约/下界修复 → CH2 SRAM访问与容量绑定 → CH3搬运路径账本 → CH4数字Tile对照；CH5复用这些基础推进CIM局部台架。CPU/GPU/NPU、外存、Die/Package及物理证据均有独立后续任务。
 
@@ -132,11 +201,11 @@ C0历史设计记录（2026-11-23）：细化 [clustermodel设计](../clustermod
 | 线性实验比较 | 复用 MAC/DMA 服务，给出条件化资源下界；同输入有限候选、保留容量失败、能耗未知、独立数值质量、保存/回读 | [指南与手算结果](../evaluation/docs/linear_mapping.md)、[集成测试](../tests/integration/test_linear_experiment.py) |
 | 独立组件与局部仿真 | 各子模块可独立查询；已有局部资源/操作组合示例；公共事件驱动器与 BenchSpec schema 尚未实现 | [系统级设计](../chipmodel/docs/system_model_design.md)、[局部示例](../example/chipmodel_demo.py)、[事件接口提案](interfaces/component_protocols.md) |
 | ADC 功能与分析 | 显式参数/单位/公式校验、均匀 offset-binary 电压量化、越限标记、无争用批次时序；无背压或电路成本 | [模型说明](../chipmodel/docs/adc_model.md)、[Python 实现](../chipmodel/compute/cim/periphery/adc.py)、[运行示例](../example/adc_demo.py) |
-| 计算与 CIM | CPU μop 能力、GPU 静态驻留、GEMM 工作/MAC 服务、位串行动作、电导阵列/TIA、DAC、保持限制、最终位权累加；无 ISA 或动态调度 | [compute 参数入口](../chipmodel/compute/UNITS.md) |
+| 计算与 CIM | CPU阶段瓶颈/有限跨度、GPU驻留/启动/尾warp、NPU显式格式/尾批与Tile供数解释；完整CIM数值/资源/保持台架；无ISA或动态调度 | [compute参数](../chipmodel/compute/UNITS.md)、[CH6证据](../chipmodel/docs/compute_capabilities.md) |
 | 存储与搬运 | SRAM/buffer/cache 几何、DRAM 组织/接口、隔离行读、NAND 几何/串行时延、DMA 服务与 TMA 布局；无缓存命中、刷新、FTL 或队列状态 | [memory](../chipmodel/memory/UNITS.md)、[control](../chipmodel/control/UNITS.md) |
 | 互连与物理条件 | 无争用 NoC 路径、D2D 分包/编码、同层矩形校验、一阶热 RC；不覆盖协议状态机、多节点热或电路校准 | [interconnect](../chipmodel/interconnect/UNITS.md)、[packaging](../chipmodel/packaging/UNITS.md) |
 | 系统组合与创建 | 身份/归属/静态端口兼容检查、摘要/细节计量选择、操作 DAG 和资源供给包络下界、显式小型注册表 | [composition](../chipmodel/composition/UNITS.md)、[registry](../chipmodel/registry/UNITS.md) |
-| 仓库开发规则与参数文档 | 根目录/模块 AGENTS.md；chipmodel 全部 27 个目录与其他实际实现目录/祖先，共 49 个 UNITS.md 检查范围；字段/接口表从代码生成 | [规则](development/model_rules.md)、[总入口](../chipmodel/UNITS.md)、[检查工具](../tools/check_model_rules.py) |
+| 仓库开发规则与参数文档 | 根目录/模块AGENTS.md；chipmodel全目录与其他实际实现目录/祖先，共62个实现目录检查范围；字段/接口表从代码生成 | [规则](development/model_rules.md)、[总入口](../chipmodel/UNITS.md)、[检查工具](../tools/check_model_rules.py) |
 | 顶层设计参数查阅 | 已整理计算/存储/互连、物理条件与 AI 工作量的候选参数、单位、公式和来源边界；不新增模型能力 | [参数清单](../ARCHITECTURE_PARAMETERS.md)，含 DDR/HBM/Flash、CIM 与原材料修正 |
 | 训练/推理场景架构 | trainingArch/inferArch 已有 README 与 UNITS 参数入口，复用 13 个基础模块；未实现独立分析器、调度器或执行器 | [训练](../trainingArch/README.md)、[推理](../inferArch/README.md) |
 | 张量区域与编译规约设计 | 已实现线性矩形 tile/顺序归约；一般 ROI/indexing map、attention/context 归约和图 pass 仍为提案 | [区域契约](interfaces/tensor_regions.md)、[编译设计](../compiler/docs/tiling_and_reduction.md)、[审阅统计](reference/layout_roi_review.md) |
@@ -181,7 +250,7 @@ python docs/tools/build_docx.py --document overview
 
 长期目标按[项目使命](../PROJECT_MISSION.md)执行；近期优先级与验收统一见[研究开发路线](RESEARCH_ROADMAP.md)，本节保留下一步摘要，具体课题另有实验材料，不写入使命正文。
 
-本轮重点保持clustermodel：先按[覆盖矩阵](../clustermodel/docs/coverage.md)检查12个维度的基础能力、外部边界和验证证据，再按具体研究问题深化队列/窗口、策略/任务依赖或物理校准。已补leaf-spine、多路径、静态可用性与需求矩阵。chipmodel留到后续轮，本轮未修改其实现。
+当前clustermodel基础已完成，chipmodel CH1–CH6已执行，下一包按[计划](../chipmodel/docs/development_plan.md)推进CH7外存与缓存接入；后续Die/Package与物理证据按研究需要展开。动态队列/可见性与物理校准仍不能由分析下界替代。
 
 既有线性路径的后续任务保留：Linear 前向/反向/更新及短算子链、梯度与状态版本、固定版本 PyTorch 功能对照、Timeloop/Accelergy及ZigZag/SCALE-Sim共同可比案例、带来源条件成本和误差报告。按实际复现决定适配，接口规则见[工程框架](../ENGINEERING_FRAMEWORK.md)。
 

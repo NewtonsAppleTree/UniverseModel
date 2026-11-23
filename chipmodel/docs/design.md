@@ -1,5 +1,7 @@
 # chipmodel：计算、存储、互连与封装
 
+CH1–CH4已实现的静态资源/路径/数字Tile范围与证据见[基础指南](foundation_usage.md)。CH5完整CIM局部台架已实现，数值/资源/保持边界见[CIM指南](cim_bench.md)。CH6已补CPU阶段、GPU驻留/启动和NPU格式/尾批及供数解释，见[能力指南](compute_capabilities.md)。以下接口、状态表仍包含后续候选能力。
+
 本页维护架构方向和候选机制；当前实现任务、优先级与验收以[开发计划](development_plan.md)为准，已有能力与待实现范围由[STATUS](../../docs/STATUS.md)区分。
 
 ## 核心与层级

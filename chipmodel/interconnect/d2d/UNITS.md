@@ -6,6 +6,8 @@ SerialLinkParams/estimate_link 描述一条单方向链路。lane_rate_bps 是�
 
 最关心有效数据率、分包尾部、物理 lane 共享与端点固定延迟。无训练、重传、FEC 纠错、credit、功率/BER 模型，不声称 UCIe/PCIe 等协议兼容。2.5D/3D 的几何和热条件由 packaging 提供；连接距离不会自动改变本参数。
 
+[transfer.py](../../composition/transfer.py)把一次单方向链路服务纳入显式源读/DMA/目标写账本，wire bits消耗唯一link预算；需要往返时分别声明方向资源。
+
 <!-- model-fields:start -->
 
 ### [link.py](link.py)

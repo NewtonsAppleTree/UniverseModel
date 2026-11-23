@@ -10,7 +10,7 @@ UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支�
 
 实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
-已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前进入chipmodel**，已完成[开发任务梳理](chipmodel/docs/development_plan.md)：按研究问题、建模边界和证据安排资源契约、SRAM访问、搬运路径及局部组合，随后推进CIM与其他研究扩展。
+已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前chipmodel已完成CH1–CH4首包**：资源契约与精度修复、SRAM访问/容量、搬运路径账本、数字Tile同预算对照与敏感性，见[实现用法与证据](chipmodel/docs/foundation_usage.md)。**CH5完整CIM局部台架也已完成**：电导编码、DAC/阵列/TIA/ADC/累加、共享读出与有限保持、资源/精度对照，见[CIM指南](chipmodel/docs/cim_bench.md)。[CH6计算能力与瓶颈解释](chipmodel/docs/compute_capabilities.md)已落地CPU阶段、GPU驻留/启动、NPU格式/尾批与供数消融；随后按[开发计划](chipmodel/docs/development_plan.md)推进CH7外存与缓存接入。
 
 **设计查阅：[芯片架构与 AI 训练/推理参数清单](ARCHITECTURE_PARAMETERS.md)。** 按计算、存储、互连及物理条件筛选参数，列明中英文术语、单位、公式、模块归属和来源；包括 DDR/HBM/Flash、CIM 外围与训练/推理资源账本。
 
@@ -77,6 +77,8 @@ python -m unittest discover -s compiler/tests -p "test_*.py" -v
 python -m unittest discover -s tests/integration -p "test_*.py" -v
 python -m example.adc_demo
 python -m example.chipmodel_demo
+python -m example.digital_tile_demo
+python -m example.cim_demo
 python -m example.universal_demo --case adc
 python -m example.universal_demo --case dma --set inputs.payload_bytes=64
 python -m example.linear_demo

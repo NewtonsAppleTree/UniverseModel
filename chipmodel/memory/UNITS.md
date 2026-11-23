@@ -4,9 +4,9 @@
 
 | Unit/子模块 | 实现边界 | 关键量 |
 | --- | --- | --- |
-| BufferParams | 固定大小槽的预留与单槽容量校验 | slot count、slot bytes；ping-pong 为两槽 |
+| BufferParams / BufferReservation | 固定槽容量与唯一 backing 区间预留 | slot count、slot bytes、offset；共同预留禁止重叠/越界，无动态生命周期 |
 | CacheGeometry | Set/way/line 容量与 tag/index/offset | sets、ways、line bytes、地址宽度；没有命中率 |
-| [SRAM](sram/UNITS.md) | Bank/字/独立端口组织 | 数据容量、bank 映射、每方向上限 |
+| [SRAM](sram/UNITS.md) | Bank/word、独立R/W或共享RW、显式地址事务与隔离服务 | 容量、bank分布、word服务放大、L/II与掩码写能力 |
 | [DRAM](dram/UNITS.md) | 显式组织与接口速率 | rank/bank/row/column、payload 宽度、MT/s |
 | [controllers](controllers/UNITS.md) | 隔离的 DRAM 读前缀时序 | 行状态、tRCD/CL/tRP/tCCD/burst |
 | [Flash](flash/UNITS.md) | NAND page/block/plane/die 组织与串行特征时间 | 数据/spare、read/program/erase 粒度 |
@@ -26,12 +26,18 @@ Register file、TLB/MMU、coherence/directory、MSHR、ECC、PHY 和 NOR 仍是�
 | `BufferParams` | `slot_count` | `int` | slot | 可保留独立批次的槽数 [slot]。 |
 | `BufferParams` | `slot_bytes` | `int` | B/slot | 每槽预留空间 [B/slot]。 |
 | `BufferParams` | `capacity_bytes` | `int` | B | 只读派生属性；总保留容量 C=slot_count*slot_bytes [B]。 |
+| `BufferReservation` | `reservation_id` | `str` | 1（标识/枚举） | 此次装配内唯一预留身份。 |
+| `BufferReservation` | `backing_id` | `str` | 1（标识/枚举） | 唯一底层存储资源 ID。 |
+| `BufferReservation` | `offset_bytes` | `int` | B | 第一个槽在 backing 中的地址 [B]。 |
+| `BufferReservation` | `buffer` | `BufferParams` | B | 连续等长槽；覆盖 slot_count*slot_bytes [B]。 |
 
 | 类型 / 接口 | 用途、公式与边界 |
 | --- | --- |
 | `BufferParams` | 固定大小槽的保留容量，不复制底层 SRAM，不维护 ready/free 生命周期。 |
 | `BufferParams.capacity_bytes` | 总保留容量 C=slot_count*slot_bytes [B]。 |
 | `BufferParams.validate_payload(self, payload_bytes: int)` | 单槽装载边界：0≤payload_bytes≤slot_bytes；返回不表示实际占有槽位。 |
+| `BufferReservation` | 一组连续槽仅引用 backing 地址，不新增物理容量或存储时延。 |
+| `validate_reservations(backing_id: str, capacity_bytes: int, reservations: tuple[BufferReservation, ...])` | 半开区间 [offset,offset+capacity) 不得重叠；此接口不声明别名或动态释放。 |
 
 ### [cache.py](cache.py)
 

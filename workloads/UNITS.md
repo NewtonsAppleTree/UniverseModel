@@ -10,6 +10,8 @@
 
 [graphs](graphs/UNITS.md) 已提供 Linear 训练链的输入生成与完整工作量；[reference](reference/UNITS.md) 提供精确有理数前向/反向/更新参考。通用图、真实训练 profile、分布式与优化器家族仍待具体问题驱动。调用：TrainingSpec → state/data → reference_training 或独立 compiler 执行 → 比较全部输出/梯度/新权重；[训练指南](../evaluation/docs/training_step.md)维护完整用法与限制。
 
+[reference](reference/UNITS.md)新增通用整数MatVec精确参考，为CIM数值验证提供独立点积；不导入chipmodel，也不共享其电导/ADC/移位实现。
+
 <!-- model-fields:start -->
 
 

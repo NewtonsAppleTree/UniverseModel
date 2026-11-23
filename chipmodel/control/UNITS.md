@@ -10,6 +10,8 @@ TMA 地址=base+Σindex*stride。logical_bytes=product(shape)*element_bytes；sp
 
 使用顺序：确定布局与访问范围 → 将逻辑请求拆成实际搬运字节 → 查询 DMA → 显式连接存储/互连。ClockDomain 表达固定频率，不提供运行中 DVFS 或复位语义。
 
+[搬运装配](../composition/UNITS.md)已把本通道服务与源读/链路/目标写连接到共同资源账本。相同通道的请求串行占用，端点/路径根据ID检查；通道摘要不包含完整copy服务。
+
 <!-- model-fields:start -->
 
 ### [data_movement.py](data_movement.py)

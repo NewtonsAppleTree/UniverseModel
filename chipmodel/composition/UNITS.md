@@ -23,6 +23,16 @@
 
 协议字符串应标明双方约定的编码/shape 版本；当前检查相等，不推导任意 shape 兼容或模拟电气负载。连接可有环，归属与操作依赖不允许有环。Port 完整闭合、共享仲裁、死锁、取消和可见性生命周期仍属后续台架。
 
+## 搬运账本与数字Tile
+
+[transfer.py](transfer.py)通过MemoryResource、DmaResource、PathLink和共同TransferResources校验owner、地址域、路径与服务单位。`analyze_transfers`输出逐请求边界、actions/budgets、逐资源贡献、共同SRAM服务和未知成本。完整摘要与展开后代不同时计费；NoC多hop只支持同构同钟，D2D只支持单条有向链路。
+
+[DigitalTile](tile/UNITS.md)进一步合并本地计算访问、DMA和buffer预留。先装配资源→输入显式请求/工作→validate_reservations→analyze_transfers/analyze_tile。当前统计不建立存储内容、事件或真实可行调度。
+
+包络与DAG中间量使用Fraction，整数配置保留精度；仅输出时转binary64，正值下溢/溢出报错。浮点输入按其确切binary64值运算。手算、参数来源和适用范围见[基础指南](../docs/foundation_usage.md)。
+
+[CIM局部台架](tile/UNITS.md)现已复用相同归属、计量选择、actions/budgets及资源贡献；增加有限样本保持、内部ADC在途、数字寄存器和显式串行phase分析。它不要求完整Die/Package或compiler；读取能耗和编程成本保持未知。
+
 <!-- model-fields:start -->
 
 ### [bounds.py](bounds.py)
@@ -31,11 +41,11 @@
 | --- | --- | --- | --- | --- |
 | `ResourceBudget` | `resource_id` | `str` | 1（标识/枚举） | 唯一资源身份，与 demand 引用一致。 |
 | `ResourceBudget` | `work_unit` | `str` | 1（标识/枚举） | 资源工作单位，如 MAC、B、conversion。 |
-| `ResourceBudget` | `rate_per_s` | `float` | work_unit/s | 可证明的供给速率上界 r [work_unit/s]。 |
-| `ResourceBudget` | `initial_credit` | `float` | work_unit | 时间零可用的额外供给上界 b [work_unit]；流体模型可取 0。 |
+| `ResourceBudget` | `rate_per_s` | `int \| float` | work_unit/s | 可证明的供给速率上界 r [work_unit/s]；整数配置保留精度。 |
+| `ResourceBudget` | `initial_credit` | `int \| float` | work_unit | 时间零额外供给上界 b [work_unit]；整数计数先精确扣除。 |
 | `ResourceDemand` | `resource_id` | `str` | 1（标识/枚举） | 承担此工作量的资源身份。 |
 | `ResourceDemand` | `work_unit` | `str` | 1（标识/枚举） | 与 budget 一致的工作单位。 |
-| `ResourceDemand` | `amount` | `float` | work_unit | 实际工作量 W [work_unit]；包含映射造成的额外工作。 |
+| `ResourceDemand` | `amount` | `int \| float` | work_unit | 实际工作量 W [work_unit]；包含映射额外工作，整数精确累计。 |
 | `ActionEstimate` | `action_id` | `str` | 1（标识/枚举） | 当前任务内唯一的操作身份。 |
 | `ActionEstimate` | `latency_s` | `float` | s | 满足输入条件后的最小完成延迟 [s]。 |
 | `ActionEstimate` | `dependencies` | `tuple[str, ...]` | 1（标识/枚举） | 必须先完成的操作 ID；不表示全部硬件连接。 |
@@ -77,5 +87,75 @@
 | `Connection` | 一条有向连接只引用现存端口；协议转换器必须作为显式节点出现。 |
 | `validate_graph(nodes: tuple[ResourceNode, ...], connections: tuple[Connection, ...])` | 校验唯一身份、无环包含与端口兼容；允许局部多根资源及 ring 等有环连接。 |
 | `validate_model_selection(nodes: tuple[ResourceNode, ...], selected_ids: tuple[str, ...])` | 同一指标口径中选择摘要或内部细模型；祖先和后代不可同时成为收费方。 |
+
+### [transfer.py](transfer.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `MemoryResource` | `resource_id` | `str` | 1（标识/枚举） | 唯一物理 backing 身份；owner 由资源图给出。 |
+| `MemoryResource` | `domain_id` | `str` | 1（标识/枚举） | 唯一地址域及路由端点身份。 |
+| `MemoryResource` | `capacity_bytes` | `int` | B | 可寻址容量 [B]。 |
+| `MemoryResource` | `sram` | `SramParams \| None` | —（结构/对象） | None 表示只声明容量，服务成本未知。 |
+| `MemoryResource` | `clock` | `ClockDomain \| None` | —（结构/对象） | SRAM 时钟；容量边界不能附带虚构服务时钟。 |
+| `MemoryResource` | `unknown_reason` | `str \| None` | 1（标识/枚举） | 缺少服务 profile 的原因；已建模 SRAM 为 None。 |
+| `DmaResource` | `resource_id` | `str` | 1（标识/枚举） | 物理通道身份，重复请求共享同一预算。 |
+| `DmaResource` | `params` | `DmaParams` | —（结构/对象） | 每请求启动、burst 与通道占用参数。 |
+| `DmaResource` | `clock` | `ClockDomain` | Hz | 通道时钟 f_dma [Hz]。 |
+| `DmaResource` | `direct_memory_ids` | `tuple[str, ...]` | 1（标识/枚举） | 显式直接可达的 memory IDs；两端均在此列才可省略路径。 |
+| `PathLink` | `resource_id` | `str` | 1（标识/枚举） | 共享链路的唯一物理身份。 |
+| `PathLink` | `source_domain` | `str` | 1（标识/枚举） | 此方向的源端点/中间路由域。 |
+| `PathLink` | `target_domain` | `str` | 1（标识/枚举） | 此方向的目标端点/中间路由域。 |
+| `PathLink` | `params` | `NoCPathParams \| SerialLinkParams` | —（结构/对象） | 单 hop NoC 或 D2D 编码 profile。 |
+| `PathLink` | `clock` | `ClockDomain \| None` | —（结构/对象） | NoC 必需；串行链路使用 bit rate，无此时钟。 |
+| `TransferResources` | `nodes` | `tuple[ResourceNode, ...]` | —（结构/对象） | 资源归属图；容器 model_id=None。 |
+| `TransferResources` | `memories` | `tuple[MemoryResource, ...]` | —（结构/对象） | 唯一地址域和 backing 清单。 |
+| `TransferResources` | `channels` | `tuple[DmaResource, ...]` | —（结构/对象） | 串行 DMA 通道清单。 |
+| `TransferResources` | `links` | `tuple[PathLink, ...]` | —（结构/对象） | 固定方向链路清单。 |
+| `TransferRequest` | `request_id` | `str` | 1（标识/枚举） | 批内唯一传输身份。 |
+| `TransferRequest` | `source_id` | `str` | 1（标识/枚举） | 源 backing ID。 |
+| `TransferRequest` | `target_id` | `str` | 1（标识/枚举） | 目标 backing ID。 |
+| `TransferRequest` | `source_address_bytes` | `int` | B | 源资源本地地址 [B]。 |
+| `TransferRequest` | `target_address_bytes` | `int` | B | 目标资源本地地址 [B]。 |
+| `TransferRequest` | `payload_bytes` | `int` | B | 保守恒的逻辑字节 D [B]。 |
+| `TransferRequest` | `channel_id` | `str` | 1（标识/枚举） | 承担本请求的 DMA 通道 ID。 |
+| `TransferRequest` | `path` | `tuple[str, ...]` | 1（标识/枚举） | 有向 link IDs；空路径须符合直接可达声明。 |
+| `TransferRequest` | `dependencies` | `tuple[str, ...]` | 1（标识/枚举） | 先完成的传输 request IDs；无隐式全局序列化。 |
+| `TransferLeg` | `request_id` | `str` | 1（标识/枚举） | 来源请求身份。 |
+| `TransferLeg` | `resource_id` | `str` | 1（标识/枚举） | 实际承载资源 ID。 |
+| `TransferLeg` | `role` | `str` | 1（标识/枚举） | source_read、dma、link 或 target_write。 |
+| `TransferLeg` | `logical_bytes` | `int` | B | 此边界的有效载荷 [B]。 |
+| `TransferLeg` | `service_unit` | `str` | 1（标识/枚举） | word、cycle、flit 或 bit。 |
+| `TransferLeg` | `service_amount` | `int \| None` | —（结构/对象） | 对应服务工作量；未知 memory 为 None。 |
+| `TransferLeg` | `protocol_bytes` | `int` | B | 链路编码前头尾开销 [B]；非链路为零。 |
+| `TransferLeg` | `packet_count` | `int` | packet | 链路 packet 数 [packet]；非链路为零。 |
+| `TransferLeg` | `isolated_time_s` | `float \| None` | s | 此资源空闲服务时间 [s]；未知为 None。 |
+| `TransferLeg` | `unknown_reason` | `str \| None` | 1（标识/枚举） | 服务未知的明确原因。 |
+| `ResourceContribution` | `resource_id` | `str` | 1（标识/枚举） | bank 端口、DMA 或有向链路的服务身份。 |
+| `ResourceContribution` | `work_unit` | `str` | 1（标识/枚举） | 与预算一致的服务单位。 |
+| `ResourceContribution` | `amount` | `int \| float` | —（结构/对象） | ΣW；整数计数保留精度。 |
+| `ResourceContribution` | `lower_bound_s` | `float` | s | max(0,(ΣW-b)/r) [s]。 |
+| `TransferAnalysis` | `legs` | `tuple[TransferLeg, ...]` | —（结构/对象） | 请求→边界明细。 |
+| `TransferAnalysis` | `actions` | `tuple[ActionEstimate, ...]` | —（结构/对象） | 每请求 latency=max(已知隔离资源时间)，含显式依赖。 |
+| `TransferAnalysis` | `budgets` | `tuple[ResourceBudget, ...]` | —（结构/对象） | 唯一资源供给包络。 |
+| `TransferAnalysis` | `contributions` | `tuple[ResourceContribution, ...]` | —（结构/对象） | 每资源累计必要服务贡献。 |
+| `TransferAnalysis` | `sram_services` | `tuple[tuple[str, SramService], ...]` | 1（标识/枚举） | 全批源读/目标写在共同 backing 上合并。 |
+| `TransferAnalysis` | `bounds` | `TimeBounds` | —（结构/对象） | 依赖和资源包络下界；不会串加流水线各 hop 整包时间。 |
+| `TransferAnalysis` | `lower_bound_s` | `float` | s | max(bounds,各 backing 全批隔离服务) [s]。 |
+| `TransferAnalysis` | `unknown_costs` | `tuple[str, ...]` | 1（标识/枚举） | 已触及但未建模的 memory 成本原因。 |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `MemoryResource` | 地址以资源本地 byte offset 表示；domain_id 明确路由端点，不跨资源推断地址别名。 |
+| `DmaResource` | 串行请求 DMA 通道；本模型控制和数据通路不覆盖源存储、链路与目标存储。 |
+| `PathLink` | 一条单向资源；反方向或另一条物理通道必须使用不同 ID。 |
+| `TransferResources` | 一份共同资源清单决定共享、包含和计量粒度，避免重复的摘要模型收费。 |
+| `TransferRequest` | 有限拷贝请求，不承诺数据已写回可见；dependencies 仅表示调用者声明的完成先后。 |
+| `TransferLeg` | 每条请求的一个边界贡献；工作量单位取决于资源，逻辑字节不含协议开销。 |
+| `ResourceContribution` | 各资源的包络贡献独立报告，保留实际工作与供给边界以解释瓶颈。 |
+| `TransferAnalysis` | 分析输出保留账本、可组合 actions/budgets 和未建模成本；没有目标完成事件。 |
+| `sram_budgets(memory: MemoryResource)` | 对 bank 创建独立 R/W 或共享 RW 的服务包络；初始 P 项允许起点瞬时发起。 |
+| `sram_demands(memory: MemoryResource, service: SramService)` | 把实际 word 事务绑定到唯一 bank 端口；仅引用 backing 的资源，不按 buffer 再计量。 |
+| `resource_contributions(actions: tuple[ActionEstimate, ...], budgets: tuple[ResourceBudget, ...])` | 累计账本后用精确包络函数生成贡献，不把多个共享请求当作独立硬件。 |
+| `analyze_transfers(resources: TransferResources, requests: tuple[TransferRequest, ...])` | 展开存储和路径边界；同构 NoC 用 wormhole 公式，单条 D2D 用编码模型。 |
 
 <!-- model-fields:end -->

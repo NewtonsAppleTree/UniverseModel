@@ -1,0 +1,226 @@
+{
+  "schema_version": "linear-study/v1",
+  "workload": {
+    "m": 5,
+    "n": 4,
+    "k": 7,
+    "dtype": "int8"
+  },
+  "hardware": {
+    "operand_dtype": "int8",
+    "scratch_capacity_bytes": 64,
+    "compute_clock": {
+      "domain_id": "mac",
+      "frequency_hz": 1000000000.0
+    },
+    "mac": {
+      "lane_count": 4,
+      "latency_cycles": 1,
+      "initiation_interval_cycles": 1
+    },
+    "dma_clock": {
+      "domain_id": "dma",
+      "frequency_hz": 500000000.0
+    },
+    "dma": {
+      "bytes_per_cycle": 8,
+      "max_burst_bytes": 64,
+      "startup_cycles": 1,
+      "burst_overhead_cycles": 0
+    },
+    "tile_backend": {
+      "tile": {
+        "resources": {
+          "nodes": [
+            {
+              "instance_id": "tile",
+              "parent_id": null,
+              "model_id": null
+            },
+            {
+              "instance_id": "scratch",
+              "parent_id": "tile",
+              "model_id": "scratch-detail/v1"
+            },
+            {
+              "instance_id": "external",
+              "parent_id": "tile",
+              "model_id": "external-detail/v1"
+            },
+            {
+              "instance_id": "dma",
+              "parent_id": "tile",
+              "model_id": "dma-detail/v1"
+            },
+            {
+              "instance_id": "load_link",
+              "parent_id": "tile",
+              "model_id": "load_link-detail/v1"
+            },
+            {
+              "instance_id": "store_link",
+              "parent_id": "tile",
+              "model_id": "store_link-detail/v1"
+            },
+            {
+              "instance_id": "mac",
+              "parent_id": "tile",
+              "model_id": "mac-detail/v1"
+            }
+          ],
+          "memories": [
+            {
+              "resource_id": "scratch",
+              "domain_id": "scratch.address",
+              "capacity_bytes": 64,
+              "sram": {
+                "bank_count": 4,
+                "words_per_bank": 4,
+                "word_bits": 32,
+                "read_ports_per_bank": 1,
+                "write_ports_per_bank": 1,
+                "shared_rw_ports_per_bank": 0,
+                "access_ii_cycles": 1,
+                "access_latency_cycles": 1,
+                "supports_byte_write": true
+              },
+              "clock": {
+                "domain_id": "sram",
+                "frequency_hz": 1000000000.0
+              }
+            },
+            {
+              "resource_id": "external",
+              "domain_id": "external.address",
+              "capacity_bytes": 4096,
+              "unknown_reason": "Capacity boundary only; DRAM service and energy are not modeled"
+            }
+          ],
+          "channels": [
+            {
+              "resource_id": "dma",
+              "params": {
+                "bytes_per_cycle": 8,
+                "max_burst_bytes": 64,
+                "startup_cycles": 1,
+                "burst_overhead_cycles": 0
+              },
+              "clock": {
+                "domain_id": "dma",
+                "frequency_hz": 500000000.0
+              },
+              "direct_memory_ids": [
+                "scratch"
+              ]
+            }
+          ],
+          "links": [
+            {
+              "resource_id": "load_link",
+              "source_domain": "external.address",
+              "target_domain": "scratch.address",
+              "params": {
+                "flit_bytes": 8,
+                "header_bytes": 4,
+                "router_latency_cycles": 1,
+                "link_latency_cycles": 1,
+                "flit_ii_cycles": 1
+              },
+              "clock": {
+                "domain_id": "noc",
+                "frequency_hz": 1000000000.0
+              }
+            },
+            {
+              "resource_id": "store_link",
+              "source_domain": "scratch.address",
+              "target_domain": "external.address",
+              "params": {
+                "flit_bytes": 8,
+                "header_bytes": 4,
+                "router_latency_cycles": 1,
+                "link_latency_cycles": 1,
+                "flit_ii_cycles": 1
+              },
+              "clock": {
+                "domain_id": "noc",
+                "frequency_hz": 1000000000.0
+              }
+            }
+          ]
+        },
+        "scratch_id": "scratch",
+        "mac_resource_id": "mac",
+        "mac": {
+          "lane_count": 4,
+          "latency_cycles": 1,
+          "initiation_interval_cycles": 1
+        },
+        "compute_clock": {
+          "domain_id": "mac",
+          "frequency_hz": 1000000000.0
+        },
+        "mac_arithmetic": {
+          "accumulator_format": "int64",
+          "operand_format": "int8",
+          "operation": "integer_mac",
+          "output_format": "int64"
+        },
+        "mac_profile_source": "Analytical INT8/INT64 independent MAC service CH6/v1; no device calibration"
+      },
+      "external_memory_id": "external",
+      "channel_id": "dma",
+      "profile_source": "Analytical fixture digital-tile/v1; no device calibration",
+      "load_path": [
+        "load_link"
+      ],
+      "store_path": [
+        "store_link"
+      ],
+      "access_policy": "scalar-ab-register-c/v1",
+      "max_local_accesses": 200000
+    }
+  },
+  "candidates": [
+    {
+      "name": "resident_2x2x3",
+      "tile": {
+        "m": 2,
+        "n": 2,
+        "k": 3
+      },
+      "strategy": "output_stationary"
+    },
+    {
+      "name": "spill_2x2x3",
+      "tile": {
+        "m": 2,
+        "n": 2,
+        "k": 3
+      },
+      "strategy": "reload_partials"
+    },
+    {
+      "name": "resident_1x2x3",
+      "tile": {
+        "m": 1,
+        "n": 2,
+        "k": 3
+      },
+      "strategy": "output_stationary"
+    },
+    {
+      "name": "infeasible_full",
+      "tile": {
+        "m": 5,
+        "n": 4,
+        "k": 7
+      },
+      "strategy": "output_stationary"
+    }
+  ],
+  "seed": 7,
+  "max_macs": 1000000,
+  "atol": 1e-12,
+  "rtol": 1e-12
+}
