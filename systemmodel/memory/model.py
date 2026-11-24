@@ -150,7 +150,7 @@ class MemoryRegion:
 @dataclass(frozen=True, slots=True, kw_only=True)
 class MemoryPlan:
     memory_identity: str  # Complete MemorySystem SHA256; stale hardware/NUMA bindings are rejected.
-    objects: tuple[MemoryObject, ...]  # Logical demand roster; every object must have at least one allocation.
+    objects: tuple[MemoryObject, ...]  # Logical demand roster; each object needs an allocation; empty workload is legal.
     allocations: tuple[MemoryAllocation, ...]  # Explicit copies and phase intervals, including unmapped reservations.
     regions: tuple[MemoryRegion, ...]  # Address aliases; unexposed reservations remain valid and consume capacity.
     source_ref: str  # Plan provenance or fixed placement-policy declaration.

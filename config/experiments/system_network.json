@@ -1,0 +1,4562 @@
+{
+  "cases": [
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "buffer_capacity",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 9000
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 9000,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 9000,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 9000,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 9000
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 9000,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 9000,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 9000,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 9000,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "expired_registration",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n0.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 1,
+                "endpoint_id": "n1.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "write"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "missing_flow_binding",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                },
+                {
+                  "chain_id": "chain1",
+                  "legs": [
+                    {
+                      "engine_id": "n0.host.dma",
+                      "leg_id": "leg1",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 5120,
+                      "source_region_id": "app1",
+                      "target_address": 5120,
+                      "target_region_id": "buffer1"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "app1",
+                    "backing_id": "n0.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer1",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  },
+                  {
+                    "object_id": "data1",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.host.in",
+                    "allocation_id": "app1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app1"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer1"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              },
+              {
+                "chain_id": "chain1",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow1",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                },
+                {
+                  "chain_id": "chain1",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg1",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 5120,
+                      "source_region_id": "buffer1",
+                      "target_address": 5120,
+                      "target_region_id": "app1"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "app1",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer1",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  },
+                  {
+                    "object_id": "data1",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app1"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer1"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              },
+              {
+                "chain_id": "chain1",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow1",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          },
+          {
+            "content_version": "input:v1",
+            "data_id": "data1",
+            "dst_rank": "n1.r1",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m1",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r1"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "missing_registration",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n0.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "succeeded",
+      "name": "rdma_write",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n0.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n1.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "write"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": "chain0",
+          "message_id": "local",
+          "rx_flow_id": null,
+          "tx_flow_id": null
+        }
+      ],
+      "expected_status": "succeeded",
+      "name": "same_node",
+      "nodes": [
+        {
+          "local": {
+            "chains": [
+              {
+                "chain_id": "chain0",
+                "legs": [
+                  {
+                    "engine_id": "n0.gpu0.dma",
+                    "leg_id": "leg0",
+                    "link_ids": null,
+                    "max_hops": 256,
+                    "source_address": 4096,
+                    "source_region_id": "app0",
+                    "target_address": 4096,
+                    "target_region_id": "buffer0"
+                  }
+                ],
+                "payload_bytes": 512
+              }
+            ],
+            "phase": 1,
+            "placement": {
+              "allocations": [
+                {
+                  "allocation_id": "app0",
+                  "backing_id": "n0.gpu0.mem",
+                  "begin_phase": 0,
+                  "end_phase": 3,
+                  "object_id": "data0",
+                  "offset_bytes": 0
+                },
+                {
+                  "allocation_id": "buffer0",
+                  "backing_id": "n0.host.mem",
+                  "begin_phase": 0,
+                  "end_phase": 3,
+                  "object_id": "data0",
+                  "offset_bytes": 0
+                }
+              ],
+              "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+              "objects": [
+                {
+                  "object_id": "data0",
+                  "size_bytes": 512,
+                  "source_ref": "input:v1"
+                }
+              ],
+              "regions": [
+                {
+                  "access_port_id": "n0.gpu0.in",
+                  "allocation_id": "app0",
+                  "base_address": 4096,
+                  "length_bytes": 512,
+                  "object_offset_bytes": 0,
+                  "permissions": [
+                    "read",
+                    "write"
+                  ],
+                  "region_id": "app0"
+                },
+                {
+                  "access_port_id": "n0.host.in",
+                  "allocation_id": "buffer0",
+                  "base_address": 4096,
+                  "length_bytes": 512,
+                  "object_offset_bytes": 0,
+                  "permissions": [
+                    "read",
+                    "write"
+                  ],
+                  "region_id": "buffer0"
+                }
+              ],
+              "schema_version": "system-memory-plan/v1",
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "source_ref": "manual:buffered-nic-fixture/v1"
+          },
+          "nic": null,
+          "node_id": "n0.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n0.r1",
+            "explicit_link_ids": null,
+            "group_id": null,
+            "message_id": "local",
+            "payload_bytes": 512,
+            "route_policy": "shortest-hop-lex/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        },
+        {
+          "local_chain_id": null,
+          "message_id": "m1",
+          "rx_flow_id": "flow1",
+          "tx_flow_id": "flow1"
+        }
+      ],
+      "expected_status": "succeeded",
+      "name": "shared_nic",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                },
+                {
+                  "chain_id": "chain1",
+                  "legs": [
+                    {
+                      "engine_id": "n0.host.dma",
+                      "leg_id": "leg1",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 5120,
+                      "source_region_id": "app1",
+                      "target_address": 5120,
+                      "target_region_id": "buffer1"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "app1",
+                    "backing_id": "n0.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer1",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  },
+                  {
+                    "object_id": "data1",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.host.in",
+                    "allocation_id": "app1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app1"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer1"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              },
+              {
+                "chain_id": "chain1",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow1",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                },
+                {
+                  "chain_id": "chain1",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg1",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 5120,
+                      "source_region_id": "buffer1",
+                      "target_address": 5120,
+                      "target_region_id": "app1"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "app1",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer1",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data1",
+                    "offset_bytes": 1024
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  },
+                  {
+                    "object_id": "data1",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app1"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer1",
+                    "base_address": 5120,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer1"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              },
+              {
+                "chain_id": "chain1",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow1",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          },
+          {
+            "content_version": "input:v1",
+            "data_id": "data1",
+            "dst_rank": "n1.r1",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m1",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r1"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "short_registration",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n0.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n1.endpoint",
+                "length_bytes": 256,
+                "offset_bytes": 0,
+                "operations": [
+                  "write"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "succeeded",
+      "name": "single",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "wrong_data_version",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "v2",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "wrong_direction",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "send",
+                "registration_id": null
+              }
+            ],
+            "registrations": []
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    },
+    {
+      "bindings": [
+        {
+          "local_chain_id": null,
+          "message_id": "m0",
+          "rx_flow_id": "flow0",
+          "tx_flow_id": "flow0"
+        }
+      ],
+      "expected_status": "failed",
+      "name": "wrong_permission",
+      "nodes": [
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n0.gpu0.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "app0",
+                      "target_address": 4096,
+                      "target_region_id": "buffer0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n0.gpu0.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n0.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "a13f5b03658ee58cfd7e3a3f6a9abab7e17e4a78080a5222984dc90efd92a7c0",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n0.gpu0.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n0.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "tx",
+                "endpoint_id": "n0.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n0.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n0.node"
+        },
+        {
+          "local": null,
+          "nic": {
+            "copies": {
+              "chains": [
+                {
+                  "chain_id": "chain0",
+                  "legs": [
+                    {
+                      "engine_id": "n1.nic.dma",
+                      "leg_id": "leg0",
+                      "link_ids": null,
+                      "max_hops": 256,
+                      "source_address": 4096,
+                      "source_region_id": "buffer0",
+                      "target_address": 4096,
+                      "target_region_id": "app0"
+                    }
+                  ],
+                  "payload_bytes": 512
+                }
+              ],
+              "phase": 1,
+              "placement": {
+                "allocations": [
+                  {
+                    "allocation_id": "app0",
+                    "backing_id": "n1.host.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  },
+                  {
+                    "allocation_id": "buffer0",
+                    "backing_id": "n1.nic.mem",
+                    "begin_phase": 0,
+                    "end_phase": 3,
+                    "object_id": "data0",
+                    "offset_bytes": 0
+                  }
+                ],
+                "memory_identity": "7b52d3b58467ad974c8f180545e6ecdfb756c390ca524197f2ff0f7572586032",
+                "objects": [
+                  {
+                    "object_id": "data0",
+                    "size_bytes": 512,
+                    "source_ref": "input:v1"
+                  }
+                ],
+                "regions": [
+                  {
+                    "access_port_id": "n1.host.in",
+                    "allocation_id": "app0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "app0"
+                  },
+                  {
+                    "access_port_id": "n1.nic.in",
+                    "allocation_id": "buffer0",
+                    "base_address": 4096,
+                    "length_bytes": 512,
+                    "object_offset_bytes": 0,
+                    "permissions": [
+                      "read",
+                      "write"
+                    ],
+                    "region_id": "buffer0"
+                  }
+                ],
+                "schema_version": "system-memory-plan/v1",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              },
+              "source_ref": "manual:buffered-nic-fixture/v1"
+            },
+            "flows": [
+              {
+                "chain_id": "chain0",
+                "direction": "rx",
+                "endpoint_id": "n1.endpoint",
+                "flow_id": "flow0",
+                "mode": "rdma_write",
+                "registration_id": "grant0"
+              }
+            ],
+            "registrations": [
+              {
+                "allocation_id": "app0",
+                "begin_phase": 0,
+                "end_phase": 3,
+                "endpoint_id": "n1.endpoint",
+                "length_bytes": 512,
+                "offset_bytes": 0,
+                "operations": [
+                  "read"
+                ],
+                "registration_id": "grant0",
+                "source_ref": "manual:buffered-nic-fixture/v1"
+              }
+            ]
+          },
+          "node_id": "n1.node"
+        }
+      ],
+      "traffic": {
+        "messages": [
+          {
+            "content_version": "input:v1",
+            "data_id": "data0",
+            "dst_rank": "n1.r0",
+            "explicit_link_ids": [
+              "wire.0"
+            ],
+            "group_id": null,
+            "message_id": "m0",
+            "payload_bytes": 512,
+            "route_policy": "explicit/v1",
+            "src_rank": "n0.r0"
+          }
+        ],
+        "requested_cuts": [],
+        "schema_version": "cluster-traffic/v1"
+      }
+    }
+  ],
+  "cluster": {
+    "cluster_id": "two-buffered-nodes",
+    "graph": {
+      "constraints": [
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n0.node",
+          "resource_id": "n0.nic.rx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n0.node",
+          "resource_id": "n0.nic.tx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n1.node",
+          "resource_id": "n1.nic.rx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n1.node",
+          "resource_id": "n1.nic.tx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        }
+      ],
+      "endpoints": [
+        {
+          "coverage": [
+            "Explicit buffered boundary; no implicit RDMA or coherent visibility"
+          ],
+          "endpoint_id": "n0.endpoint",
+          "node_id": "n0.node",
+          "port_id": "n0.wire",
+          "rx_constraint_ids": [
+            "n0.nic.rx_limit"
+          ],
+          "schema_version": "network-endpoint/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1",
+          "tx_constraint_ids": [
+            "n0.nic.tx_limit"
+          ]
+        },
+        {
+          "coverage": [
+            "Explicit buffered boundary; no implicit RDMA or coherent visibility"
+          ],
+          "endpoint_id": "n1.endpoint",
+          "node_id": "n1.node",
+          "port_id": "n1.wire",
+          "rx_constraint_ids": [
+            "n1.nic.rx_limit"
+          ],
+          "schema_version": "network-endpoint/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1",
+          "tx_constraint_ids": [
+            "n1.nic.tx_limit"
+          ]
+        }
+      ],
+      "graph_id": "fabric",
+      "links": [
+        {
+          "alignment_bytes": null,
+          "capacity_kind": "declared_ceiling",
+          "coding_efficiency": null,
+          "coverage": [
+            "Declared payload ceiling; framing/energy unknown"
+          ],
+          "dst_port_id": "n1.wire",
+          "header_bytes": null,
+          "line_rate_bps": null,
+          "link_id": "wire.0",
+          "max_payload_bytes": null,
+          "payload_bandwidth_Bps": 4000000000.0,
+          "profile_max_payload_bytes": null,
+          "profile_min_payload_bytes": 1,
+          "propagation_s": 1e-08,
+          "rate_basis": "effective_payload",
+          "schema_version": "network-link/v1",
+          "shared_constraint_ids": [],
+          "source_ref": "manual:buffered-nic-fixture/v1",
+          "src_port_id": "n0.wire",
+          "startup_s": 0.0,
+          "trailer_bytes": null
+        },
+        {
+          "alignment_bytes": null,
+          "capacity_kind": "declared_ceiling",
+          "coding_efficiency": null,
+          "coverage": [
+            "Declared payload ceiling; framing/energy unknown"
+          ],
+          "dst_port_id": "n0.wire",
+          "header_bytes": null,
+          "line_rate_bps": null,
+          "link_id": "wire.1",
+          "max_payload_bytes": null,
+          "payload_bandwidth_Bps": 4000000000.0,
+          "profile_max_payload_bytes": null,
+          "profile_min_payload_bytes": 1,
+          "propagation_s": 1e-08,
+          "rate_basis": "effective_payload",
+          "schema_version": "network-link/v1",
+          "shared_constraint_ids": [],
+          "source_ref": "manual:buffered-nic-fixture/v1",
+          "src_port_id": "n1.wire",
+          "startup_s": 0.0,
+          "trailer_bytes": null
+        }
+      ],
+      "schema_version": "direct-network-graph/v1",
+      "switches": []
+    },
+    "groups": [],
+    "placements": [
+      {
+        "endpoint_id": "n0.endpoint",
+        "node_id": "n0.node",
+        "rank_id": "n0.r0"
+      },
+      {
+        "endpoint_id": "n0.endpoint",
+        "node_id": "n0.node",
+        "rank_id": "n0.r1"
+      },
+      {
+        "endpoint_id": "n1.endpoint",
+        "node_id": "n1.node",
+        "rank_id": "n1.r0"
+      },
+      {
+        "endpoint_id": "n1.endpoint",
+        "node_id": "n1.node",
+        "rank_id": "n1.r1"
+      }
+    ],
+    "schema_version": "cluster/v1"
+  },
+  "systems": [
+    {
+      "constraints": [
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n0.node",
+          "resource_id": "n0.nic.rx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n0.node",
+          "resource_id": "n0.nic.tx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        }
+      ],
+      "dma": {
+        "engines": [
+          {
+            "clock": {
+              "domain_id": "n0.gpu0.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n0.gpu0.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n0.gpu0.mem"
+            ],
+            "resource_id": "n0.gpu0.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "clock": {
+              "domain_id": "n0.host.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n0.host.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n0.host.mem"
+            ],
+            "resource_id": "n0.host.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "clock": {
+              "domain_id": "n0.nic.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n0.nic.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n0.nic.mem"
+            ],
+            "resource_id": "n0.nic.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          }
+        ],
+        "memory": {
+          "backings": [
+            {
+              "access_port_ids": [
+                "n0.gpu0.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n0.gpu0.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "access_port_ids": [
+                "n0.host.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n0.host.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "access_port_ids": [
+                "n0.nic.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n0.nic.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Declared capacity; no backing service or data contents"
+          ],
+          "node": {
+            "boards": [],
+            "schema_version": "system-node/v1",
+            "standalone_device_ids": [
+              "n0.gpu0",
+              "n0.host",
+              "n0.nic"
+            ],
+            "topology": {
+              "constraints": [
+                {
+                  "byte_basis": "payload",
+                  "capacity_Bps": 1000000000.0,
+                  "capacity_kind": "declared_ceiling",
+                  "coverage": [
+                    "Shared root-complex internal payload service; distinct from directional line resources"
+                  ],
+                  "frame_format_id": null,
+                  "owner_id": "n0.node",
+                  "resource_id": "n0.root_bus",
+                  "schema_version": "network-bandwidth/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "coverage": [
+                "Explicit permitted posted-write topology; no read completions or endpoint transit"
+              ],
+              "domains": [
+                {
+                  "address_bits": 32,
+                  "domain_id": "n0.gpu0.address",
+                  "owner_id": "n0.gpu0",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "address_bits": 32,
+                  "domain_id": "n0.host.address",
+                  "owner_id": "n0.host",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "address_bits": 32,
+                  "domain_id": "n0.nic.address",
+                  "owner_id": "n0.nic",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "forwardings": [
+                {
+                  "constraint_ids": [
+                    "n0.root_bus"
+                  ],
+                  "egress_port_id": "n0.fabric.host.out",
+                  "forwarding_id": "n0.gpu0.to.host",
+                  "ingress_port_id": "n0.fabric.gpu0.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n0.root_bus"
+                  ],
+                  "egress_port_id": "n0.fabric.nic.out",
+                  "forwarding_id": "n0.gpu0.to.nic",
+                  "ingress_port_id": "n0.fabric.gpu0.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n0.root_bus"
+                  ],
+                  "egress_port_id": "n0.fabric.gpu0.out",
+                  "forwarding_id": "n0.host.to.gpu0",
+                  "ingress_port_id": "n0.fabric.host.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n0.root_bus"
+                  ],
+                  "egress_port_id": "n0.fabric.nic.out",
+                  "forwarding_id": "n0.host.to.nic",
+                  "ingress_port_id": "n0.fabric.host.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n0.root_bus"
+                  ],
+                  "egress_port_id": "n0.fabric.host.out",
+                  "forwarding_id": "n0.nic.to.host",
+                  "ingress_port_id": "n0.fabric.nic.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "links": [
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.gpu0.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.fabric.gpu0.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.gpu0.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.gpu0.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.gpu0.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.fabric.gpu0.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.host.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.fabric.host.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.host.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.host.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.host.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.fabric.host.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.nic.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.fabric.nic.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.nic.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n0.nic.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n0.nic.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n0.fabric.nic.in"
+                }
+              ],
+              "ports": [
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.gpu0.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.gpu0.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.host.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.host.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.nic.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.fabric",
+                  "port_id": "n0.fabric.nic.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n0.gpu0.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.gpu0",
+                  "port_id": "n0.gpu0.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n0.gpu0.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.gpu0",
+                  "port_id": "n0.gpu0.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n0.host.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.host",
+                  "port_id": "n0.host.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n0.host.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.host",
+                  "port_id": "n0.host.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n0.nic.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.nic",
+                  "port_id": "n0.nic.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n0.nic.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n0.nic",
+                  "port_id": "n0.nic.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "resources": [
+                {
+                  "instance_id": "n0.fabric",
+                  "model_id": null,
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.gpu0",
+                  "model_id": "declared-device",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.gpu0.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n0.gpu0",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.gpu0.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n0.gpu0",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.host",
+                  "model_id": "declared-device",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.host.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n0.host",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.host.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n0.host",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.nic",
+                  "model_id": "declared-device",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.nic.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n0.nic",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.nic.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n0.nic",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.nic.rx_limit",
+                  "model_id": "nic-direction-service",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.nic.tx_limit",
+                  "model_id": "nic-direction-service",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.node",
+                  "model_id": null,
+                  "parent_id": null,
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.root_bus",
+                  "model_id": "shared-payload-ceiling",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.gpu0.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.gpu0.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.host.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.host.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.nic.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n0.service.nic.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n0.node",
+                  "ports": []
+                }
+              ],
+              "schema_version": "system-topology/v1",
+              "scope_id": "n0.node",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          },
+          "numa_domains": [],
+          "schema_version": "system-memory/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "pcie_services": [
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.gpu0.rx"
+            ],
+            "resource_id": "n0.service.gpu0.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.gpu0.tx"
+            ],
+            "resource_id": "n0.service.gpu0.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.host.rx"
+            ],
+            "resource_id": "n0.service.host.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.host.tx"
+            ],
+            "resource_id": "n0.service.host.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.nic.rx"
+            ],
+            "resource_id": "n0.service.nic.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n0.nic.tx"
+            ],
+            "resource_id": "n0.service.nic.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          }
+        ],
+        "profile": {
+          "coding_data_bits": 128,
+          "coding_wire_bits": 130,
+          "coverage": [
+            "Synthetic conventional NRZ/TLP assumptions; not device calibration or complete PCIe specification",
+            "No DLLP/ACK/credit/replay/propagation/FLIT/PAM4/read-completion accounting"
+          ],
+          "max_payload_bytes": 256,
+          "profile_id": "manual-gen3-like-mps256/v1",
+          "protocol": "conventional-posted-write/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1",
+          "tlp_overhead_bytes": 24
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "ports": [
+        {
+          "buffer_backing_ids": [
+            "n0.nic.mem"
+          ],
+          "endpoint": {
+            "coverage": [
+              "Explicit buffered boundary; no implicit RDMA or coherent visibility"
+            ],
+            "endpoint_id": "n0.endpoint",
+            "node_id": "n0.node",
+            "port_id": "n0.wire",
+            "rx_constraint_ids": [
+              "n0.nic.rx_limit"
+            ],
+            "schema_version": "network-endpoint/v1",
+            "source_ref": "manual:buffered-nic-fixture/v1",
+            "tx_constraint_ids": [
+              "n0.nic.tx_limit"
+            ]
+          },
+          "rdma_write_enabled": true,
+          "resource_id": "n0.nic",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        }
+      ],
+      "source_ref": "manual:buffered-nic-fixture/v1"
+    },
+    {
+      "constraints": [
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n1.node",
+          "resource_id": "n1.nic.rx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 2000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Buffered NIC directional payload ceiling, not local PCIe service"
+          ],
+          "frame_format_id": null,
+          "owner_id": "n1.node",
+          "resource_id": "n1.nic.tx_limit",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        }
+      ],
+      "dma": {
+        "engines": [
+          {
+            "clock": {
+              "domain_id": "n1.gpu0.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n1.gpu0.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n1.gpu0.mem"
+            ],
+            "resource_id": "n1.gpu0.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "clock": {
+              "domain_id": "n1.host.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n1.host.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n1.host.mem"
+            ],
+            "resource_id": "n1.host.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "clock": {
+              "domain_id": "n1.nic.clock",
+              "frequency_hz": 1000000000.0
+            },
+            "egress_port_id": "n1.nic.out",
+            "params": {
+              "burst_overhead_cycles": 4,
+              "bytes_per_cycle": 32,
+              "max_burst_bytes": 256,
+              "startup_cycles": 100
+            },
+            "read_backing_ids": [
+              "n1.nic.mem"
+            ],
+            "resource_id": "n1.nic.dma",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          }
+        ],
+        "memory": {
+          "backings": [
+            {
+              "access_port_ids": [
+                "n1.gpu0.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n1.gpu0.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "access_port_ids": [
+                "n1.host.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n1.host.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "access_port_ids": [
+                "n1.nic.in"
+              ],
+              "allocation_granule_bytes": 64,
+              "capacity_bytes": 8192,
+              "resource_id": "n1.nic.mem",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Declared capacity; no backing service or data contents"
+          ],
+          "node": {
+            "boards": [],
+            "schema_version": "system-node/v1",
+            "standalone_device_ids": [
+              "n1.gpu0",
+              "n1.host",
+              "n1.nic"
+            ],
+            "topology": {
+              "constraints": [
+                {
+                  "byte_basis": "payload",
+                  "capacity_Bps": 1000000000.0,
+                  "capacity_kind": "declared_ceiling",
+                  "coverage": [
+                    "Shared root-complex internal payload service; distinct from directional line resources"
+                  ],
+                  "frame_format_id": null,
+                  "owner_id": "n1.node",
+                  "resource_id": "n1.root_bus",
+                  "schema_version": "network-bandwidth/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "coverage": [
+                "Explicit permitted posted-write topology; no read completions or endpoint transit"
+              ],
+              "domains": [
+                {
+                  "address_bits": 32,
+                  "domain_id": "n1.gpu0.address",
+                  "owner_id": "n1.gpu0",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "address_bits": 32,
+                  "domain_id": "n1.host.address",
+                  "owner_id": "n1.host",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "address_bits": 32,
+                  "domain_id": "n1.nic.address",
+                  "owner_id": "n1.nic",
+                  "schema_version": "system-address-domain/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "forwardings": [
+                {
+                  "constraint_ids": [
+                    "n1.root_bus"
+                  ],
+                  "egress_port_id": "n1.fabric.host.out",
+                  "forwarding_id": "n1.gpu0.to.host",
+                  "ingress_port_id": "n1.fabric.gpu0.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n1.root_bus"
+                  ],
+                  "egress_port_id": "n1.fabric.nic.out",
+                  "forwarding_id": "n1.gpu0.to.nic",
+                  "ingress_port_id": "n1.fabric.gpu0.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n1.root_bus"
+                  ],
+                  "egress_port_id": "n1.fabric.gpu0.out",
+                  "forwarding_id": "n1.host.to.gpu0",
+                  "ingress_port_id": "n1.fabric.host.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n1.root_bus"
+                  ],
+                  "egress_port_id": "n1.fabric.nic.out",
+                  "forwarding_id": "n1.host.to.nic",
+                  "ingress_port_id": "n1.fabric.host.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [
+                    "n1.root_bus"
+                  ],
+                  "egress_port_id": "n1.fabric.host.out",
+                  "forwarding_id": "n1.nic.to.host",
+                  "ingress_port_id": "n1.fabric.nic.in",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "links": [
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.gpu0.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.fabric.gpu0.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.gpu0.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.gpu0.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.gpu0.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.fabric.gpu0.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.host.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.fabric.host.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.host.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.host.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.host.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.fabric.host.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.nic.rx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.fabric.nic.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.nic.in"
+                },
+                {
+                  "constraint_ids": [],
+                  "link_id": "n1.nic.tx",
+                  "operations": [
+                    "write"
+                  ],
+                  "source_port_id": "n1.nic.out",
+                  "source_ref": "manual:pcie-dma-fixture/v1",
+                  "target_port_id": "n1.fabric.nic.in"
+                }
+              ],
+              "ports": [
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.gpu0.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.gpu0.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.host.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.host.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.nic.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": null,
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.fabric",
+                  "port_id": "n1.fabric.nic.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n1.gpu0.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.gpu0",
+                  "port_id": "n1.gpu0.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n1.gpu0.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.gpu0",
+                  "port_id": "n1.gpu0.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n1.host.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.host",
+                  "port_id": "n1.host.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n1.host.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.host",
+                  "port_id": "n1.host.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "ingress",
+                  "domain_id": "n1.nic.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.nic",
+                  "port_id": "n1.nic.in",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                },
+                {
+                  "constraint_ids": [],
+                  "direction": "egress",
+                  "domain_id": "n1.nic.address",
+                  "operations": [
+                    "read",
+                    "write"
+                  ],
+                  "owner_id": "n1.nic",
+                  "port_id": "n1.nic.out",
+                  "protocol": "conventional-posted-write/v1",
+                  "schema_version": "system-port/v1",
+                  "source_ref": "manual:pcie-dma-fixture/v1"
+                }
+              ],
+              "resources": [
+                {
+                  "instance_id": "n1.fabric",
+                  "model_id": null,
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.gpu0",
+                  "model_id": "declared-device",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.gpu0.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n1.gpu0",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.gpu0.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n1.gpu0",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.host",
+                  "model_id": "declared-device",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.host.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n1.host",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.host.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n1.host",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.nic",
+                  "model_id": "declared-device",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.nic.dma",
+                  "model_id": "serial-dma",
+                  "parent_id": "n1.nic",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.nic.mem",
+                  "model_id": "declared-storage",
+                  "parent_id": "n1.nic",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.nic.rx_limit",
+                  "model_id": "nic-direction-service",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.nic.tx_limit",
+                  "model_id": "nic-direction-service",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.node",
+                  "model_id": null,
+                  "parent_id": null,
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.root_bus",
+                  "model_id": "shared-payload-ceiling",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.gpu0.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.gpu0.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.host.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.host.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.nic.rx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                },
+                {
+                  "instance_id": "n1.service.nic.tx",
+                  "model_id": "nrz-line",
+                  "parent_id": "n1.node",
+                  "ports": []
+                }
+              ],
+              "schema_version": "system-topology/v1",
+              "scope_id": "n1.node",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          },
+          "numa_domains": [],
+          "schema_version": "system-memory/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "pcie_services": [
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.gpu0.rx"
+            ],
+            "resource_id": "n1.service.gpu0.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.gpu0.tx"
+            ],
+            "resource_id": "n1.service.gpu0.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.host.rx"
+            ],
+            "resource_id": "n1.service.host.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.host.tx"
+            ],
+            "resource_id": "n1.service.host.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.nic.rx"
+            ],
+            "resource_id": "n1.service.nic.rx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          },
+          {
+            "lane_count": 4,
+            "lane_rate_transfers_s": 8000000000.0,
+            "link_ids": [
+              "n1.nic.tx"
+            ],
+            "resource_id": "n1.service.nic.tx",
+            "source_ref": "manual:pcie-dma-fixture/v1"
+          }
+        ],
+        "profile": {
+          "coding_data_bits": 128,
+          "coding_wire_bits": 130,
+          "coverage": [
+            "Synthetic conventional NRZ/TLP assumptions; not device calibration or complete PCIe specification",
+            "No DLLP/ACK/credit/replay/propagation/FLIT/PAM4/read-completion accounting"
+          ],
+          "max_payload_bytes": 256,
+          "profile_id": "manual-gen3-like-mps256/v1",
+          "protocol": "conventional-posted-write/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1",
+          "tlp_overhead_bytes": 24
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "ports": [
+        {
+          "buffer_backing_ids": [
+            "n1.nic.mem"
+          ],
+          "endpoint": {
+            "coverage": [
+              "Explicit buffered boundary; no implicit RDMA or coherent visibility"
+            ],
+            "endpoint_id": "n1.endpoint",
+            "node_id": "n1.node",
+            "port_id": "n1.wire",
+            "rx_constraint_ids": [
+              "n1.nic.rx_limit"
+            ],
+            "schema_version": "network-endpoint/v1",
+            "source_ref": "manual:buffered-nic-fixture/v1",
+            "tx_constraint_ids": [
+              "n1.nic.tx_limit"
+            ]
+          },
+          "rdma_write_enabled": true,
+          "resource_id": "n1.nic",
+          "source_ref": "manual:buffered-nic-fixture/v1"
+        }
+      ],
+      "source_ref": "manual:buffered-nic-fixture/v1"
+    }
+  ]
+}

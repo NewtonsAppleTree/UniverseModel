@@ -34,6 +34,14 @@ jobs:
       - run: python -m example.cluster_demo --read .build/cluster-breadth --overview
       - run: python -m example.system_demo --output .build/system-connectivity
       - run: python -m example.system_demo --read .build/system-connectivity
+      - run: python -m example.system_memory_demo --output .build/system-memory
+      - run: python -m example.system_memory_demo --read .build/system-memory
+      - run: python -m example.system_transfer_demo --output .build/system-transfer
+      - run: python -m example.system_transfer_demo --read .build/system-transfer
+      - run: python -m example.system_tiering_demo --output .build/system-tiering
+      - run: python -m example.system_tiering_demo --read .build/system-tiering
+      - run: python tools/validate_systemmodel.py --output .build/systemmodel-acceptance
+      - run: python tools/validate_systemmodel.py --read .build/systemmodel-acceptance
       - run: python -m example.linear_demo --output .build/linear-study
       - run: python -m example.linear_demo --read .build/linear-study
       - run: python tools/validate_chipmodel.py --output .build/chipmodel-acceptance

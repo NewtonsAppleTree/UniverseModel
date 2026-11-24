@@ -510,3 +510,27 @@ CH9已实现[精确成本查询](costmodel/UNITS.md)、[物理资源账本](chip
 ## systemmodel S0/S1静态节点边界
 
 地址域address_bits[bit]规定0≤address、length_bytes>0、address+length_bytes≤2**address_bits，不等价于物理容量/驻留。节点port明确egress/ingress、协议/profile、copy/read/write权限；wire/crossing的权限是两端能力子集，terminal不能转发。BandwidthConstraint引用唯一resource_id与实际parent owner；摘要与内部模型互斥，路径constraint_visits保留实际访问次数，不能据此把共享容量按卡数相加。max_hops[link]是宿主路径查询预算，最少跳数不等于最快路径。参数来源/实现与当前未知成本见[系统UNITS](systemmodel/UNITS.md)。
+
+## systemmodel S2静态内存与NUMA
+
+物理capacity_bytes[B]独立于地址宽度；allocation_granule_bytes[B]为正整数，reserved=ceil(size_bytes/granule)×granule，offset_bytes按granule对齐且offset+reserved≤capacity。对象是逻辑需求，allocation是一份完整物理副本，region是其逻辑子区间视图；alias引用同一allocation不增容，独立副本分别占用。生命周期[begin_phase,end_phase)采用逻辑phase，非目标时间；同一backing并发物理区间、同一domain并发地址区间分别互斥。视图physical_offset=allocation.offset+region.object_offset+address-region.base，padding不可见。每池独立峰值不能相加当作同时节点峰值。
+
+NUMA的member_ids显式赋给精确资源，无层次继承；同/异group是local/remote，缺成员为unknown，不能推定distance、latency或energy。权限和路径可达另校验，read只覆盖请求方向，返回/内容/一致性未建模。设计字段、来源与验证见[memory UNITS](systemmodel/memory/UNITS.md)。
+
+## systemmodel S3 PCIe/DMA服务与共享账本
+
+conventional非FLIT posted write：MPS[B]约束DWORD数据字段，包不跨4 KiB；首尾byte enable产生的padding与每TLP显式overhead均进入frame_bytes。NRZ线路frame容量=lane_count×lane_rate_transfers_s×coding_data_bits/coding_wire_bits/8[B/s]，编码不再重复计入工作；最后编码块补齐和控制流量未知。PcieService可被多条wire引用，每次实际经过计工作、预算只一份。frame口径共享约束必须绑定同profile_id，必要下界只接受declared_ceiling，不能拿有效平均速率当严格上限。
+
+DMA复用DmaParams/ClockDomain：每leg工作startup_cycles+ceil(D/max_burst_bytes)×burst_overhead_cycles+ceil(D/bytes_per_cycle)，以本域frequency换为second；不含software launch。源需显式本地backing/domain绑定，目的受view/route权限约束。CopyChain表示前leg完整copy完成后，后leg从同一物理区间读取；staging容量显式预留，不推断分块流水。独立链不得有未排序写冲突。每leg取已知必要资源时间最大值，整copy依赖累加，共享总工作ΣW按唯一rate计算；最终取依赖与资源下界最大值，实际执行/可见性和能量未知。字段与验证见[io UNITS](systemmodel/io/UNITS.md)。
+
+## systemmodel S4 CXL与分层迁移
+
+设备type限制允许模式；enabled_protocols单独声明实际启用，io/cache不能替代mem访问，一致性不由模式名称推断。平坦decoder的base/offset/length按显式granule[B]对齐，granule含完整line；backing_offset+address−base必须匹配S2解出的物理地址。窗口按host domain和backing分别互斥，不重复容量。人工台架64 B decoder粒度不代表真实HDM寄存器粒度；交错/多主机池化不覆盖。
+
+原生CXL读行数=ceil((address%line+length)/line)，data_bytes=行数×line；仅支持整行对齐写。它不是PCIe TLP frame_bytes；FLIT、返回路径服务、一致性与物理成本未知。tier精确分区全部backing，同phase汇总存活copy预留，不累加不同历史峰值。三状态迁移during=before+目标副本，move在条件after中删除源，copy保留源；additional_reserved_bytes=during−before。完整对象身份/长度/phase/物理端点绑定，原生CXL时间界未知，非CXL.mem兼容DMA才复用S3必要界。字段、来源和验证见[CXL](systemmodel/io/cxl/UNITS.md)与[memory](systemmodel/memory/UNITS.md)。
+
+## systemmodel S5/S6节点供数与AI比较
+
+NicPort引用真实NIC及buffer backing，方向capacity为node-owned payload declared_ceiling[B/s]，与本地DMA/PCIe/root资源互斥；标准库NetworkEndpointSpec/BandwidthConstraint由cluster原样使用且只计一次。TX链终止于NIC缓冲，RX链起于缓冲，应用object/version/offset/bytes需一致。RDMA写显式启用，并要求注册覆盖精确allocation的对象内字节区间、read/write方向和半开phase；协议名不授予权限，rkey/QP/ordering与真实可见性未知。组合必要界=max(node局部界,fabric界)，非端到端时间；同节点消息仅用局部CopyChain。
+
+AI packed-input长度按实际dtype与生成的operands/state推导，输入哈希绑定MemoryObject来源；目标input和workspace分别按backing粒度取整。训练为保留输入另预留全部非initial tensor总字节，不能复用编译计划已释放输入；独立scratch由compiler核对。resident/direct/staged分别按已在目标/一次copy/两次copy前提计准备工作；原始硬件固定，带宽与startup干预显式保存比例和派生身份。MAC-only时间界=实际MAC/声明MAC每秒，完整时延/能耗与数据集质量未知。参数来源与例子见[NIC UNITS](systemmodel/io/nic/UNITS.md)、[AI指南](systemmodel/docs/ai_usage.md)。

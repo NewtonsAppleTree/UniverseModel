@@ -1,6 +1,6 @@
 # systemmodel：板卡、主机与节点
 
-实现状态：S0/S1静态归属/域/端口/拓扑与权限查询已落地，见[首包指南](foundation_usage.md)和[开发计划](development_plan.md)。下文是完整设计目标；动态队列、服务、容量/地址映射和性能仍不能由拓扑查询推导为已实现。
+实现状态：S0/S1静态节点与权限路径、S2内存预留/地址/NUMA、S3 conventional posted-write与DMA整缓冲搬运分析、S4 CXL能力/平坦decoder与分层迁移、S5显式缓冲NIC/cluster、S6 AI数值与节点方案台架已落地，见[首包](foundation_usage.md)、[内存](memory_usage.md)、[搬运](transfer_usage.md)、[分层指南](tiering_usage.md)、[NIC/cluster](network_usage.md)、[AI研究台架](ai_usage.md)和[开发计划](development_plan.md)，S7统一验收入口已接入。下文仍包含完整设计目标；动态队列、完整协议、真实访存和执行性能不能由静态分析推导为已实现。
 
 ## 核心与边界
 

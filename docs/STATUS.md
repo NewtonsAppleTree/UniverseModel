@@ -1,5 +1,93 @@
 # 实现状态
 
+## 2026-11-24 systemmodel S0–S7独立整体验收通过
+
+已对基础计划重新核对实现边界、独立参考、失败诊断、来源、组合账本与wheel，结果见[整体验收报告](../systemmodel/docs/acceptance.md)。发现并修复两处验收器缺口：总源码清单原先未交叉绑定每条RunRecord，以及成功名单原先只核对数量。现在重新计算保存的源码聚合哈希，并检查全部成功/失败记录的source_revision；完整正负案例身份固定，不能以等量新案例替代。临时副本反例在修复前被接受、修复后被拒绝；未改动硬件或AI生产模型。
+
+新增8项验收器测试及1项AI可替换任务测试，后者含INT8/float64尾块、单层/三层训练、identity激活、批量因果GQA与不等头数，共18种任务/策略组合。全仓555项测试：contracts 8、cluster 72、cost 7、chip 141、system 79、workloads 47、compiler 20、integration 181；默认553通过、2可选PyTorch跳过。既有PyTorch 2.5.1+cpu/float64环境另通过这2项autograd/SGD及来源验证，555项均已有本轮通过证据；该外部参考不构成目标性能测量。
+
+六组默认81例重新执行和回读，42成功、39预期失败，176份产物保留。逐项核对失败诊断与模型边界相符；新旧输出/状态/预期/诊断完全一致，仅来源引起的identity_hash变化。上一轮完整验收包在加强后的入口下仍通过，原176份产物字节不变。规则/结构与空白检查独立保存，CI只读查询仍为`disabled_manually`。
+
+证据目录`.build/systemmodel-review-20261124`保存轮初与最终来源、测试日志、修复前后探针、全部bundle、历史兼容审计、PyTorch环境、wheel/索引保护及validation。233份来源文件的身份为`cea6acc6b56883321280c8764c879fef6bb79482+python-config-sha256:ce9e5cb99c5c1fe4074bd240261b10287d63f960fd209644eda0b1131166852c`；轮初232份中仅工具及AI测试2份修改，其余230份保留，新增验收器测试1份。原有未提交工作保留，Git索引未变，未提交或推送。
+
+新wheel位于`.build/systemmodel-review-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `322b4e8098481f5de43187049f138749460bb1e4c4dad7fbda0fb6a476e07154`。121份Python名单/字节与工作区一致；`python -I`从独立解包目录导入68份模块，以标准库依赖重新运行并回读全部81例，与源码侧结果一致，配置由仓库提供。
+
+验收结论限定为S0–S7约定基础范围，没有遗留范围内阻断项。动态执行/争用、完整PCIe/CXL/RDMA、一致性与发布、真实任务质量、实测性能和总能耗仍按具体研究需要接入，不能将本次通过解释为这些主张已经成立。
+
+## 2026-11-24 systemmodel S5–S7完成：基础开发计划验收
+
+[systemmodel开发计划](../systemmodel/docs/development_plan.md)的S0–S7本轮基础范围已完成。新增S5显式缓冲NIC/注册/节点供数与cluster边界，S6三类AI任务的实际数值与节点驻留/搬运对照，S7六组81例统一保存/回读及来源/产物验证。独立接口与局限见[NIC指南](../systemmodel/docs/network_usage.md)、[AI指南](../systemmodel/docs/ai_usage.md)和[NIC UNITS](../systemmodel/io/nic/UNITS.md)。后续深化按具体研究主张选择动态执行、数据可见性、真实任务质量或设备标定，不再将S5–S7列为未开发。
+
+S5的NicSystem引用现有DmaSystem、真实NIC资源与有限buffer backing；NetworkEndpointSpec/BandwidthConstraint原样导出给cluster，node资源全局唯一，local DMA/PCIe与NIC/fabric收费互斥。TX链末端和RX链起点必须为该NIC buffer，应用数据object/version/offset/bytes严格绑定。RDMA写需显式启用，且精确注册allocation区间、read/write方向与逻辑phase；普通协议标签不授予访问。NetworkStudy保留完整TX/RX或local绑定，同节点消息只走本地CopyChain；每node一次共享batch避免漏算多流工作与hazard。
+
+S5十二例为4成功、8预期失败；512 B单消息的node局部必要界512 ns，两路512 B共享root合计1024 ns，NIC容量仍仅一份。NIC ceiling降到0.25 GB/s的独立敏感性检查使1024 B需求必要界变为4096 ns。相同node复制的网络工作为0；这不是未知成本填零。合成界取max(node局部界,fabric界)，不假定端到端完成、调度或一致性；显式完整缓冲抽象不等同原生NIC读完成/零拷贝/RDMA协议实现。
+
+S6的AiTask/AiCase/AiStudy复用workloads/compiler实现与独立参考：Linear输出、训练prediction/loss/所有梯度/更新状态、Attention输出均检查。真实operands/state与任务哈希绑定packed-input对象，derive输入字节、目标空间和显式copy链。训练保留288 B初始输入时，为全部非initial张量另留1096 B workspace，不能套用可释放输入的680 B编译活跃峰值；未取整预留1384 B，分配粒度另计。compute-local scratch独立校验；MAC-only服务与节点准备工作取必要界，scalar/softmax/内部供数/输出返回等完整成本未知。
+
+S6十八例为15成功、3同预算容量失败。每个小任务比较resident/direct/staged以及明确的带宽×0.5、startup cycle×10干预；同任务的实际输入、数值结果和基础硬件一致。4×8与8×4 float64 Linear为512 B输入、128 B输出、128 MAC；三种策略准备copy为0/512/1024 B，已知部分界128/512/1024 ns。resident假设输入已经在目标，不能把这组数当作同一初态的实际加速比。没有数据集accuracy、LLM质量或实测性能声明。
+
+S7新增`python tools/validate_systemmodel.py --output <fresh-dir>`及`--read <dir>`。六组分别为7/15/14/15/12/18例，共81例，42成功、39预期失败全部保留；命令、源码与176份产物清单/哈希绑定，保存后独立回读一致。NIC回读使用固定fabric路径和已存local路径；AI用独立reference重验保存actual，不执行mapped interpreter/producer或新寻路。旧S4十五例记录回读仍与原证据一致。
+
+新增28项测试：systemmodel 13、integration 15。全回归546项中544通过、2项可选PyTorch因未安装跳过；contracts 8、clustermodel 72、costmodel 7、chipmodel 141、systemmodel 79、workloads 47、compiler 20、integration 172。模型规则通过79个实现目录；结构通过13模块、124份模块Python、195份Markdown及4份DOCX来源哈希，空白检查通过。
+
+本地证据目录`.build/systemmodel-completion-20261124`保存轮初before、source、全分组日志、acceptance/六组记录及summary、preservation_audit、wheel核对、workflow_state和validation。来源覆盖232份Python/config/pyproject，身份为`cea6acc6b56883321280c8764c879fef6bb79482+python-config-sha256:f0c6d1d538d8fdcb90d8c4203d1561053d7be9740c566c3eea69aab40929f598`。轮初221份源码/config原始字节全部保留，新增11份源码/配置/测试/工具文件，Git索引未改变；历史S2–S4尚未提交的修改也保留。
+
+wheel为`.build/systemmodel-completion-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `087adf52c93d2d3c1acee3f29d54156879ce0b14cdd8f41d4f3ebbc01bf0f4b8`。121份打包Python完整名单/字节与工作区一致，python -I从解包目录导入68份项目模块，在标准库依赖范围重新执行全部81例并核对工作区bundle回读一致；配置/示例由仓库提供。
+
+本轮完成的是计划明确的基础范围：没有动态队列、混合一个node的local-only/NIC batch执行、完整PCIe/CXL/RDMA协议、远端认证/QP/ordering、真实复制/缓存一致性/publication或完整时延/能量模型。所有完整目标成本保持None+原因。GitHub Actions继续暂停，本轮只读GET确认`disabled_manually`；本地YAML补入统一验收入口供以后恢复使用，未恢复远端CI，未提交或推送文件。
+
+## 2026-11-24 systemmodel S4 CXL能力、分层驻留与迁移可行性完成
+
+已完成[开发计划](../systemmodel/docs/development_plan.md)的S4约定范围：显式CXL类型/启用模式、平坦decoder窗口与内存行数据计量；唯一物理tier分区和同phase驻留；完整对象迁移的before/during/after静态预留与传输绑定。研究问题、独立调用、15例和证据范围见[分层指南](../systemmodel/docs/tiering_usage.md)。下一包为**S5：NIC与集群边界**；S5–S6待开发，不声明完整systemmodel已完成。
+
+CxlMemorySystem引用S2物理清单，分别检查host/device端口所有权、启用mem、窗口容量/对齐/地址宽度、host窗口与backing范围互斥；访问核对S2视图和decoder物理偏移、请求权限与实际路径。io/cache不能替代mem，一致性不由设备类型推断。非对齐读按完整内存行计量；写只支持对齐整行。64 B decoder粒度是具名人工平坦窗口假设，不声明真实HDM寄存器合法性；原生CXL工作不套用PCIe TLP帧。
+
+TieredMemorySystem将全部backing精确划入一层，capacity只引用已有存储；同一phase汇总存活副本，不累加各池历史峰值。TierMigration的during保留源和全部旧资源，仅增加同一完整对象的目标copy；copy保留两份，move仅在条件after删除源及其视图。迁移传输绑定精确对象、长度、phase、allocation与物理区间；原生CXL需host-local端点，兼容非CXL.mem路径可复用S3 DMA。分析不复制数据或发布after，不提供自动替换策略/分块流水。
+
+同一host 512 B、CXL 4096 B及两份accelerator各1024 B预算下，1024 B对象全放host失败，host 256 B+CXL 768 B可行。cold 256 B提升move的总预留为1024→1280→1024 B，copy的after保持1280 B；额外256 B体现复制重叠代价。1 B非对齐读需64 B行数据。原生CXL时间下界None+原因，兼容host→accelerator DMA的已知部分下界256 ns；所有目标执行时间/能量未知。这是容量/声明/工作证据，不是AI质量、实测性能或加速比。
+
+新增23项测试：systemmodel 17、integration 6，含100组独立byte-to-line-set参考、手算/不变性、模式/路径/映射/瞬时空间反例、完整对象绑定、无producer/新寻路回读及结果/指标篡改。全回归518项中516通过、2项可选PyTorch因环境未安装跳过；contracts 8、clustermodel 72、costmodel 7、chipmodel 141、systemmodel 66、workloads 47、compiler 20、integration 157。模型规则覆盖78目录；结构通过13模块、121份模块Python、192份Markdown及4份DOCX来源哈希；空白检查通过。
+
+本地证据`.build/systemmodel-tiering-20261124`保存before/source、各组日志与结果、study/、summary、study_audit、preservation_audit、validation、workflow_state和wheel核对。来源覆盖221份Python/config/pyproject，身份`cea6acc6b56883321280c8764c879fef6bb79482+python-config-sha256:f4df6be3afbe7393ca02d8c813a4556b76191528c81230b20404e686c60404db`。轮初213份源码/config原始字节全部保持，新增8份源码/配置/测试，Git索引未改变。15例为7成功、8预期失败，完整保存/回读一致；旧S3十四例回读仍与原证据一致。
+
+wheel为`.build/systemmodel-tiering-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `0df77a9459d40c613ffa78e4904fa34ba97c745d33ba9f70ecf63613e1e02a27`。118份打包Python完整名单/字节与工作区一致，python -I从解包目录导入36份实际项目模块，在标准库依赖范围完成15例执行及工作区/新bundle回读一致；配置和示例由仓库提供。
+
+完整CXL协议、HDM寄存器/交错/多主机池化、FLIT/credit/返回服务、缓存一致性/原子/顺序/可见性、真实复制、完整时延和物理能耗均未覆盖。按既有用户要求保持GitHub Actions暂停；本轮只读GET确认`disabled_manually`。本地工作流补入S4示例保存/回读供以后恢复时使用，未恢复远端CI，未提交或推送文件。
+
+## 2026-11-24 systemmodel S3 PCIe/DMA搬运分析完成
+
+已完成[开发计划](../systemmodel/docs/development_plan.md)的S3约定范围：conventional非FLIT/NRZ posted-write流量、显式本地源DMA、整缓冲copy链与唯一共享资源工作账本。研究问题、独立接口、14例及适用边界见[搬运指南](../systemmodel/docs/transfer_usage.md)；下一包为**S4：CXL能力与分层内存**，S4–S6仍未实现。
+
+PcieProfile明确MPS、每TLP协议开销、编码比例与来源，packetize_write按4 KiB边界和DWORD byte enable计算实际frame B，完整页批量计算，不逐字节/逐包展开大载荷。PcieService绑定唯一物理服务和实际wire，frame容量由lane/rate/coding派生；编码只折算一次。DmaEngine复用chipmodel DmaParams/ClockDomain，校验源backing/domain直连与目标write路径；CopyChain后leg必须读取前leg写入的同一物理区间，允许alias，staging空间由S2显式预留，独立链禁止未排序读写冲突。
+
+账本分别保存backing有效读写、DMA cycle、PCIe frame B和共享payload/frame工作。engine、线路与共享摘要统一检查重复/父子计量；同一资源多次真实经过累计工作，预算只有一份。每leg取已知必要资源时间最大值，整copy完成依赖才相加；复用资源包络/DAG下界，没有逐hop串加完整包时间。目标执行与能量继续None+原因；没有backing真实服务、读完成、DLLP/ACK/credit/replay/传播、动态队列、分块流水、数据内容/可见性、软件launch或完整物理能耗。
+
+默认14例为7成功、7预期失败。相同硬件与MemoryPlan的512 B直传/中转分别有1120/2240条线路累计frame B，已知界512/1024 ns；中转host写512 B后再读512 B。direct仍保留同预算下未使用的host预留，不用此例声称容量节省。1 B为105 DMA cycle，启动主导；513 B非对齐尾块产生3 TLP、588 frame B。两条独立copy的单链critical512 ns，共享工作界1024 ns。所有数值来自具名人工台架，不能当作设备实测、可达调度时间、AI任务质量或实机加速比。
+
+新增22项测试：systemmodel 16、integration 6；含160组独立DWORD分包oracle、4 KiB/64 bit尾边界、16 TiB计数、手算/守恒、启动与带宽敏感性、alias中转、共享/重复资源、非法source/路径/容量/hazard及记录篡改。全回归495项中493通过、2项可选PyTorch因环境未安装跳过；contracts 8、clustermodel 72、costmodel 7、chipmodel 141、systemmodel 49、workloads 47、compiler 20、integration 151。模型规则覆盖77个目录，结构通过13模块、117份模块Python、190份Markdown与4份DOCX来源哈希，空白检查通过。
+
+本地证据`.build/systemmodel-transfer-20261124`包含before/source、全部测试/规则/结构日志、study/、summary、study_audit、validation、workflow_state及wheel核对。来源覆盖213份Python/config/pyproject，身份为`cea6acc6b56883321280c8764c879fef6bb79482+python-config-sha256:fa50645a86e6b90dbe45420938e72c64e25e627fc1adf4cd8820392a0dcf77f9`。轮初205份源码/config字节全部保持，新增8份源码/配置/测试，Git索引未改变。新14例保存/回读与旧S2十五例回读一致；回读使用保存route静态重分析，不调用producer或新寻路。
+
+wheel为`.build/systemmodel-transfer-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `7dc4cf63732a83760b51a65fd4a40360b8296e3ab045540a440164999673bbc1`。114份打包Python完整名单/字节与工作区一致；python -I从解包目录导入33份实际项目模块，标准库依赖环境完成14例执行、新旧本包bundle回读与工作区一致。配置/示例仍由仓库提供。
+
+按用户本轮要求，已通过GitHub API暂停工作流`Structure, model rules and universal framework`，确认`disabled_manually`；未删除配置、未恢复远端自动检查。本地工作流配置补入S3 demo保存/回读，供未来手动恢复后使用。本地验收不代表远端CI已执行，也未提交/推送本轮开发文件。
+
+## 2026-11-24 systemmodel S2内存容量、地址视图与NUMA完成
+
+已完成[开发计划](../systemmodel/docs/development_plan.md)的S2；下一包为**S3：PCIe与DMA服务**。本包回答声明的对象能否驻留、别名与副本怎样计量、生命周期能否复用空间、访问地址是否有效及源到backing是否可达，见[独立用法与十五例](../systemmodel/docs/memory_usage.md)。S3–S6仍待开发，未声明完整systemmodel已完成。
+
+新增MemorySystem/MemoryBacking/NumaDomain，引用同一NodeSpec并校验物理资源与端口归属、互斥摘要/内部容量和精确NUMA成员。MemoryPlan分离逻辑对象、完整物理副本、地址视图：reserved=ceil(size/granule)×granule；不同alias引用同一allocation不重复占用，不同副本分别计量。按半开逻辑phase生命周期检查物理及同domain地址区间，同阶段先释放再预留；物理偏移和视图长度分别校验，padding不可访问。独立analyze_placement/resolve_span/analyze_access分别提供容量、地址解析、权限路径和local/remote/unknown；位置不从地址、controller祖先或跳数推断。各池峰值独立报告，不相加当作同时节点峰值。
+
+默认双CPU/双1024 B池、64 B粒度全部为具名人工假设。完整15例中6成功、9预期失败；160 B权重+96 B激活预留320 B，逻辑256 B、padding64 B；增加alias仍320 B，额外权重副本变512 B，半开生命周期复用仍320 B。相同逻辑需求与物理预算的local/remote对照都为2跳，不能据此推定延迟。失败涵盖物理/地址重叠、取整超容量、padding暴露、权限、生命周期、范围、路径和旧identity绑定。
+
+新增26项测试：systemmodel 19、integration 7；含120组独立逐字节物理占用和80组地址区间oracle、精确整数/归属/NUMA反例、输入/结果/指标篡改和完整失败名单。全回归473项中471通过、2项可选PyTorch因环境未安装跳过；contracts 8、clustermodel 72、costmodel 7、chipmodel 141、systemmodel 33、workloads 47、compiler 20、integration 145。模型规则覆盖74个目录，结构检查通过13模块、113份模块Python、186份Markdown及4份DOCX来源哈希。CI追加system_memory_demo保存/回读；本地结果不表示远端CI已执行。
+
+MemoryStudy逐例保存完整候选/硬件/输入/源码/假设以及结果或失败，placement-only不声明路径。回读重新校验静态区间、地址、NUMA和保存的实际route，不执行producer或重新搜索；不重新证明最少跳数、失败诊断或真实设备行为。S0/S1 schema和原七例证据回读保持兼容。目标时延、能量仍为None并附unknown_reason；逻辑phase不作为目标时间，host wall time不进入性能指标。没有真实数据内容、分配器、page table/TLB/IOMMU、NUMA距离、缓存/一致性、read返回服务或调度完成证据。
+
+本地证据根目录`.build/systemmodel-memory-20261124`保存before/source、分组测试/规则/结构日志、study/、summary、study_audit、validation及wheel核对。来源覆盖205份Python/config/pyproject，身份为`cea6acc6b56883321280c8764c879fef6bb79482+python-config-sha256:1778bedb6890282f3b6e56def98e4386c2c24a153552dce75c0f97cc6396e5cc`。相对轮初197份源码/config字节全部保持，新增8份源码/配置/测试；期间仓库出现提交`cea6acc6`，证据采用保存时实际HEAD与源码，不将Git索引变化归为本轮执行的提交。
+
+wheel为`.build/systemmodel-memory-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `5efe55be424765edec7942d12fd258632308896b98b446e33db2228094d12e34`。110份打包Python的完整名单/字节与工作区一致；python -I从解包目录导入30份实际项目模块，在标准库依赖范围完成15例执行及新旧bundle回读，与工作区结果一致。配置和示例仍由仓库提供。
+
 ## 2026-11-24 systemmodel S0/S1节点边界与拓扑首包完成
 
 依据项目使命启动[systemmodel S0–S7规划](../systemmodel/docs/development_plan.md)，已完成S0公共边界、S1板卡/节点与静态权限路径，以及对应工程验收。独立用法、假设和七例见[首包指南](../systemmodel/docs/foundation_usage.md)。S2内存/NUMA、S3 PCIe/DMA服务、S4 CXL、S5 NIC、S6 AI实验仍为后续开发包，完整设计目标未当作已实现能力。

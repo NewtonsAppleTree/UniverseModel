@@ -75,3 +75,11 @@ python -m example.adc_demo
 [`assembly_demo.py`](assembly_demo.py)运行CH8五组16个案例，比较固定工作的位置、共享端口/时钟、完整job顺序和D2D方向预算。`python -m example.assembly_demo --output .build/assembly-study` 保存，`--read .build/assembly-study` 回读。完整工作/资源/预留/来源及失败保留，未知执行/能量不补零；见[组合指南](../chipmodel/docs/assembly.md)。
 
 `python -m example.system_demo --output .build/system-connectivity`执行完整7例静态节点研究；`--read`核对保存路径而不重新搜索。详细范围见[系统首包](../systemmodel/docs/foundation_usage.md)。
+
+`python -m example.system_memory_demo --output .build/system-memory`执行S2完整15例；`--read`重分析静态容量、映射和NUMA，核对保存路径，不重新寻路或执行producer。范围、手算与未知成本见[内存指南](../systemmodel/docs/memory_usage.md)。
+
+`python -m example.system_transfer_demo --output .build/system-transfer`执行S3完整14例；`--read`核对保存路径、内存/DMA/帧工作、整copy依赖与条件下界，不重新寻路。范围见[搬运指南](../systemmodel/docs/transfer_usage.md)。
+
+`python -m example.system_tiering_demo --output .build/system-tiering`执行S4完整15例；`--read`重分析同phase驻留、CXL行访问和三状态迁移，核对保存路径与对象/来源，不重新寻路或执行producer。见[分层指南](../systemmodel/docs/tiering_usage.md)。
+
+`python -m example.system_network_demo --output .build/system-network`与`python -m example.system_ai_demo --output .build/system-ai`分别运行S5十二例与S6十八例，各自支持`--read`。完整S0–S7验收用`python tools/validate_systemmodel.py --output .build/systemmodel-acceptance`，之后`--read .build/systemmodel-acceptance`核对六组81例及来源/产物哈希。

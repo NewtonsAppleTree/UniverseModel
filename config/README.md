@@ -28,3 +28,11 @@
 配置应引用模板、实例及成本版本，避免复制互相矛盾的参数。覆盖顺序、派生量和约束见 [configuration 设计](../configuration/docs/design.md)。示意结构放在 example/specs，不能把它当成已可执行配置。
 
 `experiments/system_connectivity.json`：S0/S1主机/双卡静态路径，3成功与4预期失败。16/8 GB/s为手工payload条件声明，当前不计算节点性能；见[指南](../systemmodel/docs/foundation_usage.md)。
+
+`experiments/system_memory.json`：S2双池内存/NUMA，6成功与9预期失败。1024 B池/64 B粒度为具名人工假设；比较alias/copy、生命周期复用与相同需求的本地/远端放置。plan绑定完整memory identity，改变硬件需显式重新绑定；见[指南](../systemmodel/docs/memory_usage.md)。
+
+`experiments/system_transfer.json`：S3固定双GPU/host/共享root预算，7成功与7预期失败；同任务直传/整缓冲中转、小块/尾块、共享工作及非法staging/权限。线路、帧与DMA参数为具名人工假设，只输出已知必要时间界；见[指南](../systemmodel/docs/transfer_usage.md)。
+
+`experiments/system_tiering.json`：S4相同host/CXL/accelerator预算下的分层容量、模式/decoder、完整对象提升/复制/迁出及兼容DMA；7成功与8预期失败。64 B decoder粒度是人工平坦窗口假设，不声明真实HDM配置。见[分层指南](../systemmodel/docs/tiering_usage.md)。
+
+`experiments/system_network.json`：S5双node显式NIC缓冲、供数/接收、共享预算和注册条件，4成功8预期失败。`experiments/system_ai.json`：S6三类实际数值任务的resident/direct/staged及单参数敏感性，15成功3容量失败。均为具名人工预算，不代表设备实测；详见[网络](../systemmodel/docs/network_usage.md)与[AI](../systemmodel/docs/ai_usage.md)。

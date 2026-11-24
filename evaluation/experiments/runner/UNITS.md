@@ -1,6 +1,12 @@
 # runner：独立调用与有限线性映射比较
 
+`system_tiering.py`的TierStudy/TierCase固定相同硬件、tier/CXL/DMA声明及15例完整候选。记录同phase驻留、原生CXL内存行工作、三状态迁移预留或失败；原生时间未知，兼容DMA保留S3条件下界。回读使用保存路径重分析，不执行producer/新寻路；核对容量、decoder、瞬时预留、对象身份、方法/工作/指标、来源与全名单。接口、人工参数和未覆盖机制见[S4指南](../../../systemmodel/docs/tiering_usage.md)。
+
+`system_transfer.py`的TransferStudy/TransferCase固定DmaSystem，各case保存完整CopyBatch。独立PCIe分包与DMA服务由systemmodel提供；runner记录实际路径、物理读写/帧/DMA工作、整copy依赖与已知条件下界。payload_bytes、copied_bytes与pcie_frame_bytes区分任务/多次搬运/线路工作；known_service_lower_bound不是target_execution_time，完整能耗仍未知。回读只验证保存路径并静态重分析，保留全部失败与来源，不执行producer或新寻路。专业接口见[S3指南](../../../systemmodel/docs/transfer_usage.md)。
+
 `system.py`新增NodeStudy/NodeCase：固定完整node清单，逐case保存实际PathRequest、静态路径或失败。目标时延/能量未知；回读不搜索/执行，只检查保存路径在同一拓扑上的合法性、资源引用、指标、完整名单与来源。属于静态证据重分析，不证明最少跳数、真实设备能力或任务质量。示例与专业参数见[系统首包](../../../systemmodel/docs/foundation_usage.md)。
+
+`system_memory.py`的MemoryStudy/MemoryCase固定MemorySystem，每例保存完整MemoryPlan与可选MemoryAccessRequest。独立placement-only不声明路径；副本按粒度预留、地址alias不增容，phase仅为逻辑生命周期。输出每backing峰值、解析物理区间、请求路径和NUMA分类；不相加各池的独立峰值，不推算目标成本。回读静态重分析区间/映射/NUMA并检查保存路径、计数、unknown reason、全名单与来源，既不搜索也不执行producer。失败诊断只保留不重跑。用法和比较口径见[内存指南](../../../systemmodel/docs/memory_usage.md)。
 
 `attention_evidence.py`只消费保存的任务/计划/观测，验证行所有权、资源守恒与边界，并用保存参考输出重新计算数值比较；不拥有硬件或执行状态。mapping/retrieval新implementation为v2，必存reference_output，NumPy另存两条实际输出。历史v1仅执行能由原证据支持的检查；配置/bundle仍为v1。retrieval还验证选参计数、训练标签/类配额、Attention语义和预测变化；指标与未知成本不能互相矛盾。详见[审计](../../../workloads/docs/completion_audit.md)。
 
@@ -63,6 +69,8 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 ## Attention映射、真实任务与共享bundle
 
 `attention.py`固定AttentionMappingStudy的task/input/hardware比较query_tile、score驻留及KV布局；专业memory/traffic、独立数值校验和格式匹配的MAC/DMA服务分开保存，SFU/存储/执行与能量未知。`retrieval.py`按RetrievalProfile保存真实观测、train-only状态、validation选参表、逐例test输出、独立数值/任务质量和可选NumPy；质量失败可为预期负对照，不改成运行失败。`bundle.py`复用固定目录索引/原始SHA256和调用方语义检查，回放不执行模型；分类指标由保存观察重算。参数、资源边界、默认5/12例与完整验收见[W4/W5指南](../../../workloads/docs/mapping_and_quality.md)。
+
+`system_network.py`提供NodeWork/MessageBinding/NetworkCase/NetworkStudy：node端点与容量原样导入cluster，同节点消息仅用本地DMA，跨节点绑定TX/RX、实际object/version/offset/bytes。node局部与NIC/fabric计量互斥；组合取必要界最大值。`system_ai.py`提供AiTask/AiCase/AiStudy：Linear/训练/Attention实际输入与独立参考绑定节点预留/完整copy，保守workspace与scratch分开，策略同预算、参数干预显式记录。两种runner的回读均无producer/新寻路，AI只以独立reference重验保存actual；全部失败、来源和unknown保留。见[S5](../../../systemmodel/docs/network_usage.md)与[S6](../../../systemmodel/docs/ai_usage.md)。
 
 <!-- model-fields:start -->
 
@@ -340,6 +348,147 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 | `summarize_records(records: tuple[RunRecord, ...])` | Recheck saved route legality and roster consistency without search, hardware analysis or target execution. |
 | `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit the complete checked study once; existing evidence directories are never overwritten. |
 | `read_study(directory: str \| Path)` | Rebuild route observations from saved structure alone; no execution callback or path search is needed. |
+
+### [system_ai.py](system_ai.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AiTask` | `task_id` | `str` | 1（标识/枚举） | Unique task identity, shared by its placement/policy comparison group. |
+| `AiTask` | `seed` | `int` | 1 | Deterministic input seed [1], uint64. |
+| `AiTask` | `linear` | `LinearSpec \| None` | —（结构/对象） | Dense Linear task; exactly one task kind is provided. |
+| `AiTask` | `training` | `TrainingSpec \| None` | —（结构/对象） | Dense MSE/SGD chain, including gradient and next-state checks. |
+| `AiTask` | `attention` | `AttentionSpec \| None` | —（结构/对象） | Attention/GQA/KV task with explicit numerical semantics. |
+| `AiCase` | `name` | `str` | 1（标识/枚举） | Unique candidate identity. |
+| `AiCase` | `task_id` | `str` | 1（标识/枚举） | Existing shared task. |
+| `AiCase` | `strategy` | `str` | 1（标识/枚举） | resident, direct or staged complete input-buffer preparation. |
+| `AiCase` | `bandwidth_scale` | `float` | 1 | Multiplicative change to one declared shared service ceiling [1], positive. |
+| `AiCase` | `startup_scale` | `int` | 1 | Multiplicative DMA startup-cycle intervention [1], positive. |
+| `AiCase` | `expected_status` | `str` | 1（标识/枚举） | Reviewed feasibility expectation. |
+| `AiStudy` | `system` | `DmaSystem` | —（结构/对象） | Physical node resources and local service source. |
+| `AiStudy` | `source_backing_id` | `str` | 1（标识/枚举） | Initial remote device storage for direct/staged policies. |
+| `AiStudy` | `target_backing_id` | `str` | 1（标识/枚举） | Compute device's backing for inputs plus conservative workspace reservation. |
+| `AiStudy` | `staging_backing_id` | `str` | 1（标识/枚举） | Host backing used only by staged policy. |
+| `AiStudy` | `shared_resource_id` | `str` | 1（标识/枚举） | Declared payload ceiling changed by explicit bandwidth sensitivity cases. |
+| `AiStudy` | `scratch_capacity_bytes` | `int` | B | Separate compute-local scratch arena [B], checked by existing compiler models. |
+| `AiStudy` | `compute_capacity_macs_s` | `float` | MAC/s | MAC-only service ceiling [MAC/s] for target owner; scalar/softmax service remains unknown. |
+| `AiStudy` | `compute_source_ref` | `str` | 1（标识/枚举） | Compute/scratch assumption or calibration provenance. |
+| `AiStudy` | `tasks` | `tuple[AiTask, ...]` | —（结构/对象） | Task roster; no comparison of different tasks as a speedup. |
+| `AiStudy` | `cases` | `tuple[AiCase, ...]` | —（结构/对象） | Complete policies, sensitivities and infeasible tasks. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `AiTask` | Task semantics are replaceable; small deterministic inputs exercise exact compute and node-demand linkage. |
+| `AiCase` | Bandwidth/startup changes are explicit sensitivity interventions, separate from same-budget strategy comparisons. |
+| `AiStudy` | Fixed memory/DMA budget and declared compute/scratch service; input copies and workspace are derived from each task. |
+| `task_inputs(task: AiTask)` | Store actual deterministic operands/state; all strategy cases for one task use identical values and versions. |
+| `task_evidence(study: AiStudy, task: AiTask, inputs: dict, saved: dict \| None=None)` | Execute mapped numerics or verify saved numerics with an independent reference; derive actual operand/backing/scratch demand. |
+| `case_hardware(study: AiStudy, case: AiCase)` | Derive and record the exact single-resource and startup interventions; unchanged cases retain original hardware identity. |
+| `map_task(study: AiStudy, case: AiCase, evidence: dict)` | Reserve packed input copies and conservative compute workspace, with full-buffer staging only for the staged policy. |
+| `analyze_ai(study: AiStudy, case: AiCase, inputs: dict, saved: dict \| None=None)` | Link checked task values to exact byte demand and node work; compute and transfer ceilings are necessary bounds only. |
+| `run_study(study: AiStudy, *, source_revision: str='unrecorded')` | Save actual input tensors/state and full common budget for every successful or failed candidate. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Replay saved actual numerics against independent references and saved DMA routes without mapped execution or a new search. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Save one verified complete task/policy/sensitivity study without overwriting previous evidence. |
+| `read_study(directory: str \| Path)` | Recover records and recheck independent numeric/static evidence, retaining prior failure diagnostics. |
+
+### [system_memory.py](system_memory.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `MemoryCase` | `name` | `str` | 1（标识/枚举） | Unique identity in the complete finite study. |
+| `MemoryCase` | `plan` | `MemoryPlan` | —（结构/对象） | Full demand/copies/views; infeasibility is recorded by execution. |
+| `MemoryCase` | `request` | `MemoryAccessRequest \| None` | —（结构/对象） | None checks placement only, without any path claim. |
+| `MemoryCase` | `expected_status` | `Literal['succeeded', 'failed']` | —（结构/对象） | Reviewed fixture expectation, not evidence by itself. |
+| `MemoryStudy` | `memory` | `MemorySystem` | —（结构/对象） | Fixed resource ownership, capacity, topology and NUMA placement. |
+| `MemoryStudy` | `cases` | `tuple[MemoryCase, ...]` | —（结构/对象） | Complete roster including negative controls and placement-only cases. |
+| `MemoryStudy` | `schema_version` | `Literal['system-memory-study/v1']` | —（结构/对象） | Static analysis evidence. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `MemoryCase` | Each case declares one complete candidate placement and optionally one live address-access question. |
+| `MemoryStudy` | One sourced memory system is shared by all cases; task/budget equivalence must be stated per comparison. |
+| `run_study(study: MemoryStudy, *, source_revision: str='unrecorded')` | Snapshot the full hardware/roster and preserve every success or failure independently of fixture expectations. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Recheck static intervals/mappings/locality and the saved explicit route; do not invoke the producer or search for paths. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit checked immutable records and their manifest once; do not overwrite prior research evidence. |
+| `read_study(directory: str \| Path)` | Validate saved data and declared static semantics only; failure diagnostics remain observations, not rerun proofs. |
+
+### [system_network.py](system_network.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `NodeWork` | `node_id` | `str` | 1（标识/枚举） | Existing physical node identity. |
+| `NodeWork` | `nic` | `NicBatch \| None` | —（结构/对象） | Inter-node flows with explicit supply/drain buffers. |
+| `NodeWork` | `local` | `CopyBatch \| None` | —（结构/对象） | Same-node messages served entirely by local DMA; no network charge. |
+| `MessageBinding` | `message_id` | `str` | 1（标识/枚举） | Exact cluster traffic identity. |
+| `MessageBinding` | `tx_flow_id` | `str \| None` | 1（标识/枚举） | Source-node NIC flow for an inter-node message. |
+| `MessageBinding` | `rx_flow_id` | `str \| None` | 1（标识/枚举） | Destination-node NIC flow for an inter-node message. |
+| `MessageBinding` | `local_chain_id` | `str \| None` | 1（标识/枚举） | Same-node copy chain, mutually exclusive with NIC flow IDs. |
+| `NetworkCase` | `name` | `str` | 1（标识/枚举） | Unique candidate identity. |
+| `NetworkCase` | `traffic` | `TrafficInput` | —（结构/对象） | Exact simultaneous messages; remote routes must be explicit for deterministic replay. |
+| `NetworkCase` | `nodes` | `tuple[NodeWork, ...]` | —（结构/对象） | One shared batch per active node. |
+| `NetworkCase` | `bindings` | `tuple[MessageBinding, ...]` | —（结构/对象） | Complete message-to-service roster. |
+| `NetworkCase` | `expected_status` | `str` | 1（标识/枚举） | Reviewed expectation, separate from actual feasibility. |
+| `NetworkStudy` | `systems` | `tuple[NicSystem, ...]` | —（结构/对象） | Node hardware, uniquely identified by topology scope. |
+| `NetworkStudy` | `cluster` | `ClusterSpec` | —（结构/对象） | Fabric graph, exact exported endpoints/capacities and rank placements. |
+| `NetworkStudy` | `cases` | `tuple[NetworkCase, ...]` | —（结构/对象） | Complete success/failure study. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `NodeWork` | One node's simultaneous local work must be analyzed in a single batch to conserve shared demand and hazards. |
+| `MessageBinding` | Each P2P message binds both node endpoints or one entirely local whole-copy chain. |
+| `NetworkCase` | Every candidate uses the same node/fabric hardware; only demand and explicit paths/buffers vary. |
+| `NetworkStudy` | Hardware assembly joins actual standard-library endpoint exports, preserving one authoritative NIC budget. |
+| `analyze_network(study: NetworkStudy, case: NetworkCase, saved: dict \| None=None)` | Compose supply/drain, NIC and fabric necessary bounds by max; no completed-message or overlap schedule is inferred. |
+| `run_study(study: NetworkStudy, *, source_revision: str='unrecorded')` | Preserve the full hardware/budget and candidate roster in every record. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Replay declarations and exact saved local routes; no producer or fabric path selection runs. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Save only a complete verified study into a fresh output directory. |
+| `read_study(directory: str \| Path)` | Read immutable observations and validate static accounting without a new experiment callback. |
+
+### [system_tiering.py](system_tiering.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `TierCase` | `name` | `str` | 1（标识/枚举） | Unique candidate identity in the complete finite study. |
+| `TierCase` | `placement` | `MemoryPlan` | —（结构/对象） | Initial static placement; must equal migration.before when a migration is requested. |
+| `TierCase` | `phase` | `int` | —（结构/对象） | Shared logical phase for initial usage, native accesses and all migration snapshots. |
+| `TierCase` | `access` | `CxlAccessRequest \| None` | —（结构/对象） | Optional native access query, mutually exclusive with migration. |
+| `TierCase` | `migration` | `TierMigration \| None` | —（结构/对象） | Explicit before/overlap/after transition. |
+| `TierCase` | `cxl_copy` | `CxlCopyRequest \| None` | —（结构/对象） | Native host-copy transport for a migration. |
+| `TierCase` | `dma_copy` | `CopyBatch \| None` | —（结构/对象） | Compatible existing S3 transport for a migration. |
+| `TierCase` | `expected_status` | `Literal['succeeded', 'failed']` | —（结构/对象） | Reviewed fixture expectation, separate from actual status. |
+| `TierStudy` | `system` | `TieredMemorySystem` | —（结构/对象） | Complete physical tier assignment. |
+| `TierStudy` | `cxl` | `CxlMemorySystem` | —（结构/对象） | Native capability/decoder assembly on the same MemorySystem. |
+| `TierStudy` | `cases` | `tuple[TierCase, ...]` | —（结构/对象） | Complete success/failure roster. |
+| `TierStudy` | `dma` | `DmaSystem \| None` | —（结构/对象） | Optional compatible PCIe/DMA assembly; not a CXL.mem protocol implementation. |
+| `TierStudy` | `schema_version` | `Literal['system-tiering-study/v1']` | —（结构/对象） | Static residency/access/transition evidence. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `TierCase` | Each case checks one placement and optionally native access or exactly one explicitly transported migration. |
+| `TierStudy` | Every candidate uses the same physical hardware; changing a placement never invents new capacity or protocol capability. |
+| `run_study(study: TierStudy, *, source_revision: str='unrecorded')` | Preserve complete hardware, all cases and selected input for every success/failure independently of fixture expectation. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Recheck roster/source and all saved static evidence without producer execution; failed diagnostics remain prior observations. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit one complete checked study into a new immutable output directory. |
+| `read_study(directory: str \| Path)` | Decode records and verify saved static evidence without creating a new execution or data-transfer claim. |
+
+### [system_transfer.py](system_transfer.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `TransferCase` | `name` | `str` | 1（标识/枚举） | Unique case identity, including negative controls. |
+| `TransferCase` | `batch` | `CopyBatch` | —（结构/对象） | Full placement, logical phase and ordered whole-copy chains. |
+| `TransferCase` | `expected_status` | `Literal['succeeded', 'failed']` | —（结构/对象） | Fixture expectation checked separately from execution status. |
+| `TransferStudy` | `system` | `DmaSystem` | —（结构/对象） | Fixed, sourced hardware capacities and packet/DMA service assumptions. |
+| `TransferStudy` | `cases` | `tuple[TransferCase, ...]` | —（结构/对象） | Complete finite candidate roster. |
+| `TransferStudy` | `schema_version` | `Literal['system-transfer-study/v1']` | —（结构/对象） | Analytical posted-write/whole-copy study. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `TransferCase` | One candidate retains its full source/destination/staging placement and finite independent copy chains. |
+| `TransferStudy` | All cases share one complete memory/channel/fabric budget; specific comparisons must also match useful task bytes. |
+| `run_study(study: TransferStudy, *, source_revision: str='unrecorded')` | Save exact hardware, full roster and selected batch on every attempt; expectations never suppress failures. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Reanalyze exact saved routes/bytes/dependencies under the same source; no producer callback or path search executes. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Preserve one complete validated study in an immutable directory; never overwrite existing evidence. |
+| `read_study(directory: str \| Path)` | Read exact stored observations and recheck their static semantics without producing a new execution. |
 
 ### [tile_mapping.py](tile_mapping.py)
 

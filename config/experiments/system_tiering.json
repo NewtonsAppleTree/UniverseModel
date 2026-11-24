@@ -1,0 +1,5607 @@
+{
+  "cases": [
+    {
+      "access": {
+        "access": {
+          "address": 65536,
+          "length_bytes": 256,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "read",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "cache",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": null,
+      "name": "cache_is_not_mem",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": {
+        "access": {
+          "address": 65600,
+          "length_bytes": 256,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "read",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "mem",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": null,
+      "name": "decoder_mismatch",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65600,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4096,
+        "local_region_id": "hot",
+        "request": {
+          "access": {
+            "address": 65792,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "write",
+            "phase": 1,
+            "region_id": "hot.new.view",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 256
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "hot.new",
+              "base_address": 65792,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 256
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "hot.new",
+              "base_address": 65792,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "hot.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "hot.new"
+      },
+      "name": "demote",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": null,
+      "dma_copy": {
+        "chains": [
+          {
+            "chain_id": "migration",
+            "legs": [
+              {
+                "engine_id": "host.dma",
+                "leg_id": "host_to_gpu",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "hot",
+                "target_address": 4096,
+                "target_region_id": "hot.new.view"
+              }
+            ],
+            "payload_bytes": 256
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            },
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "hot.new",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "hot.new",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            },
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "hot.new",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "hot.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "hot.new"
+      },
+      "name": "dma_to_accelerator",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": null,
+      "name": "expanded_residency",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": {
+        "access": {
+          "address": 65536,
+          "length_bytes": 256,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "read",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "io",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": null,
+      "name": "io_is_not_mem",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": null,
+      "name": "local_capacity_failed",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "archive.copy",
+            "base_address": 4608,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "cold.copy",
+            "base_address": 4352,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": {
+        "access": {
+          "address": 65537,
+          "length_bytes": 64,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "write",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "mem",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": null,
+      "name": "masked_write_unsupported",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": {
+        "access": {
+          "address": 65536,
+          "length_bytes": 256,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "read",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "mem",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": null,
+      "name": "native_read",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": {
+        "access": {
+          "address": 65537,
+          "length_bytes": 1,
+          "link_ids": null,
+          "max_hops": 256,
+          "operation": "read",
+          "phase": 1,
+          "region_id": "cold",
+          "source_port_id": "host.cxl.out"
+        },
+        "protocol": "mem",
+        "window_id": "expansion"
+      },
+      "cxl_copy": null,
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": null,
+      "name": "partial_read_1B",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4352,
+        "local_region_id": "cold.new.view",
+        "request": {
+          "access": {
+            "address": 65536,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "read",
+            "phase": 1,
+            "region_id": "cold",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "cold.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "cold.new"
+      },
+      "name": "promote",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4352,
+        "local_region_id": "cold.new.view",
+        "request": {
+          "access": {
+            "address": 65536,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "read",
+            "phase": 1,
+            "region_id": "cold",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "succeeded",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "copy",
+        "source_allocation_id": "cold.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "cold.new"
+      },
+      "name": "replicate",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4352,
+        "local_region_id": "cold.new.view",
+        "request": {
+          "access": {
+            "address": 65536,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "read",
+            "phase": 1,
+            "region_id": "cold",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.new",
+              "base_address": 8192,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.new",
+              "base_address": 8192,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot.new.view"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "hot.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "hot.new"
+      },
+      "name": "reuse_source_too_early",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4352,
+        "local_region_id": "cold.new.view",
+        "request": {
+          "access": {
+            "address": 65536,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "read",
+            "phase": 1,
+            "region_id": "cold",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "cold.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "cold.new"
+      },
+      "name": "source_retired_early",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    },
+    {
+      "access": null,
+      "cxl_copy": {
+        "local_address": 4352,
+        "local_region_id": "cold.new.view",
+        "request": {
+          "access": {
+            "address": 66048,
+            "length_bytes": 256,
+            "link_ids": null,
+            "max_hops": 256,
+            "operation": "read",
+            "phase": 1,
+            "region_id": "archive",
+            "source_port_id": "host.cxl.out"
+          },
+          "protocol": "mem",
+          "window_id": "expansion"
+        }
+      },
+      "dma_copy": null,
+      "expected_status": "failed",
+      "migration": {
+        "after": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "before": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "during": {
+          "allocations": [
+            {
+              "allocation_id": "archive.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "archive",
+              "offset_bytes": 512
+            },
+            {
+              "allocation_id": "cold.copy",
+              "backing_id": "cxl0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "cold.new",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "cold",
+              "offset_bytes": 256
+            },
+            {
+              "allocation_id": "hot.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "hot",
+              "offset_bytes": 0
+            }
+          ],
+          "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+          "objects": [
+            {
+              "object_id": "archive",
+              "size_bytes": 512,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "cold",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "object_id": "hot",
+              "size_bytes": 256,
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "archive.copy",
+              "base_address": 66048,
+              "length_bytes": 512,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "archive"
+            },
+            {
+              "access_port_id": "cxl0.in",
+              "allocation_id": "cold.copy",
+              "base_address": 65536,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "cold.new",
+              "base_address": 4352,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "cold.new.view"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "hot.copy",
+              "base_address": 4096,
+              "length_bytes": 256,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "hot"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        "operation": "move",
+        "source_allocation_id": "cold.copy",
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "target_allocation_id": "cold.new"
+      },
+      "name": "wrong_copy_object",
+      "phase": 1,
+      "placement": {
+        "allocations": [
+          {
+            "allocation_id": "archive.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "archive",
+            "offset_bytes": 512
+          },
+          {
+            "allocation_id": "cold.copy",
+            "backing_id": "cxl0.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "cold",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "hot.copy",
+            "backing_id": "host.mem",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "hot",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b6bf7fd7523a086700ad1466590850ee00d128a8fca5eb9b6dc74df85ed3b787",
+        "objects": [
+          {
+            "object_id": "archive",
+            "size_bytes": 512,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "cold",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          },
+          {
+            "object_id": "hot",
+            "size_bytes": 256,
+            "source_ref": "manual:tier-cxl-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "archive.copy",
+            "base_address": 66048,
+            "length_bytes": 512,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "archive"
+          },
+          {
+            "access_port_id": "cxl0.in",
+            "allocation_id": "cold.copy",
+            "base_address": 65536,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "cold"
+          },
+          {
+            "access_port_id": "host.in",
+            "allocation_id": "hot.copy",
+            "base_address": 4096,
+            "length_bytes": 256,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "hot"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    }
+  ],
+  "cxl": {
+    "attachments": [
+      {
+        "attachment_id": "host_type3",
+        "device_id": "cxl0",
+        "device_port_id": "cxl0.in",
+        "device_type": "type3",
+        "enabled_protocols": [
+          "io",
+          "mem"
+        ],
+        "host_port_id": "host.cxl.out",
+        "source_ref": "manual:tier-cxl-fixture/v1"
+      }
+    ],
+    "memory": {
+      "backings": [
+        {
+          "access_port_ids": [
+            "cxl0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 4096,
+          "resource_id": "cxl0.mem",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu0.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu1.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu1.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "host.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 512,
+          "resource_id": "host.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        }
+      ],
+      "coverage": [
+        "Declared capacity; no backing service or data contents"
+      ],
+      "node": {
+        "boards": [],
+        "schema_version": "system-node/v1",
+        "standalone_device_ids": [
+          "cxl0",
+          "gpu0",
+          "gpu1",
+          "host"
+        ],
+        "topology": {
+          "constraints": [
+            {
+              "byte_basis": "payload",
+              "capacity_Bps": 1000000000.0,
+              "capacity_kind": "declared_ceiling",
+              "coverage": [
+                "Shared root-complex internal payload service; distinct from directional line resources"
+              ],
+              "frame_format_id": null,
+              "owner_id": "node",
+              "resource_id": "root_bus",
+              "schema_version": "network-bandwidth/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Explicit permitted posted-write topology; no read completions or endpoint transit"
+          ],
+          "domains": [
+            {
+              "address_bits": 32,
+              "domain_id": "cxl0.address",
+              "owner_id": "cxl0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu0.address",
+              "owner_id": "gpu0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu1.address",
+              "owner_id": "gpu1",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "host.address",
+              "owner_id": "host",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "forwardings": [
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "gpu0.to.gpu1",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu0.to.host",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu1.to.host",
+              "ingress_port_id": "fabric.gpu1.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu0.out",
+              "forwarding_id": "host.to.gpu0",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "host.to.gpu1",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "links": [
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host_cxl0",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "source_port_id": "host.cxl.out",
+              "source_ref": "manual:tier-cxl-fixture/v1",
+              "target_port_id": "cxl0.in"
+            }
+          ],
+          "ports": [
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "cxl0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "cxl0",
+              "port_id": "cxl0.in",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.cxl.out",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "resources": [
+            {
+              "instance_id": "cxl0",
+              "model_id": "declared-type3",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "cxl0.mem",
+              "model_id": "declared-expansion-storage",
+              "parent_id": "cxl0",
+              "ports": []
+            },
+            {
+              "instance_id": "fabric",
+              "model_id": null,
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "host",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "host.dma",
+              "model_id": "serial-dma",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "host.mem",
+              "model_id": "declared-storage",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "node",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "root_bus",
+              "model_id": "shared-payload-ceiling",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            }
+          ],
+          "schema_version": "system-topology/v1",
+          "scope_id": "node",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        }
+      },
+      "numa_domains": [],
+      "schema_version": "system-memory/v1",
+      "source_ref": "manual:tier-cxl-fixture/v1"
+    },
+    "profile": {
+      "coverage": [
+        "Synthetic flat decoder granule, not register-level HDM implementation",
+        "Line data only; no coherence, FLIT/credit or complete native timing/energy"
+      ],
+      "decoder_granule_bytes": 64,
+      "line_bytes": 64,
+      "mem_protocol": "cxl.mem-request/v1",
+      "profile_id": "flat-native-cxl-lines/v1",
+      "source_ref": "manual:tier-cxl-fixture/v1"
+    },
+    "source_ref": "manual:tier-cxl-fixture/v1",
+    "windows": [
+      {
+        "attachment_id": "host_type3",
+        "backing_id": "cxl0.mem",
+        "backing_offset_bytes": 0,
+        "base_address": 65536,
+        "length_bytes": 4096,
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "window_id": "expansion"
+      }
+    ]
+  },
+  "dma": {
+    "engines": [
+      {
+        "clock": {
+          "domain_id": "gpu0.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "gpu0.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "gpu0.mem"
+        ],
+        "resource_id": "gpu0.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "clock": {
+          "domain_id": "gpu1.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "gpu1.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "gpu1.mem"
+        ],
+        "resource_id": "gpu1.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "clock": {
+          "domain_id": "host.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "host.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "host.mem"
+        ],
+        "resource_id": "host.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      }
+    ],
+    "memory": {
+      "backings": [
+        {
+          "access_port_ids": [
+            "cxl0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 4096,
+          "resource_id": "cxl0.mem",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu0.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu1.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu1.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "host.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 512,
+          "resource_id": "host.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        }
+      ],
+      "coverage": [
+        "Declared capacity; no backing service or data contents"
+      ],
+      "node": {
+        "boards": [],
+        "schema_version": "system-node/v1",
+        "standalone_device_ids": [
+          "cxl0",
+          "gpu0",
+          "gpu1",
+          "host"
+        ],
+        "topology": {
+          "constraints": [
+            {
+              "byte_basis": "payload",
+              "capacity_Bps": 1000000000.0,
+              "capacity_kind": "declared_ceiling",
+              "coverage": [
+                "Shared root-complex internal payload service; distinct from directional line resources"
+              ],
+              "frame_format_id": null,
+              "owner_id": "node",
+              "resource_id": "root_bus",
+              "schema_version": "network-bandwidth/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Explicit permitted posted-write topology; no read completions or endpoint transit"
+          ],
+          "domains": [
+            {
+              "address_bits": 32,
+              "domain_id": "cxl0.address",
+              "owner_id": "cxl0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu0.address",
+              "owner_id": "gpu0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu1.address",
+              "owner_id": "gpu1",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "host.address",
+              "owner_id": "host",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "forwardings": [
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "gpu0.to.gpu1",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu0.to.host",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu1.to.host",
+              "ingress_port_id": "fabric.gpu1.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu0.out",
+              "forwarding_id": "host.to.gpu0",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "host.to.gpu1",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "links": [
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host_cxl0",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "source_port_id": "host.cxl.out",
+              "source_ref": "manual:tier-cxl-fixture/v1",
+              "target_port_id": "cxl0.in"
+            }
+          ],
+          "ports": [
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "cxl0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "cxl0",
+              "port_id": "cxl0.in",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.cxl.out",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "resources": [
+            {
+              "instance_id": "cxl0",
+              "model_id": "declared-type3",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "cxl0.mem",
+              "model_id": "declared-expansion-storage",
+              "parent_id": "cxl0",
+              "ports": []
+            },
+            {
+              "instance_id": "fabric",
+              "model_id": null,
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "host",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "host.dma",
+              "model_id": "serial-dma",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "host.mem",
+              "model_id": "declared-storage",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "node",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "root_bus",
+              "model_id": "shared-payload-ceiling",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            }
+          ],
+          "schema_version": "system-topology/v1",
+          "scope_id": "node",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        }
+      },
+      "numa_domains": [],
+      "schema_version": "system-memory/v1",
+      "source_ref": "manual:tier-cxl-fixture/v1"
+    },
+    "pcie_services": [
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu0.rx"
+        ],
+        "resource_id": "service.gpu0.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu0.tx"
+        ],
+        "resource_id": "service.gpu0.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu1.rx"
+        ],
+        "resource_id": "service.gpu1.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu1.tx"
+        ],
+        "resource_id": "service.gpu1.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "host.rx"
+        ],
+        "resource_id": "service.host.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "host.tx"
+        ],
+        "resource_id": "service.host.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      }
+    ],
+    "profile": {
+      "coding_data_bits": 128,
+      "coding_wire_bits": 130,
+      "coverage": [
+        "Synthetic conventional NRZ/TLP assumptions; not device calibration or complete PCIe specification",
+        "No DLLP/ACK/credit/replay/propagation/FLIT/PAM4/read-completion accounting"
+      ],
+      "max_payload_bytes": 256,
+      "profile_id": "manual-gen3-like-mps256/v1",
+      "protocol": "conventional-posted-write/v1",
+      "source_ref": "manual:pcie-dma-fixture/v1",
+      "tlp_overhead_bytes": 24
+    },
+    "source_ref": "manual:tier-cxl-fixture/v1"
+  },
+  "schema_version": "system-tiering-study/v1",
+  "system": {
+    "memory": {
+      "backings": [
+        {
+          "access_port_ids": [
+            "cxl0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 4096,
+          "resource_id": "cxl0.mem",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu0.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu1.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 1024,
+          "resource_id": "gpu1.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "host.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 512,
+          "resource_id": "host.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        }
+      ],
+      "coverage": [
+        "Declared capacity; no backing service or data contents"
+      ],
+      "node": {
+        "boards": [],
+        "schema_version": "system-node/v1",
+        "standalone_device_ids": [
+          "cxl0",
+          "gpu0",
+          "gpu1",
+          "host"
+        ],
+        "topology": {
+          "constraints": [
+            {
+              "byte_basis": "payload",
+              "capacity_Bps": 1000000000.0,
+              "capacity_kind": "declared_ceiling",
+              "coverage": [
+                "Shared root-complex internal payload service; distinct from directional line resources"
+              ],
+              "frame_format_id": null,
+              "owner_id": "node",
+              "resource_id": "root_bus",
+              "schema_version": "network-bandwidth/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Explicit permitted posted-write topology; no read completions or endpoint transit"
+          ],
+          "domains": [
+            {
+              "address_bits": 32,
+              "domain_id": "cxl0.address",
+              "owner_id": "cxl0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu0.address",
+              "owner_id": "gpu0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu1.address",
+              "owner_id": "gpu1",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "host.address",
+              "owner_id": "host",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "forwardings": [
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "gpu0.to.gpu1",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu0.to.host",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu1.to.host",
+              "ingress_port_id": "fabric.gpu1.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu0.out",
+              "forwarding_id": "host.to.gpu0",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "host.to.gpu1",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "links": [
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host_cxl0",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "source_port_id": "host.cxl.out",
+              "source_ref": "manual:tier-cxl-fixture/v1",
+              "target_port_id": "cxl0.in"
+            }
+          ],
+          "ports": [
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "cxl0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "cxl0",
+              "port_id": "cxl0.in",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.cxl.out",
+              "protocol": "cxl.mem-request/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:tier-cxl-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "resources": [
+            {
+              "instance_id": "cxl0",
+              "model_id": "declared-type3",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "cxl0.mem",
+              "model_id": "declared-expansion-storage",
+              "parent_id": "cxl0",
+              "ports": []
+            },
+            {
+              "instance_id": "fabric",
+              "model_id": null,
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "host",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "host.dma",
+              "model_id": "serial-dma",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "host.mem",
+              "model_id": "declared-storage",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "node",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "root_bus",
+              "model_id": "shared-payload-ceiling",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            }
+          ],
+          "schema_version": "system-topology/v1",
+          "scope_id": "node",
+          "source_ref": "manual:tier-cxl-fixture/v1"
+        }
+      },
+      "numa_domains": [],
+      "schema_version": "system-memory/v1",
+      "source_ref": "manual:tier-cxl-fixture/v1"
+    },
+    "source_ref": "manual:tier-cxl-fixture/v1",
+    "tiers": [
+      {
+        "access_kind": "dma_only",
+        "backing_ids": [
+          "gpu0.mem",
+          "gpu1.mem"
+        ],
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "tier_id": "accelerator"
+      },
+      {
+        "access_kind": "cxl.mem",
+        "backing_ids": [
+          "cxl0.mem"
+        ],
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "tier_id": "cxl_expansion"
+      },
+      {
+        "access_kind": "local",
+        "backing_ids": [
+          "host.mem"
+        ],
+        "source_ref": "manual:tier-cxl-fixture/v1",
+        "tier_id": "host_local"
+      }
+    ]
+  }
+}

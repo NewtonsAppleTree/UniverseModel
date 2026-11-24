@@ -67,3 +67,13 @@ python -m unittest discover -s compiler/tests -p "test_*.py" -v
 ```
 
 系统模型新增`python -m unittest discover -s tests/systemmodel -p "test_*.py" -v`，包含板卡/节点、共享所有权、域/端口/权限与30组独立穷举路径；公共契约在tests/contracts，保存回读在test_system_experiment.py。每个discover组使用独立进程。
+
+S2追加test_memory.py：容量取整/别名/副本/半开生命周期/映射/NUMA及200组独立逐字节oracle；test_system_memory_experiment.py检查15例完整结果与失败、未知成本、不可变bundle及容量/地址/路径/指标篡改回读。
+
+S3追加test_transfer.py：160组独立DWORD/TLP参考、4 KiB/尾块、DMA手算、守恒、共享工作/依赖下界、startup/bandwidth敏感性、staging/读写冲突；test_system_transfer_experiment.py检查14例全名单、保存回读及账本/路径/依赖/未知成本篡改。
+
+S4追加test_tiering.py的17项测试：100组独立行参考、同phase容量、模式/decoder/所有权、三状态瞬时预留与完整对象绑定、原生CXL/兼容DMA；test_system_tiering_experiment.py的6项测试覆盖15例全名单、无producer/寻路回读、容量/行/路径/迁移/DMA工作与unknown指标篡改。
+
+S5的test_nic.py独立检查13项NIC/注册/预算/本地与网络边界；test_system_network_experiment.py检查6项全名单/回读/篡改。S6的test_system_ai_experiment.py检查9项任务数值、输入/空间/字节绑定、保守训练workspace、策略/敏感性、失败与无执行回读。S7工具`tools/validate_systemmodel.py`另完整运行/回读六组81例；这不替代全仓unittest、规则与结构检查。
+
+2026-11-24整体验收追加9项：S6组合测试增加1项（6种任务×3策略），S7的[test_systemmodel_acceptance.py](integration/test_systemmodel_acceptance.py)增加8项，检查完整成功/失败身份、所有run与总来源绑定、源码清单摘要、内外manifest、只读回放及证据保护。全仓555项默认553通过、2可选PyTorch跳过；独立PyTorch 2.5.1+cpu环境补验该2项通过。完整结果见[验收报告](../systemmodel/docs/acceptance.md)。

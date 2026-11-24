@@ -1,0 +1,2621 @@
+{
+  "cases": [
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "direct"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 3,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "expired"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": [
+                  "gpu0.tx",
+                  "gpu1.rx"
+                ],
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "explicit_route"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "host.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "remote_pull_denied"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu1.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "target",
+                "target_address": 4096,
+                "target_region_id": "source"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "reverse_direct_denied"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu1.dma",
+                "leg_id": "reverse_to_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "target",
+                "target_address": 4096,
+                "target_region_id": "staging"
+              },
+              {
+                "engine_id": "host.dma",
+                "leg_id": "reverse_from_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "staging",
+                "target_address": 4096,
+                "target_region_id": "source"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "reverse_staged"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 1
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "small_1B"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "to_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "staging"
+              },
+              {
+                "engine_id": "host.dma",
+                "leg_id": "from_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "staging",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "staged"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "to_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "staging"
+              },
+              {
+                "engine_id": "host.dma",
+                "leg_id": "from_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4097,
+                "source_region_id": "staging",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "staging_discontinuity"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "to_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "staging"
+              },
+              {
+                "engine_id": "host.dma",
+                "leg_id": "from_host",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "staging",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 128,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 128,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "staging_too_small"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4099,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 513
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "tail_513B"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          },
+          {
+            "chain_id": "second",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "other",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 8192,
+                "target_region_id": "target_other"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "succeeded",
+      "name": "two_shared"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          },
+          {
+            "chain_id": "second",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "conflict",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "write_conflict"
+    },
+    {
+      "batch": {
+        "chains": [
+          {
+            "chain_id": "copy",
+            "legs": [
+              {
+                "engine_id": "gpu0.dma",
+                "leg_id": "direct",
+                "link_ids": null,
+                "max_hops": 256,
+                "source_address": 4096,
+                "source_region_id": "source",
+                "target_address": 4096,
+                "target_region_id": "target"
+              }
+            ],
+            "payload_bytes": 512
+          }
+        ],
+        "phase": 1,
+        "placement": {
+          "allocations": [
+            {
+              "allocation_id": "source.copy",
+              "backing_id": "gpu0.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "source",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "staging.copy",
+              "backing_id": "host.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "staging",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target",
+              "offset_bytes": 0
+            },
+            {
+              "allocation_id": "target_other.copy",
+              "backing_id": "gpu1.mem",
+              "begin_phase": 0,
+              "end_phase": 3,
+              "object_id": "target_other",
+              "offset_bytes": 2048
+            }
+          ],
+          "memory_identity": "53c7cc9fb8ca4c5a4959a3938e14bc24bff13fb6bebce52121a3997ee5d5221b",
+          "objects": [
+            {
+              "object_id": "source",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "staging",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "object_id": "target_other",
+              "size_bytes": 1024,
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "regions": [
+            {
+              "access_port_id": "gpu0.in",
+              "allocation_id": "source.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "source"
+            },
+            {
+              "access_port_id": "host.in",
+              "allocation_id": "staging.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "staging"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target.copy",
+              "base_address": 4096,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read"
+              ],
+              "region_id": "target"
+            },
+            {
+              "access_port_id": "gpu1.in",
+              "allocation_id": "target_other.copy",
+              "base_address": 8192,
+              "length_bytes": 1024,
+              "object_offset_bytes": 0,
+              "permissions": [
+                "read",
+                "write"
+              ],
+              "region_id": "target_other"
+            }
+          ],
+          "schema_version": "system-memory-plan/v1",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      "expected_status": "failed",
+      "name": "write_permission_denied"
+    }
+  ],
+  "schema_version": "system-transfer-study/v1",
+  "system": {
+    "engines": [
+      {
+        "clock": {
+          "domain_id": "gpu0.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "gpu0.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "gpu0.mem"
+        ],
+        "resource_id": "gpu0.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "clock": {
+          "domain_id": "gpu1.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "gpu1.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "gpu1.mem"
+        ],
+        "resource_id": "gpu1.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "clock": {
+          "domain_id": "host.clock",
+          "frequency_hz": 1000000000.0
+        },
+        "egress_port_id": "host.out",
+        "params": {
+          "burst_overhead_cycles": 4,
+          "bytes_per_cycle": 32,
+          "max_burst_bytes": 256,
+          "startup_cycles": 100
+        },
+        "read_backing_ids": [
+          "host.mem"
+        ],
+        "resource_id": "host.dma",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      }
+    ],
+    "memory": {
+      "backings": [
+        {
+          "access_port_ids": [
+            "gpu0.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 8192,
+          "resource_id": "gpu0.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "gpu1.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 8192,
+          "resource_id": "gpu1.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        },
+        {
+          "access_port_ids": [
+            "host.in"
+          ],
+          "allocation_granule_bytes": 64,
+          "capacity_bytes": 8192,
+          "resource_id": "host.mem",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        }
+      ],
+      "coverage": [
+        "Declared capacity; no backing service or data contents"
+      ],
+      "node": {
+        "boards": [],
+        "schema_version": "system-node/v1",
+        "standalone_device_ids": [
+          "gpu0",
+          "gpu1",
+          "host"
+        ],
+        "topology": {
+          "constraints": [
+            {
+              "byte_basis": "payload",
+              "capacity_Bps": 1000000000.0,
+              "capacity_kind": "declared_ceiling",
+              "coverage": [
+                "Shared root-complex internal payload service; distinct from directional line resources"
+              ],
+              "frame_format_id": null,
+              "owner_id": "node",
+              "resource_id": "root_bus",
+              "schema_version": "network-bandwidth/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "coverage": [
+            "Explicit permitted posted-write topology; no read completions or endpoint transit"
+          ],
+          "domains": [
+            {
+              "address_bits": 32,
+              "domain_id": "gpu0.address",
+              "owner_id": "gpu0",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "gpu1.address",
+              "owner_id": "gpu1",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "address_bits": 32,
+              "domain_id": "host.address",
+              "owner_id": "host",
+              "schema_version": "system-address-domain/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "forwardings": [
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "gpu0.to.gpu1",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu0.to.host",
+              "ingress_port_id": "fabric.gpu0.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.host.out",
+              "forwarding_id": "gpu1.to.host",
+              "ingress_port_id": "fabric.gpu1.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu0.out",
+              "forwarding_id": "host.to.gpu0",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [
+                "root_bus"
+              ],
+              "egress_port_id": "fabric.gpu1.out",
+              "forwarding_id": "host.to.gpu1",
+              "ingress_port_id": "fabric.host.in",
+              "operations": [
+                "write"
+              ],
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "links": [
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu0.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu0.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu0.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "gpu1.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "gpu1.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.gpu1.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.rx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "fabric.host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "host.in"
+            },
+            {
+              "constraint_ids": [],
+              "link_id": "host.tx",
+              "operations": [
+                "write"
+              ],
+              "source_port_id": "host.out",
+              "source_ref": "manual:pcie-dma-fixture/v1",
+              "target_port_id": "fabric.host.in"
+            }
+          ],
+          "ports": [
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": null,
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "fabric",
+              "port_id": "fabric.host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu0.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu0",
+              "port_id": "gpu0.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "gpu1.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "gpu1",
+              "port_id": "gpu1.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "ingress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.in",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            },
+            {
+              "constraint_ids": [],
+              "direction": "egress",
+              "domain_id": "host.address",
+              "operations": [
+                "read",
+                "write"
+              ],
+              "owner_id": "host",
+              "port_id": "host.out",
+              "protocol": "conventional-posted-write/v1",
+              "schema_version": "system-port/v1",
+              "source_ref": "manual:pcie-dma-fixture/v1"
+            }
+          ],
+          "resources": [
+            {
+              "instance_id": "fabric",
+              "model_id": null,
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu0.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu0",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.dma",
+              "model_id": "serial-dma",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "gpu1.mem",
+              "model_id": "declared-storage",
+              "parent_id": "gpu1",
+              "ports": []
+            },
+            {
+              "instance_id": "host",
+              "model_id": "declared-device",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "host.dma",
+              "model_id": "serial-dma",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "host.mem",
+              "model_id": "declared-storage",
+              "parent_id": "host",
+              "ports": []
+            },
+            {
+              "instance_id": "node",
+              "model_id": null,
+              "parent_id": null,
+              "ports": []
+            },
+            {
+              "instance_id": "root_bus",
+              "model_id": "shared-payload-ceiling",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu0.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.gpu1.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.rx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            },
+            {
+              "instance_id": "service.host.tx",
+              "model_id": "nrz-line",
+              "parent_id": "node",
+              "ports": []
+            }
+          ],
+          "schema_version": "system-topology/v1",
+          "scope_id": "node",
+          "source_ref": "manual:pcie-dma-fixture/v1"
+        }
+      },
+      "numa_domains": [],
+      "schema_version": "system-memory/v1",
+      "source_ref": "manual:pcie-dma-fixture/v1"
+    },
+    "pcie_services": [
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu0.rx"
+        ],
+        "resource_id": "service.gpu0.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu0.tx"
+        ],
+        "resource_id": "service.gpu0.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu1.rx"
+        ],
+        "resource_id": "service.gpu1.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "gpu1.tx"
+        ],
+        "resource_id": "service.gpu1.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "host.rx"
+        ],
+        "resource_id": "service.host.rx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      },
+      {
+        "lane_count": 4,
+        "lane_rate_transfers_s": 8000000000.0,
+        "link_ids": [
+          "host.tx"
+        ],
+        "resource_id": "service.host.tx",
+        "source_ref": "manual:pcie-dma-fixture/v1"
+      }
+    ],
+    "profile": {
+      "coding_data_bits": 128,
+      "coding_wire_bits": 130,
+      "coverage": [
+        "Synthetic conventional NRZ/TLP assumptions; not device calibration or complete PCIe specification",
+        "No DLLP/ACK/credit/replay/propagation/FLIT/PAM4/read-completion accounting"
+      ],
+      "max_payload_bytes": 256,
+      "profile_id": "manual-gen3-like-mps256/v1",
+      "protocol": "conventional-posted-write/v1",
+      "source_ref": "manual:pcie-dma-fixture/v1",
+      "tlp_overhead_bytes": 24
+    },
+    "source_ref": "manual:pcie-dma-fixture/v1"
+  }
+}

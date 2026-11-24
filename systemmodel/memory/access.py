@@ -37,6 +37,8 @@ class MemoryAccessRequest:
 # Resolution identifies backing bytes; it neither reads data nor simulates page tables, TLBs or IOMMUs.
 @dataclass(frozen=True, slots=True)
 class ResolvedSpan:
+    memory_identity: str  # Full MemorySystem SHA256 even for independent resolution without a route.
+    plan_identity: str  # Exact object/allocation/view declaration SHA256.
     region_id: str  # Selected address view.
     allocation_id: str  # One physical copy, shared by aliases.
     object_id: str  # Logical object identity.
@@ -77,7 +79,7 @@ def _resolve(memory: MemorySystem, plan: MemoryPlan, request: MemoryAccessReques
         raise ValueError('access span outside memory region')
     port = next(p for p in memory.node.topology.ports if p.port_id==region.access_port_id)
     offset = allocation.offset_bytes+region.object_offset_bytes+request.address-region.base_address
-    return ResolvedSpan(region.region_id,allocation.allocation_id,allocation.object_id,allocation.backing_id,
+    return ResolvedSpan(memory.identity_hash,plan.identity_hash,region.region_id,allocation.allocation_id,allocation.object_id,allocation.backing_id,
                         port.port_id,port.domain_id,request.address,request.length_bytes,request.phase,request.operation,offset)
 
 
