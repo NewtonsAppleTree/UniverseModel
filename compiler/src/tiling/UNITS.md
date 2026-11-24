@@ -6,7 +6,18 @@
 
 M/N/K 与块尺寸均为 element；步骤数为 ceil(M/Tm)·ceil(N/Tn)·ceil(K/Tk)，实际 MAC 总量必须为 MNK。块尺寸与策略决定容量/搬运，而非时钟。接口顺序：创建公共值 → 生产或提供计划 → 校验 → 下游。无硬件所有权或状态。尾块、乱序、缺失、重复、越界和提前释放验证见[测试](../../tests/test_linear_mapping.py)。
 
+## Attention行所有权
+
+`attention.py`以query_tile逐batch/query head生成AttentionBlock，max_blocks限制宿主材料化。validate_attention_plan用独立行游标检查网格、真实尾块、完整有序且无重复的Q/O覆盖，并绑定Spec哈希。所有可见key在同一输出行中归约，不实现context分割。关键量是query_tile与B·Hq·ceil(Sq/tile)；顺序为Spec→build→validate，行为与手算见[W4指南](../../../workloads/docs/mapping_and_quality.md)和[测试](../../tests/test_attention_mapping.py)。
+
 <!-- model-fields:start -->
+
+### [attention.py](attention.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `build_attention_plan(spec: AttentionSpec, *, query_tile: int, score_policy: str='fused', kv_layout: str='shared', max_blocks: int=100000)` | Each query/head owner retains full-key reduction semantics, using real query tails without padded arithmetic. |
+| `validate_attention_plan(spec: AttentionSpec, plan: AttentionPlan)` | Check coverage with a linear row cursor, independently of builder enumeration; duplicates and gaps both fail. |
 
 ### [linear.py](linear.py)
 

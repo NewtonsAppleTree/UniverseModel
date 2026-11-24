@@ -2,6 +2,8 @@
 
 当前落地范围为[线性算子实验](../../evaluation/docs/linear_mapping.md)及下文的训练首批：稠密 GEMM/MatVec、稳定小输入生成、逻辑工作量、独立整数/有理数参考和显式质量结果。以下描述更广的目标职责，通用图、分布式训练状态及代表性 profile 不视为已实现。
 
+[Attention首包](foundation_usage.md)新增MHA/GQA/MQA与因果位置语义、独立Fraction/Decimal参考、逻辑KV快照/追加，以及带原始SHA256和来源的本地数据/有限合成profiles。[W4/W5](mapping_and_quality.md)现已接入query分块/score驻留/KV复制、格式匹配资源分析，以及UCI真实分类的划分、训练支持状态、验证集选参、质量门槛和NumPy外部功能对照。完整规划见[完成报告](completion.md)；真实分类证据不等于通用代表性，仍不报告完整Attention硬件性能。
+
 ## 核心与边界
 
 [训练首批](../../evaluation/docs/training_step.md)另提供固定 Linear/ReLU/identity 链、不可变状态、mean MSE/plain SGD 的完整工作量与精确反向参考；尚未实现通用 autograd、代表性训练数据或分布式语义。

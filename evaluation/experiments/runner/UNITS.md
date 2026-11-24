@@ -1,5 +1,9 @@
 # runner：独立调用与有限线性映射比较
 
+`attention_evidence.py`只消费保存的任务/计划/观测，验证行所有权、资源守恒与边界，并用保存参考输出重新计算数值比较；不拥有硬件或执行状态。mapping/retrieval新implementation为v2，必存reference_output，NumPy另存两条实际输出。历史v1仅执行能由原证据支持的检查；配置/bundle仍为v1。retrieval还验证选参计数、训练标签/类配额、Attention语义和预测变化；指标与未知成本不能互相矛盾。详见[审计](../../../workloads/docs/completion_audit.md)。
+
+`workload.py`接入AttentionSuite/Case：先准备并保存实际Q/K/V，再调用独立参考和逻辑计数；准备失败保留清单/错误，参考失败保留实际输入。完整名单、来源、预算、假设和内容参与记录；succeeded不表示真实AI质量通过。目标时间/能量为None+原因，host_elapsed_s仅覆盖通用callback/收集。write_study/read_study沿用不可覆盖bundle并验证名单/身份/输出结构，回读不执行参考或访问原dataset。公式、关键宿主预算、顺序和证据见[workloads指南](../../../workloads/docs/foundation_usage.md)与[集成测试](../../../tests/integration/test_workload_experiment.py)。
+
 CH6的`compute.py`使用ComputeCase/ComputeStudy连接CPU/GPU/NPU专业入口。每组唯一基线，资源消融固定work且仅改变一个数值模型参数，工作消融固定model且只改一个数值需求；语义变化列boundary。返回专业分析与未知execution_time指标，不作跨架构性能排名或数值质量声明。完整名单/输入/来源参与记录，保存/回读拒绝混用和缺失，且回读不重跑模型。详见[CH6指南](../../../chipmodel/docs/compute_capabilities.md)。
 
 `run_experiment(spec, configuration, inputs, execute)` 返回 RunRecord。execute 接收隔离副本，返回 producer payload 与 tuple[Metric]；没有动态 import、插件发现、隐式编译或模拟时钟。
@@ -54,6 +58,10 @@ assembly.py提供AssemblyCase/Study、run/summarize/write/read_study，直接接
 
 CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和可选ThermalTrace。每组基线固定来源表，geometry/observation/thermal/pvt/activity各限定变动范围，thermal仅单数值变化。专业输入、完整名单和来源保留，已知子集/未知总成本、几何必要条件和热阈值与程序成功分开。保存/回读不执行模型，宿主时间不参与积分；见[CH9指南](../../../chipmodel/docs/physical_evidence.md)。
 
+## Attention映射、真实任务与共享bundle
+
+`attention.py`固定AttentionMappingStudy的task/input/hardware比较query_tile、score驻留及KV布局；专业memory/traffic、独立数值校验和格式匹配的MAC/DMA服务分开保存，SFU/存储/执行与能量未知。`retrieval.py`按RetrievalProfile保存真实观测、train-only状态、validation选参表、逐例test输出、独立数值/任务质量和可选NumPy；质量失败可为预期负对照，不改成运行失败。`bundle.py`复用固定目录索引/原始SHA256和调用方语义检查，回放不执行模型；分类指标由保存观察重算。参数、资源边界、默认5/12例与完整验收见[W4/W5指南](../../../workloads/docs/mapping_and_quality.md)。
+
 <!-- model-fields:start -->
 
 ### [assembly.py](assembly.py)
@@ -76,6 +84,57 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 | `summarize_records(records: tuple[RunRecord, ...])` | 回读检查完整同源名单和真实工作；保留专业分析、全部失败与未知指标。 |
 | `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | 哈希bundle先落盘，固定相对路径索引最后写；禁止覆盖已存在的研究目录。 |
 | `read_study(directory: str \| Path)` | 回读不执行模型；索引路径、run身份和完整研究协议必须一致。 |
+
+### [attention.py](attention.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AttentionCandidate` | `name` | `str` | 1（标识/枚举） | Unique mapping identity. |
+| `AttentionCandidate` | `query_tile` | `int` | token | Maximum rows per query block [token]. |
+| `AttentionCandidate` | `score_policy` | `Literal['fused', 'spill']` | —（结构/对象） | Explicit intermediate residency. |
+| `AttentionCandidate` | `kv_layout` | `Literal['shared', 'expanded']` | —（结构/对象） | Logical sharing or explicitly copied backing. |
+| `AttentionCandidate` | `expected_status` | `Literal['succeeded', 'failed']` | —（结构/对象） | Reviewed fixture expectation. |
+| `AttentionHardware` | `scratch_capacity_bytes` | `int` | B | Separate scratch reservation budget [B]. |
+| `AttentionHardware` | `backing_capacity_bytes` | `int` | B | Original inputs, outputs and temporary backing reservation budget [B]. |
+| `AttentionHardware` | `mac` | `MacArray` | —（结构/对象） | Explicit arithmetic/P/L/II/clock/source profile; must match binary64 mul-add at evaluation. |
+| `AttentionHardware` | `dma` | `DmaParams` | —（结构/对象） | One serialized payload service channel; no implicit second charge for memory traffic. |
+| `AttentionHardware` | `dma_clock` | `ClockDomain` | —（结构/对象） | DMA service clock, independently converted to seconds. |
+| `AttentionMappingStudy` | `workload` | `AttentionSpec` | —（结构/对象） | Common task semantics for all candidates. |
+| `AttentionMappingStudy` | `hardware` | `AttentionHardware` | —（结构/对象） | Common resource budget, no per-candidate overprovisioning. |
+| `AttentionMappingStudy` | `candidates` | `tuple[AttentionCandidate, ...]` | —（结构/对象） | Complete unique mapping roster, including failures. |
+| `AttentionMappingStudy` | `seed` | `int` | —（结构/对象） | Deterministic uint64 Q/K/V generation seed. |
+| `AttentionMappingStudy` | `atol` | `float` | output value | Absolute numerical output tolerance [output value]. |
+| `AttentionMappingStudy` | `rtol` | `float` | 1 | Relative numerical tolerance [1]. |
+| `AttentionMappingStudy` | `max_macs` | `int` | MAC | Host visible-pair contraction budget [MAC]. |
+| `AttentionMappingStudy` | `max_elements` | `int` | element | Host input/interpreter storage guard [element]. |
+| `AttentionMappingStudy` | `max_score_pairs` | `int` | pair | Host independent-reference probability matrix limit [pair]. |
+| `AttentionMappingStudy` | `schema_version` | `Literal['attention-mapping/v1']` | —（结构/对象） | Same-task fixed-budget comparison. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `AttentionCandidate` | A candidate changes only declared mapping choices; every candidate shares the same task/input/hardware budget. |
+| `AttentionHardware` | MAC and serialized DMA are separate resources; scalar operations and actual external-memory timing remain uncovered. |
+| `AttentionMappingStudy` | One complete comparison fixes quality tolerances, host limits and source-independent workload inputs. |
+| `evaluate_attention(study: AttentionMappingStudy, candidate: AttentionCandidate, inputs: AttentionInputs)` | Execute and compare against the independent reference, then query each resource once with matching arithmetic. |
+| `run_study(study: AttentionMappingStudy, *, source_revision: str='unrecorded')` | Keep all candidates, including input preparation failures; records own actual inputs rather than just seeds. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Replay validates complete common conditions and output identities without running mapping, input generation or models. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit a complete immutable mapping bundle using the common checked index. |
+| `read_study(directory: str \| Path)` | Read committed mapping evidence without invoking its models or reference. |
+
+### [attention_evidence.py](attention_evidence.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `validate_saved_plan(spec: AttentionSpec, snapshot: dict, *, query_tile: int, score_policy: str='fused', kv_layout: str='shared')` | A saved plan must own all rows of this task and use the candidate's exact declared mapping choices. |
+| `validate_saved_resources(spec: AttentionSpec, plan: dict, memory: dict, traffic: dict, *, scratch_capacity_bytes: int, backing_capacity_bytes: int)` | Check saved reservations, payload bounds and work conservation; no allocator, traffic generator or device model is rerun. |
+| `validate_saved_comparison(spec: AttentionSpec, inputs: AttentionInputs, actual: list, validation: dict, *, reference_output: list \| None=None, atol: float=1e-12, rtol: float=1e-12)` | v1 evidence gets structural checks; v2 additionally reconstructs error/tolerance results from saved reference observations. |
+
+### [bundle.py](bundle.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `write_records(records: tuple[RunRecord, ...], directory: str \| Path, schema: str, validate: Callable)` | Validate a complete study, then write immutable runs before committing its index. |
+| `read_records(directory: str \| Path, schema: str, validate: Callable)` | Read only fixed local run names and verify complete semantics without executing producers. |
 
 ### [cim.py](cim.py)
 
@@ -243,6 +302,17 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 | `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | 先写哈希bundle，再写固定相对路径索引；不覆盖已有实验目录。 |
 | `read_study(directory: str \| Path)` | 回读只核对工件/输入身份和完整协议，不运行物理模型。 |
 
+### [retrieval.py](retrieval.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `prepare_retrieval(profile: RetrievalProfile, data: ClassificationData, seed: int)` | Prepare actual source data/model/selection once per seed; no held-out test label participates in fitting or selection. |
+| `evaluate_retrieval(config: dict, prepared: dict)` | Compare actual mapped arithmetic to the oracle, then evaluate held-out task quality and optional two-form NumPy evidence. |
+| `run_study(profile: RetrievalProfile, *, data_root: str \| Path, source_revision: str='unrecorded', numpy_reference: bool=False)` | Retain every split/variant including data/selection/tool failures; the optional backend version is part of configuration identity. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Summarize complete paired cases without fitting/selection/reference or external-data access; validate recorded metrics from observations. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Preserve a complete immutable task-quality bundle, including failed executions and negative controls. |
+| `read_study(directory: str \| Path)` | Read verified saved observations; NumPy and original dataset files are unnecessary for replay. |
+
 ### [single.py](single.py)
 
 | 类型 / 接口 | 用途、公式与边界 |
@@ -299,5 +369,14 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 | `evaluate_training(params: TrainingExperiment, inputs: tuple[TrainingState, TrainingInputs])` | Compare the whole step; only the GEMM subset has target service estimates, while full-step time remains unknown. |
 | `run_training_study(study: TrainingStudy, *, source_revision: str='unrecorded', reference_backend: str='exact')` | Freeze the actual reference environment in run identity and preserve failed candidates as independent attempts. |
 | `summarize_training(records: tuple[RunRecord, ...])` | Reconstruct comparison rows from verified run records without rerunning training or importing an external framework. |
+
+### [workload.py](workload.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `run_study(suite: AttentionSuite, *, data_root: str \| Path, source_revision: str='unrecorded')` | Prepare actual input snapshots before the callback; preparation errors become records without invented input data. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Check semantic identity, complete roster and source consistency without regenerating inputs or executing the reference. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit the immutable bundle roster only after all records are written; never overwrite previous evidence. |
+| `read_study(directory: str \| Path)` | Read only local indexed bundles, rejecting omissions, duplicate identities and arbitrary paths; source data files are unnecessary. |
 
 <!-- model-fields:end -->

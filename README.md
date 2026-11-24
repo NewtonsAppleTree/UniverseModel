@@ -2,6 +2,8 @@
 
 chipmodel CH1–CH10基础与统一验收已完成，覆盖、调用入口和后续证据条件见[完成报告](chipmodel/docs/completion.md)。
 
+workloads W0–W6规划已落实：Attention/KV、显式映射、来源数据、真实分类质量与独立NumPy对照；完整覆盖、统一验收及研究边界见[完成报告](workloads/docs/completion.md)，最新修复与验证见[收尾审计](workloads/docs/completion_audit.md)。
+
 **面向 AI 与软硬件协同设计的通用计算架构研究与实验平台。**
 
 UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支撑体系结构、AI 与 EDA 领域的原创研究和顶级会议论文，并探索研究成果的工业应用。通过可组合的建模、仿真、系统执行与评估方法，检验软硬件方案的可行性，解释收益、瓶颈和适用条件。
@@ -88,6 +90,9 @@ python -m example.universal_demo --case adc
 python -m example.universal_demo --case dma --set inputs.payload_bytes=64
 python -m example.linear_demo
 python -m example.training_demo
+python -m example.workload_demo
+python -m example.attention_demo
+python -m example.retrieval_demo
 ```
 
 结构检查覆盖目录、实际 Python 模块依赖、文档链接和 Word 源哈希；模型规则检查覆盖已实现模块的定义/字段注释与参数文档。测试和示例验证局部模型及工程约束，使用方法见 [Unit 总入口](chipmodel/UNITS.md)。分析下界不等于实际运行时间，这些检查也不证明电路可实现性或成本精度。

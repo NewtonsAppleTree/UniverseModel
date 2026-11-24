@@ -65,7 +65,25 @@
 
 最关心：完整工作量 O、各边界实际流量 D、峰值活跃容量、数值验收目标。Roofline 用于筛选瓶颈；依赖、小批次启动、队列、通信和资源共享仍可能进一步限制性能。
 
+当前[Attention/逻辑KV首包](workloads/docs/foundation_usage.md)采用以下子集，实际定义由[workload契约](contracts/workload/UNITS.md)和[kernels](workloads/kernels/UNITS.md)维护：
+
+| 参数 / 派生量 | 单位 | 关系与边界 |
+| --- | --- | --- |
+| B、Hq、Hkv、Sq、Skv、D、Dv、scale | sample/head/token/element；scale无量纲 | Q/K contraction维D相同，V维Dv独立；Hq可被Hkv整除；scale显式正值，不能由dtype推断 |
+| causal、query_start | bool；token position | 因果可见j≤query_start+i，query_start+Sq≤Skv；非因果起点0 |
+| 矩形配对R、有效配对P | pair | R=B·Hq·Sq·Skv；因果P=B·Hq·[Sq·(query_start+1)+Sq·(Sq−1)/2]；非因果P=R |
+| QK/AV与softmax工作 | MAC、compare、exp、add、divide | 矩形分别R·D/R·Dv MAC；可见P·(D+Dv)需映射利用mask；softmax各数学动作独立，不兑换为MAC |
+| 唯一Q/KV/O及一个完整score | B | binary64下分别8B·Hq·Sq·D、8B·Hkv·Skv·(D+Dv)、8B·Hq·Sq·Dv、8R；不等于实际流量/强制scratch |
+| KV tokens/max_tokens/version | token/update | 逻辑容量8B·Hkv·max_tokens·(D+Dv)，驻留按tokens；追加version+1，身份含源内容，不提供并发仲裁 |
+| precision_digits、材料化/参考/文件上限 | digit/element/pair/MAC/B | 宿主验证预算，不是硬件精度/资源；有限Decimal参考最终舍入binary64，概率/输出可下溢为零 |
+
+本包公式来自声明的缩放点积/因果语义、唯一张量布局与逐行归约，手算和独立算法证据见[Attention测试](tests/workloads/test_attention.py)；没有据此预测硬件发射、缓存流量或性能。
+
 ### 2.1 当前线性映射实验采用的参数子集
+
+Attention映射与真实任务的新增关系由[W4/W5指南](workloads/docs/mapping_and_quality.md)和相应UNITS维护：query-block scratch=8[qD+Skv(D+Dv)+qSkv+qDv+2q] B（q=min(tile,Sq)），fused/spill按同一矩形score分别保留本地或增加4次外部payload；expanded KV增加8B·Hq·Skv·(D+Dv) B backing及其显式读写。共享Hkv容量与每块实际重读分开，不由GQA推断cache复用。
+
+RBF分类使用训练集mean/population std标准化，Q=[2x,−||x||²,1]、K=[z,1,−||z||²]，QK=−||x−z||²；D=feature_count+2，Dv=classes。scale候选仅由validation选择，test隔离。key_decimals是十进制坐标舍入设置，仍为float64，不是存储bit数。accuracy=correct/samples，概率端点/行和允许1e-9绝对舍入容差；mean log-loss以min(1,max(p_true,probability_floor))取自然对数，原始argmax不变；绝对门槛与同split下降用精确计数比例及十进制阈值比较。来源、原始字节、划分seed、状态与外部NumPy版本参与实验身份。
 
 2026-11-20 的[线性实验](evaluation/docs/linear_mapping.md)采用正整数 M/N/K、row-major、INT8/INT64 或 float64。字段由 [workload](contracts/workload/UNITS.md)、[plan](contracts/plan/UNITS.md)、[memplan](compiler/src/memplan/UNITS.md) 与 [runner](evaluation/experiments/runner/UNITS.md) 维护。本节是该模型假设下的关系清单，不是所有数据流的通式。
 

@@ -1,0 +1,2 @@
+# Optional independent Attention/RBF baseline; public contracts and default workloads do not require NumPy.
+numpy==2.2.6

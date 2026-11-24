@@ -1,5 +1,56 @@
 # 实现状态
 
+## 2026-11-23 workloads完成审计与数值/回读修复
+
+W0–W6既定任务已经完成，本次按使命复核后补齐真实边界缺陷，详情见[收尾审计](../workloads/docs/completion_audit.md)。9个均匀key、同类one-hot V的合法Attention输出出现`1.0000000000000002`，此前被概率有效域拒绝；现在概率端点/行和使用明确1e-9容差，原始观测与argmax不变，log-loss限制在显式floor与1之间，避免负loss。越界/行和错误及独立数值不合格仍被检出。
+
+mapping/retrieval新implementation v2保存参考输出，NumPy另存Attention与直接RBF实际输出；回读从观测重算数值比较与外部分类质量，核对计划/行所有权、资源守恒/边界、选参计数、训练标签/类配额、任务维度/scale/one-hot V、预测变化与记录指标。任务配置/bundle保持v1，历史implementation v1实际回读通过；其缺失参考输出，不能宣称重新计算数值误差。回读不生成输入、不拟合/执行模型或外部参考，不提供第三方认证或完整物理性能证据。
+
+新增6项测试，全回归425项：423通过，2项可选PyTorch因未安装跳过；NumPy 2.2.6实际通过。分组contracts 6、clustermodel 72、costmodel 7、chipmodel 141、workloads 47、compiler 20、integration 132。统一27例保留23个执行成功、4个预期执行失败以及成功中的3个质量负对照。规则通过68个目录，结构通过13模块、103份模块Python、177份Markdown及4份DOCX来源哈希，旧示例/空白检查通过。
+
+证据在`.build/workloads-audit-20261123`，保留新验收、分组日志、before/validation、完整wheel核对；原交付证据未覆盖。189份来源文件的身份为`1455a22188ee47fd9a3785f7bcc6d79c2f61c508+workloads-sha256:af021af31756357ce21b418281fe4821b9fb625e35516dddec4ffa3a9e0dadcb`。仅改动6份既有源码/测试、新增1份检查源码，Git索引不变。wheel为`.build/workloads-audit-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `15d4398530eef50e2ec990f7ac14f25cd2608049bb3773ea8de309659325b830`；100份打包源码字节一致，隔离解释器导入97份项目模块并执行/回读完整27例，与工作区一致。以上为本地验收，远端CI未执行。
+
+## 2026-11-23 workloads W0–W6规划完成与统一验收
+
+已继续完成[workloads任务规划](../workloads/docs/development_plan.md)中剩余W4、W5及完整W6；研究范围、全部独立接口、来源与后续课题条件见[完成报告](../workloads/docs/completion.md)，实际公式/用法见[映射与真实质量指南](../workloads/docs/mapping_and_quality.md)。W0–W6均有实现和对应证据，不把后续context分割、完整LLM、通用autograd、目标时序或器件成本列为已覆盖。
+
+W4新增公共Attention query-block计划、独立区域/顺序校验，QK/softmax/AV的binary64功能解释、shared/expanded KV与fused/spill中间结果、命名数据域和scratch/backing分离。相同任务/硬件预算的5方案中4个数值校验成功、1个容量预期失败：fused_q1/spill_q1/fused_q2/expanded_q1的外部payload分别2400/3936/1760/3680 B，共同有效工作180 MAC。实际copy和四次score中间传输显式计量；MAC服务要求float64非FMA签名，DMA串行服务与softmax动作分开。MAC/DMA子集下界不能作为完整Attention时间，标量/存储/争用和完整能量仍未知。
+
+W5选择真实UCI Iris的RBF Attention分类，取得原始CSV/说明/API元数据，保留Fisher署名、DOI、CC BY 4.0页面声明及SHA256。150行4项cm测量、3类各50例；原来源第35/38行与历史文章的差异保留未改。每seed按类90/30/30划分，标准化只拟合train，scale0.25/1/4只在validation选择，test只用于报告。Q/K的距离等价式与one-hot V可独立调用，模型状态包含实际来源/划分/统计/支持值。key_decimals为数值简化，仍使用float64存储，没有低bit容量或硬件加速主张。
+
+3个split×4个变体均执行成功且数值通过；基线测试正确数为28/29/27，各30例，所选scale4/1/1。1位/12位支持坐标舍入在这些划分上不改变准确率；−2位负对照各10/30，被任务质量门槛拒绝但保留为成功执行记录。实际NumPy 2.2.6提供batched Attention与独立直接RBF距离两种表达，后者对高精度参考最大绝对误差`6.661338147750939e-16`。保存逐例概率/真值/预测、confusion、accuracy、显式log-loss floor/裁剪、验证选参表及配对基线；精确计数比处理质量阈值。重复split使用同一原始数据，不作独立样本显著性或LLM/服务代表性外推。
+
+W6新增[统一验收工具](../tools/validate_workloads.py)，固定基础10例、映射5例、真实质量12例，共27例；4个预期执行失败与3个成功执行但低质量的负对照全部保留。原始Python/config/数据/来源进入版本身份，bundle字节、完整名单、共同条件、输入/模型身份与指标一致性验证后提交报告。回放不读原始数据、不执行拟合/参考、不要求NumPy；分类指标可从已存概率和真值重建。CI增加标准库与固定NumPy可选环境，本地结果不代表远端CI已运行。
+
+本轮新增24项测试：compiler 3、workloads 7、integration 14；涉及独立高精度参考的3项验证放在integration，保持compiler不得依赖workloads的约束。全回归419项，417通过、2项可选PyTorch跳过；NumPy测试实际通过。分组contracts 6、clustermodel 72、costmodel 7、chipmodel 141、workloads 46、compiler 20、integration 127。规则通过68个实现目录；结构通过13模块、102份模块Python、176份Markdown和4份DOCX来源哈希；旧chipmodel_demo、空白检查均通过。
+
+证据根目录`.build/workloads-completion-20261123`：acceptance/保存完整27例、source.json、三个summary和report.json；references/保存UCI数据、说明、元数据及许可页面原始字节。source.json覆盖188份Python/config/数据/来源文件，身份为`1455a22188ee47fd9a3785f7bcc6d79c2f61c508+workloads-sha256:79a4ebeda1de3dee081990b0892b96c047b5b497defa99a56916ee4189dac66d`。validation.json、各组日志及wheel_audit.json保存工程检查；前包证据保留，既有source中只扩展workloads/reference/attention.py的数值比较接口。
+
+wheel位于`.build/workloads-completion-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `c958e5d6fe79181a4d8495fad84b962adf7effa8bffaba8badac5d676bd714a0`。99份打包Python名单/原始字节一致；python -I从解包目录导入96份项目模块，显式提供NumPy 2.2.6依赖，完整27例及保存/原记录回读与工作区一致。示例/配置/来源数据继续从仓库提供，公共契约与默认模型没有新增第三方必需依赖。
+
+## 2026-11-23 workloads W1–W3基础与首包W6验收完成
+
+按[项目使命](../PROJECT_MISSION.md)完成任务梳理与首包开发，顺序见[W0–W6计划](../workloads/docs/development_plan.md)。复用GEMM/MatVec和Linear训练短链，补充Attention任务/独立参考、逻辑KV、有限profiles与本地数据来源；公式、接口、适用域和复现命令见[基础指南](../workloads/docs/foundation_usage.md)。workloads仍只依赖contracts，公共契约只用标准库；没有为了目录完成率创建空模型。
+
+| 包 | 已交付行为 | 证据与边界 |
+| --- | --- | --- |
+| W1 Attention | MHA/GQA/MQA，Q/K/V维度、显式scale、因果query_start；矩形/有效配对与softmax动作独立计数，唯一KV按Hkv计 | 手算、60组独立float算法、GQA显式复制等价、极值；已投影Q/K/V，不包含完整Transformer/量化/反向 |
+| W2 逻辑KV | 不可变快照，按每个batch/head的token轴追加，形状/容量/源内容身份校验；绑定resident KV与query | 多batch/head整段prefill与逐token/分块等价；允许纯函数分支，无物理page/淘汰或并发版本仲裁 |
+| W3 数据与profile | 有限完整案例、生成seed/算法版本或本地原始SHA256数据、spec身份、来源/用途/限制；宿主预算先检查 | 篡改/语义/路径/大小反例；当前全为合成验证，未建立真实模型/请求分布代表性 |
+| W6 首包工程 | 严格配置、实际输入/准备错误、参考输出或失败、未知目标成本、保存与只读回放；文档/CI/wheel | 完整名单/来源/输入身份和bundle字节检查；运行成功及回读一致性均不等于AI质量或性能结论 |
+
+数值参考用Fraction保留QK/scale与行最大值差，再用独立局部Decimal上下文做exp/归一化/AV，观察值最终转binary64。精度默认80有效位，可选32–256；它不模拟硬件逐指令舍入。概率与输出可下溢为零，AV使用内部高精度概率，故保存的概率舍入为零时输出仍可能保留其大V贡献。极值证据检验数值算法，不表明这些输入有物理可行性。参考预算只限制宿主验证规模，逻辑字节不是真实搬运或峰值分配。
+
+[默认配置](../config/experiments/attention_workloads.json)共10例：prefill MHA/GQA/MQA、短/长decode、cross Attention和本地手算数据7例成功；host_limit_failed、dataset_hash_failed、reference_limit_failed 3例按预期失败。前两种准备失败保留完整配置/来源/诊断、实际data为None；参考规模失败保留实际Q/K/V。手算文件每个query head输出(1,2,3)、(3,4,5)；相同B/Hq/Sq/Skv/D/Dv的MHA/GQA/MQA逻辑KV分别640/320/160 B。不同案例是任务形状验证，不作同预算硬件排名。target_execution_time/target_energy始终None+原因，无“参考与自身比较通过”的质量标记。
+
+新增27项测试：workloads 20、integration 7。全回归395项中393通过、2项可选PyTorch因默认环境未安装跳过；分组contracts 6、clustermodel 72、costmodel 7、chipmodel 141、workloads 39、compiler 17、integration 113。规则通过68个实现目录，结构通过13模块、88份模块Python、173份Markdown和4份DOCX来源哈希；空白及旧chipmodel_demo通过。CI已加入workload_demo保存/回读，本地验收不代表远端CI已运行。
+
+本地证据在`.build/workloads-foundation-20261123`：source.json保存160份Python/config/pyproject原始字节哈希及环境，study/与summary.json保存10例及回放摘要，study_audit.json记录完整结果；各组日志/JSON、validation.json和wheel_audit.json保存工程核对。源码身份为`1455a22188ee47fd9a3785f7bcc6d79c2f61c508+python-config-sha256:15de7235391f3303024a92e3884535ab586aa8bb71fc34d89ff409c646f5e30f`，包含未提交代码，不包含文档与构建产物。
+
+wheel位于`.build/workloads-foundation-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256为`b8becf824376d9c689583d865402150a7916beb6bbdcb396ec2a84174a04eca0`。86份打包Python的完整名单和工作区字节一致；python -I仅从解包目录加载83份实际项目模块，完整10例/旧记录回读与工作区一致，另验证多KV head追加与decode手算。示例/配置仍由仓库提供，不包装为数据下载服务。
+
+下一包为**W4：Attention映射、非矩阵工作与KV布局接入**。需补计划/格式、真实搬运、scratch生命周期与同任务方案比较，再接chipmodel资源；W5按课题补真实模型/数据与任务质量，目标时延、能效、服务代表性和物理可行性仍需各自证据。首包完成不表示整个workloads目标全部实现。
+
 ## 2026-11-23 chipmodel完成范围复查与文档补漏
 
 针对“是否还有本阶段应完成的工作”复查实现、CH1–CH10验收计划及分包指南，未发现新的已知必补功能项，但确认六份专业文档仍有过时描述。已修正CH9待办、wheel不可用、完整CIM MatVec待实现及实验记录尚未接入的表述；Unit设计中的早期实现示例明确标为历史范围，并区分基础交付与声明并发/背压时所需的证据。

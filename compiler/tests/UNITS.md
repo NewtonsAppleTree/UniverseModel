@@ -1,5 +1,7 @@
 # tests：编译阶段独立验证
 
+Attention新增3项计划/区域/容量测试，见[test_attention_mapping.py](test_attention_mapping.py)；独立数值参考的3项跨模块验证放在[集成测试](../../tests/integration/test_attention_mapping_experiment.py)，避免compiler反向依赖workloads。
+
 使用标准库 unittest、contracts 和 compiler，不跨边界导入 workloads/chipmodel。无独立硬件 Unit、物理参数或运行状态；手算矩形乘法、缓冲容量和请求字节提供数值证据，缺失/重复/非法 ROI 与提前释放提供反例。最大规模参数只限制测试/宿主材料化。
 
 运行 `python -m unittest discover -s compiler/tests -p "test_*.py" -v`。跨模块独立参考、目标服务参数、保存回读由[集成测试](../../tests/integration/test_linear_experiment.py)覆盖。测试通过不声称事件时序或物理成本已校准。
@@ -7,6 +9,16 @@
 训练测试 [test_training.py](test_training.py) 增加单层手算、ReLU 零/负输入、SGD 旧状态/异源梯度拒绝、连续两个 step、独立生命周期反例、双容量边界与反向收缩轴；仍不导入 workloads/chipmodel。
 
 <!-- model-fields:start -->
+
+### [test_attention_mapping.py](test_attention_mapping.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `AttentionMappingTests` | Coverage and data movement are checked independently of the builder's own validation. |
+| `AttentionMappingTests.setUp(self)` | Small causal GQA task gives hand-countable full-key loads and real query tails. |
+| `AttentionMappingTests.test_hand_counts_and_capacity(self)` | Fusion removes four intermediate payload transfers; larger query blocks reduce repeated KV loads. |
+| `AttentionMappingTests.test_output_regions_and_layout(self)` | Explicitly enumerate output elements; every row/head is written exactly once, including non-divisible tails. |
+| `AttentionMappingTests.test_plan_and_budget_guards(self)` | Reject forged ownership, omitted/repeated rows, stale task hashes and host allocation/work limits. |
 
 ### [test_linear_mapping.py](test_linear_mapping.py)
 

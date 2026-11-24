@@ -1,5 +1,7 @@
 # compiler：张量区域、切块与规约入口
 
+Attention已有query-block计划、命名区域、KV复制/score落存和独立float64解释；入口见[src](src/UNITS.md)与[W4指南](../workloads/docs/mapping_and_quality.md)。
+
 当前实现稠密线性算子的显式分块、三缓冲内存规划、逐行流量账本和功能解释执行；入口见 [src](src/UNITS.md) 与[验证](tests/UNITS.md)。下表是更广的分析职责，不能将未覆盖的 attention、一般索引映射等记为已实现。先读[模块设计](docs/design.md)、[张量区域契约](../docs/interfaces/tensor_regions.md)和[切块与规约](docs/tiling_and_reduction.md)。
 
 | 分析职责 | 关键输入 / 专业术语 / 单位 | 输出与关系 |

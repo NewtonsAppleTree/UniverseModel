@@ -1,6 +1,6 @@
 # contracts：公共值与工程边界
 
-本模块无硬件计量，不拥有模型状态。当前入口为[线性任务](workload/UNITS.md)、[线性计划](plan/UNITS.md)、[实验结果](results/UNITS.md)、[规范化与版本](versions/UNITS.md)、[指标单位](units/UNITS.md)。专业 payload 保留生产模块自己的 schema；通用资源/图计划/事件契约见[设计](docs/design.md)，不与已实现的窄范围线性值混淆。
+本模块无硬件计量，不维护运行时组件状态。当前入口为[线性/训练/Attention任务与逻辑KV值](workload/UNITS.md)、[线性计划](plan/UNITS.md)、[实验结果](results/UNITS.md)、[规范化与版本](versions/UNITS.md)、[指标单位](units/UNITS.md)。专业 payload 保留生产模块自己的 schema；调用者持有不可变状态值，行为由生产模块实现。通用资源/图计划/事件契约见[设计](docs/design.md)，不与已实现的专用值混淆。
 
 C1另提供[公共网络边界](hardware/UNITS.md)：只读NIC端点、带单位和来源的共享容量。它们不拥有硬件状态，跨对象归属/连线由clustermodel验证；不代表一般硬件或事件schema已经实现。
 

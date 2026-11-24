@@ -1,5 +1,9 @@
 # 示例
 
+workloads完整规划入口为`python tools/validate_workloads.py --output .build/workloads-acceptance`，再以`--read`回读；`--numpy-reference`可接独立外部证据。单独运行[`attention_demo.py`](attention_demo.py)比较映射，[`retrieval_demo.py`](retrieval_demo.py)运行真实分类质量，完整语义和限制见[指南](../workloads/docs/mapping_and_quality.md)。
+
+[`workload_demo.py`](workload_demo.py)运行10个Attention合成案例（7成功、3预期失败），可用`--output .build/attention-study`保存，`--read .build/attention-study`只读回放；实际输入、数据来源和未知硬件成本均留档。独立调用、数据根目录和参考精度见[指南](../workloads/docs/foundation_usage.md)。
+
 CH1–CH10六组默认夹具统一运行/回读：`python tools/validate_chipmodel.py --output .build/chipmodel-acceptance`，然后以`--read`回读同一目录。固定案例名单、源码身份和证据范围见[完成报告](../chipmodel/docs/completion.md)。
 
 新增六节点[leaf-spine配置](../config/experiments/cluster_leaf_spine.json)，可用`--config config/experiments/cluster_leaf_spine.json --overview`查看安装资源/方向可达性与需求矩阵。停用来源和失败回读见[横向指南](../clustermodel/docs/breadth_usage.md)。

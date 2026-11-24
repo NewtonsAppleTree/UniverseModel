@@ -37,6 +37,8 @@ jobs:
       - run: python tools/validate_chipmodel.py --read .build/chipmodel-acceptance
       - run: python -m example.training_demo --output .build/training-study
       - run: python -m example.training_demo --read .build/training-study
+      - run: python tools/validate_workloads.py --output .build/workloads-acceptance
+      - run: python tools/validate_workloads.py --read .build/workloads-acceptance
       - run: python -m pip wheel . --no-deps --wheel-dir .build/wheels
 
   training-torch:
@@ -51,3 +53,15 @@ jobs:
       - run: python -m pip install -r tools/requirements-training-torch.txt
       - run: python -m unittest discover -s tests/integration -p "test_training_experiment.py" -v
       - run: python -m example.training_demo --torch-reference --output .build/training-pytorch
+
+  workloads-numpy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r tools/requirements-workloads-numpy.txt
+      - run: python -m unittest discover -s tests/integration -p "test_retrieval_experiment.py" -v
+      - run: python tools/validate_workloads.py --numpy-reference --output .build/workloads-numpy
+      - run: python tools/validate_workloads.py --read .build/workloads-numpy

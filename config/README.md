@@ -1,5 +1,9 @@
 # 配置文件
 
+[attention_mapping.json](experiments/attention_mapping.json)固定任务/资源比较5个映射；[retrieval_quality.json](experiments/retrieval_quality.json)固定3个split×4个数值变体。真实[UCI Iris来源](workloads/iris/README.md)含原始数据、元数据、署名/许可与哈希；详情见[W4/W5指南](../workloads/docs/mapping_and_quality.md)。
+
+[attention_workloads.json](experiments/attention_workloads.json)声明10个有限Attention合成案例及宿主预算；[attention_inputs.json](workloads/attention_inputs.json)为原始SHA256绑定的本地手算输入。来源、用途与形状身份规则见[workloads指南](../workloads/docs/foundation_usage.md)，这些配置不声明真实模型分布。
+
 本目录存配置，解析逻辑在 configuration。可用 schema 与实验配置的完成情况见[实现状态](../docs/STATUS.md)。
 
 [cluster_leaf_spine.json](experiments/cluster_leaf_spine.json)声明六节点、三leaf、双spine与30条1 MiB合成需求，可选outage保存静态停用条件；见[横向指南](../clustermodel/docs/breadth_usage.md)。
@@ -19,5 +23,6 @@
 | runtime | streams、派发、collective 与动态策略 |
 | simulation | 时间精度、事件、上限与观测设置 |
 | experiments | 负载、基线、搜索空间和比较协议 |
+| workloads | 带来源/字节哈希的本地任务数据夹具 |
 
 配置应引用模板、实例及成本版本，避免复制互相矛盾的参数。覆盖顺序、派生量和约束见 [configuration 设计](../configuration/docs/design.md)。示意结构放在 example/specs，不能把它当成已可执行配置。

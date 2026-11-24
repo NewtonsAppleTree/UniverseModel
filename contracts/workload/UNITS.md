@@ -12,7 +12,89 @@ M/N/K 是正整数元素数，N=1 可表达 MatVec。INT8 输入范围 [-128,127
 
 state/version 与内容哈希共同绑定梯度；调用方持有不可变旧状态，更新产生 version+1。构造时冻结嵌套数组并检查有限标量，消费时按 batch/widths 校验形状。输入、梯度与新状态分别存储，loss/预测属于更新前。关键量是尺寸/学习率、浮点容差及状态身份。公式、独立参考与版本反例见[训练指南](../../evaluation/docs/training_step.md)。
 
+## Attention 与逻辑 KV 值边界
+
+`attention.py`定义AttentionSpec/Inputs、KvCacheSpec/State；仅标准库公共数据，不包含参考算法、物理cache或运行时。Q[B,Hq,Sq,D]、K[B,Hkv,Skv,D]、V[B,Hkv,Skv,Dv]各轴正整数、Hq可被Hkv整除；每组连续query head共享KV。scale显式且正，binary64输入必须为有限Python float，列表在边界冻结。
+
+causal时j≤query_start+i且query_start+Sq≤Skv；非causal要求起点为零，所以没有全mask行。Spec推导矩形/可见配对与输入元素数；KV派生逻辑容量/驻留字节。独立校验shape后，身份绑定完整语义与实际内容；KV还含版本和容量。调用者拥有快照，追加算法由workloads提供。关键参数与手算关系见[首包指南](../../workloads/docs/foundation_usage.md)；[Attention](../../tests/workloads/test_attention.py)和[KV测试](../../tests/workloads/test_kv_cache.py)验证数值、冻结、形状及身份反例。
+
+## 真实分类数据边界
+
+`classification.py`提供ClassificationData：不可变二维有限浮点features、合法整数labels、唯一feature/class_names及原始source_sha256；身份还含实际内容。它只保存观测，不拥有分类器或物理资源。特征单位由names/来源说明，split/标准化/支持状态归workloads，结果质量归评价协议。尺寸、类别顺序和来源是关键约束；完整真实任务与[数据/指标测试](../../tests/workloads/test_retrieval.py)见[W5指南](../../workloads/docs/mapping_and_quality.md)。
+
 <!-- model-fields:start -->
+
+### [attention.py](attention.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AttentionSpec` | `batch_size` | `int` | sample | B [sample], positive; all samples share logical lengths in this version. |
+| `AttentionSpec` | `query_heads` | `int` | head | Hq [head], positive multiple of Hkv. |
+| `AttentionSpec` | `kv_heads` | `int` | head | Hkv [head]; shared logical K/V heads, not physically replicated to Hq. |
+| `AttentionSpec` | `query_length` | `int` | token position | Sq [token position], positive and independent of Skv. |
+| `AttentionSpec` | `kv_length` | `int` | token position | Skv [token position], positive visible-plus-masked key extent. |
+| `AttentionSpec` | `key_dim` | `int` | element/head | D [element/head]; Q and K contraction dimensions are equal. |
+| `AttentionSpec` | `value_dim` | `int` | element/head | Dv [element/head]; may differ from D. |
+| `AttentionSpec` | `scale` | `float` | 1 | Positive logit multiplier [1]; conventionally 1/sqrt(D), always explicit. |
+| `AttentionSpec` | `causal` | `bool` | 1（布尔） | If true, query i can use key j iff j <= query_start+i. |
+| `AttentionSpec` | `query_start` | `int` | token position | Absolute query start within the K sequence [token position]; noncausal requires 0. |
+| `AttentionSpec` | `dtype` | `Literal['float64']` | —（结构/对象） | Input/output storage semantics; no low-precision or quantized claim. |
+| `AttentionSpec` | `schema_version` | `Literal['attention/v1']` | —（结构/对象） | No projection, bias, dropout, position encoding or backward. |
+| `AttentionSpec` | `score_pairs` | `int` | pair | 只读派生属性；Complete rectangular score extent R=B*Hq*Sq*Skv [pair], independent of mask exploitation. |
+| `AttentionSpec` | `visible_pairs` | `int` | —（结构/对象） | 只读派生属性；Causal valid pairs sum_i(query_start+i+1); no claim that hardware skips masked pairs. |
+| `AttentionSpec` | `input_elements` | `int` | —（结构/对象） | 只读派生属性；Unique logical Q/K/V elements; GQA sharing counts K/V by Hkv. |
+| `AttentionSpec` | `identity_hash` | `str` | 1（标识/枚举） | 只读派生属性；Bind data, profiles and references to complete semantics, including scale and causal alignment. |
+| `AttentionInputs` | `q` | `tuple[float, ...]` | B,Hq,Sq,D | Query values [B,Hq,Sq,D], not raw model activations before projection. |
+| `AttentionInputs` | `k` | `tuple[float, ...]` | B,Hkv,Skv,D | Key values [B,Hkv,Skv,D]. |
+| `AttentionInputs` | `v` | `tuple[float, ...]` | B,Hkv,Skv,Dv | Value values [B,Hkv,Skv,Dv]. |
+| `KvCacheSpec` | `batch_size` | `int` | sample | B [sample], uniform token count across samples. |
+| `KvCacheSpec` | `kv_heads` | `int` | head | Hkv [head], not query heads. |
+| `KvCacheSpec` | `key_dim` | `int` | element/head | D [element/head] for K. |
+| `KvCacheSpec` | `value_dim` | `int` | element/head | Dv [element/head] for V. |
+| `KvCacheSpec` | `max_tokens` | `int` | token | Logical token limit per sample [token], positive. |
+| `KvCacheSpec` | `schema_version` | `Literal['logical-kv/v1']` | —（结构/对象） | Binary64 contiguous logical snapshots only. |
+| `KvCacheSpec` | `capacity_bytes` | `int` | B | 只读派生属性；Maximum logical K/V payload B*Hkv*Tmax*(D+Dv)*8 [B], excluding metadata. |
+| `KvCacheState` | `spec` | `KvCacheSpec` | —（结构/对象） | Logical batch/head/dimension/capacity contract. |
+| `KvCacheState` | `version` | `int` | update | Append generation [update], independent of token count. |
+| `KvCacheState` | `tokens` | `int` | token | Resident contiguous positions per sample [token], 0..max_tokens. |
+| `KvCacheState` | `k` | `tuple[float, ...]` | B,Hkv,tokens,D | Current keys [B,Hkv,tokens,D]. |
+| `KvCacheState` | `v` | `tuple[float, ...]` | B,Hkv,tokens,Dv | Current values [B,Hkv,tokens,Dv]. |
+| `KvCacheState` | `resident_bytes` | `int` | —（结构/对象） | 只读派生属性；Resident logical K/V payload; immutable host copies are not target transfer events. |
+| `KvCacheState` | `identity_hash` | `str` | 1（标识/枚举） | 只读派生属性；Identity includes dimensions, capacity, contents and logical version; same-version foreign state is distinct. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `nonnegative_int(name: str, value: int)` | Logical versions/positions are nonnegative Python integers, excluding bool. |
+| `attention_buffer(name: str, values: tuple[float, ...])` | Freeze an explicit finite binary64 buffer; empty arrays are useful for an empty KV snapshot. |
+| `AttentionSpec` | Q[B,Hq,Sq,D], K[B,Hkv,Skv,D], V[B,Hkv,Skv,Dv]; contiguous Hq/Hkv query groups share K/V. |
+| `AttentionSpec.score_pairs` | Complete rectangular score extent R=B*Hq*Sq*Skv [pair], independent of mask exploitation. |
+| `AttentionSpec.visible_pairs` | Causal valid pairs sum_i(query_start+i+1); no claim that hardware skips masked pairs. |
+| `AttentionSpec.input_elements` | Unique logical Q/K/V elements; GQA sharing counts K/V by Hkv. |
+| `AttentionSpec.identity_hash` | Bind data, profiles and references to complete semantics, including scale and causal alignment. |
+| `AttentionInputs` | Independent immutable logical input buffers; flat order follows the spec's B/head/token/feature axes. |
+| `validate_attention(spec: AttentionSpec, inputs: AttentionInputs)` | Shape validation is independent of the reference algorithm, mapping and target resources. |
+| `attention_identity(spec: AttentionSpec, inputs: AttentionInputs)` | Same shape with different values, head grouping or causal alignment is a different workload input. |
+| `KvCacheSpec` | Logical KV capacity/shape; no pages, physical placement, eviction or request scheduler. |
+| `KvCacheSpec.capacity_bytes` | Maximum logical K/V payload B*Hkv*Tmax*(D+Dv)*8 [B], excluding metadata. |
+| `KvCacheState` | Immutable state owned by the caller; explicit identity/version permits branches but does not arbitrate concurrent commits. |
+| `KvCacheState.resident_bytes` | Resident logical K/V payload; immutable host copies are not target transfer events. |
+| `KvCacheState.identity_hash` | Identity includes dimensions, capacity, contents and logical version; same-version foreign state is distinct. |
+
+### [classification.py](classification.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `ClassificationData` | `features` | `tuple[tuple[float, ...], ...]` | sample,feature | [sample,feature] finite measurements; source metadata supplies units. |
+| `ClassificationData` | `labels` | `tuple[int, ...]` | class index | Zero-based class labels [class index]. |
+| `ClassificationData` | `feature_names` | `tuple[str, ...]` | 1（标识/枚举） | Ordered unique feature/measurement names, including units where applicable. |
+| `ClassificationData` | `class_names` | `tuple[str, ...]` | 1（标识/枚举） | Ordered unique class names; tie breaking uses this order. |
+| `ClassificationData` | `source_sha256` | `str` | 1（标识/枚举） | Exact original file byte identity; transformations create distinct data identity. |
+| `ClassificationData` | `identity_hash` | `str` | 1（标识/枚举） | 只读派生属性；Actual observations and declared source/order determine experiment input identity. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `ClassificationData` | Original rows and labels retain their source order; partitioning and preprocessing must be explicit downstream. |
+| `ClassificationData.identity_hash` | Actual observations and declared source/order determine experiment input identity. |
 
 ### [linear.py](linear.py)
 

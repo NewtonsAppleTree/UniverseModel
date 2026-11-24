@@ -1,0 +1,240 @@
+{
+  "cases": [
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "prefill_mha",
+      "purpose": "Full causal prefill with separate KV for all query heads.",
+      "seed": 11,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 4,
+        "kv_length": 4,
+        "query_heads": 4,
+        "query_length": 4,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "prefill_gqa",
+      "purpose": "Two query heads per KV head: unique logical KV storage uses Hkv.",
+      "seed": 11,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 2,
+        "kv_length": 4,
+        "query_heads": 4,
+        "query_length": 4,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "prefill_mqa",
+      "purpose": "All query heads share one logical KV head; no physical reuse claim.",
+      "seed": 11,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 1,
+        "kv_length": 4,
+        "query_heads": 4,
+        "query_length": 4,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "decode_short",
+      "purpose": "Single query at absolute position 3 sees four keys.",
+      "seed": 12,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 2,
+        "kv_length": 4,
+        "query_heads": 4,
+        "query_length": 1,
+        "query_start": 3,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "decode_long",
+      "purpose": "Single query with longer KV; workload sensitivity, not hardware speedup.",
+      "seed": 12,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 2,
+        "kv_length": 16,
+        "query_heads": 4,
+        "query_length": 1,
+        "query_start": 15,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "succeeded",
+      "name": "cross_attention",
+      "purpose": "Noncausal Q and KV lengths differ; D and Dv remain independent.",
+      "seed": 13,
+      "spec": {
+        "batch_size": 1,
+        "causal": false,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 1,
+        "kv_length": 2,
+        "query_heads": 2,
+        "query_length": 3,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": {
+        "dataset_id": "uniform-causal-hand-fixture/v1",
+        "kind": "synthetic",
+        "limitations": "Six V values and zero logits exercise causal means only; no real model or task-quality evidence.",
+        "relative_path": "attention_inputs.json",
+        "sha256": "d35a50c2ed9401c208cf1fd2a01e32da2907cc0d338dbdbc2d5db5df3a85f583",
+        "source": "Repository hand construction: zero Q/K, V=(1,2,3),(5,6,7); each head observes (1,2,3),(3,4,5).",
+        "split": "test",
+        "usage_terms": "Repository-generated arithmetic fixture; no external dataset included."
+      },
+      "expected_status": "succeeded",
+      "name": "dataset_uniform",
+      "purpose": "Hand-computable local file with exact raw-byte and spec identities.",
+      "seed": null,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 1,
+        "kv_length": 2,
+        "query_heads": 2,
+        "query_length": 2,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "failed",
+      "name": "host_limit_failed",
+      "purpose": "Reject input materialization before allocating beyond the host limit.",
+      "seed": 0,
+      "spec": {
+        "batch_size": 4,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 64,
+        "kv_heads": 2,
+        "kv_length": 64,
+        "query_heads": 4,
+        "query_length": 64,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 64
+      }
+    },
+    {
+      "dataset": {
+        "dataset_id": "uniform-causal-hand-fixture/v1",
+        "kind": "synthetic",
+        "limitations": "Six V values and zero logits exercise causal means only; no real model or task-quality evidence.",
+        "relative_path": "attention_inputs.json",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "source": "Repository hand construction: zero Q/K, V=(1,2,3),(5,6,7); each head observes (1,2,3),(3,4,5).",
+        "split": "test",
+        "usage_terms": "Repository-generated arithmetic fixture; no external dataset included."
+      },
+      "expected_status": "failed",
+      "name": "dataset_hash_failed",
+      "purpose": "Reject mismatched input bytes; retain source metadata and preparation error.",
+      "seed": null,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 1,
+        "kv_length": 2,
+        "query_heads": 2,
+        "query_length": 2,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    },
+    {
+      "dataset": null,
+      "expected_status": "failed",
+      "name": "reference_limit_failed",
+      "purpose": "Keep actual prepared input when reference score storage exceeds host limit.",
+      "seed": 0,
+      "spec": {
+        "batch_size": 1,
+        "causal": true,
+        "dtype": "float64",
+        "key_dim": 2,
+        "kv_heads": 2,
+        "kv_length": 16,
+        "query_heads": 4,
+        "query_length": 16,
+        "query_start": 0,
+        "scale": 0.5,
+        "schema_version": "attention/v1",
+        "value_dim": 3
+      }
+    }
+  ],
+  "max_elements": 4096,
+  "max_file_bytes": 4194304,
+  "max_macs": 1000000,
+  "max_score_pairs": 512,
+  "precision_digits": 80,
+  "schema_version": "attention-suite/v1",
+  "source_note": "Finite synthetic verification scenarios selected by repository authors. No model, arrival-trace or training-distribution representativeness; expected failures are host/source boundaries.",
+  "suite_id": "attention-foundation/v1"
+}

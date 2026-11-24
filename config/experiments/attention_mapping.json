@@ -1,0 +1,92 @@
+{
+  "atol": 1e-12,
+  "candidates": [
+    {
+      "expected_status": "succeeded",
+      "kv_layout": "shared",
+      "name": "fused_q1",
+      "query_tile": 1,
+      "score_policy": "fused"
+    },
+    {
+      "expected_status": "succeeded",
+      "kv_layout": "shared",
+      "name": "spill_q1",
+      "query_tile": 1,
+      "score_policy": "spill"
+    },
+    {
+      "expected_status": "succeeded",
+      "kv_layout": "shared",
+      "name": "fused_q2",
+      "query_tile": 2,
+      "score_policy": "fused"
+    },
+    {
+      "expected_status": "succeeded",
+      "kv_layout": "expanded",
+      "name": "expanded_q1",
+      "query_tile": 1,
+      "score_policy": "fused"
+    },
+    {
+      "expected_status": "failed",
+      "kv_layout": "shared",
+      "name": "capacity_failed",
+      "query_tile": 3,
+      "score_policy": "fused"
+    }
+  ],
+  "hardware": {
+    "backing_capacity_bytes": 2000,
+    "dma": {
+      "burst_overhead_cycles": 0,
+      "bytes_per_cycle": 8,
+      "max_burst_bytes": 64,
+      "startup_cycles": 1
+    },
+    "dma_clock": {
+      "domain_id": "dma",
+      "frequency_hz": 500000000.0
+    },
+    "mac": {
+      "arithmetic": {
+        "accumulator_format": "float64",
+        "operand_format": "float64",
+        "operation": "float_mul_add",
+        "output_format": "float64"
+      },
+      "clock": {
+        "domain_id": "mac",
+        "frequency_hz": 1000000000.0
+      },
+      "params": {
+        "initiation_interval_cycles": 1,
+        "lane_count": 4,
+        "latency_cycles": 1
+      },
+      "profile_source": "Synthetic binary64 service assumption; no device calibration"
+    },
+    "scratch_capacity_bytes": 340
+  },
+  "max_elements": 1000000,
+  "max_macs": 1000000,
+  "max_score_pairs": 100000,
+  "rtol": 1e-12,
+  "schema_version": "attention-mapping/v1",
+  "seed": 17,
+  "workload": {
+    "batch_size": 1,
+    "causal": true,
+    "dtype": "float64",
+    "key_dim": 2,
+    "kv_heads": 2,
+    "kv_length": 4,
+    "query_heads": 4,
+    "query_length": 3,
+    "query_start": 1,
+    "scale": 0.5,
+    "schema_version": "attention/v1",
+    "value_dim": 3
+  }
+}

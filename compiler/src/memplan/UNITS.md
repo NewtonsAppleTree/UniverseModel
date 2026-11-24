@@ -8,7 +8,45 @@
 
 顺序：已校验公共计划 → 内存分配/容量判断 → 行请求/计数 → 功能消费者或外部 DMA 分析。max_transfers 仅限制宿主请求列表。44 B 边界及 314/954 B 手算验证见[测试](../../tests/test_linear_mapping.py)，模型条件见[实验指南](../../../evaluation/docs/linear_mapping.md)。
 
+## Attention命名区域与搬运
+
+`attention.py`提供AttentionMemory/Traffic/Transfer。scratch拥有Q/K/V/score/O/max-sum六个不重叠arena；backing拥有原始输入/输出，按策略增加expanded KV及score_probability临时区。全部保守预留，分别检查两份容量，不能把逻辑KV共享当硬件cache。Transfer给出tensor/方向/域内offset/payload与block身份；prelude=-1。逐块加载整KV，实际MAC仅覆盖可见key；spill每个score增加四次payload，expanded逐query head复制K/V，copy不更改dtype。query_tile、Skv、Hq/Hkv及两份容量最敏感；完整公式/顺序/独立区域枚举见[W4指南](../../../workloads/docs/mapping_and_quality.md)。
+
 <!-- model-fields:start -->
+
+### [attention.py](attention.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AttentionTransfer` | `block_index` | `int` | index | Consumer/producer block [index]; -1 identifies the KV expansion prelude. |
+| `AttentionTransfer` | `tensor` | `str` | 1（标识/枚举） | Q/K/V/O, K_expanded/V_expanded or shared in-place score_probability temporary. |
+| `AttentionTransfer` | `direction` | `str` | 1（标识/枚举） | read or write relative to scratch. |
+| `AttentionTransfer` | `offset_bytes` | `int` | B | Offset within the named tensor [B]. |
+| `AttentionTransfer` | `payload_bytes` | `int` | B | Actual contiguous binary64 payload [B]; DMA rounding is separate. |
+| `AttentionMemory` | `scratch_arenas` | `tuple[tuple[str, int, int], ...]` | identity,B,B | (name, offset, size) [identity,B,B], disjoint reserved arenas. |
+| `AttentionMemory` | `scratch_bytes` | `int` | B | Sum of maximum Q/K/V/score/O/reduction arenas [B]. |
+| `AttentionMemory` | `backing_tensors` | `tuple[tuple[str, int], ...]` | B | Named disjoint backing sizes [B], original inputs retained. |
+| `AttentionMemory` | `backing_bytes` | `int` | B | Sum of reserved backing tensors [B], excluding the distinct scratch resource. |
+| `AttentionTraffic` | `qk_macs` | `int` | MAC | Visible pairs times D [MAC]; causal masking is explicitly exploited by this interpreter. |
+| `AttentionTraffic` | `av_macs` | `int` | MAC | Visible pairs times Dv [MAC]. |
+| `AttentionTraffic` | `scale_multiplications` | `int` | multiply | One scale multiplication per visible score [multiply]. |
+| `AttentionTraffic` | `max_comparisons` | `int` | compare | Sum(visible keys-1) [compare]. |
+| `AttentionTraffic` | `shift_subtractions` | `int` | subtract | One subtraction per visible score [subtract]. |
+| `AttentionTraffic` | `exp_evaluations` | `int` | exp | One exponential per visible score [exp]. |
+| `AttentionTraffic` | `sum_additions` | `int` | add | Denominator reduction, sum(visible keys-1) [add]. |
+| `AttentionTraffic` | `divisions` | `int` | divide | Probability normalization [divide]. |
+| `AttentionTraffic` | `layout_copy_elements` | `int` | element | Elements copied to explicit expanded KV [element], not free aliasing or dtype conversion. |
+| `AttentionTraffic` | `transfers` | `tuple[AttentionTransfer, ...]` | —（结构/对象） | Ordered payload movements, including layout and score spills. |
+| `AttentionTraffic` | `external_bytes` | `int` | —（结构/对象） | 只读派生属性；External payload counts both directions once per declared transfer; no caching is inferred. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `AttentionTransfer` | Each transfer is contiguous within one named backing tensor; addresses across tensors are separate domains. |
+| `AttentionMemory` | All arenas are reserved for the call; this conservative allocator does not assert optimal peak liveness. |
+| `AttentionTraffic` | Keep actual visible arithmetic and copy/traffic work separate from logical unique KV capacity. |
+| `AttentionTraffic.external_bytes` | External payload counts both directions once per declared transfer; no caching is inferred. |
+| `plan_attention_memory(spec: AttentionSpec, plan: AttentionPlan, *, scratch_capacity_bytes: int, backing_capacity_bytes: int)` | Reserve full-key operands and one in-place local score/probability matrix for the largest query block. |
+| `count_attention_traffic(spec: AttentionSpec, plan: AttentionPlan, *, max_transfers: int=1000000)` | Prelude copies KV once per query head; blocks reload full KV and optionally spill/reload the score/probability region. |
 
 ### [linear.py](linear.py)
 

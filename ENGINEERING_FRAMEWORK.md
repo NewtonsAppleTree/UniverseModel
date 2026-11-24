@@ -119,9 +119,9 @@ python -m unittest discover -s tests/integration -p "test_*.py" -v
 
 2026-11-23 [clustermodel基础及横向能力](clustermodel/docs/completion.md)已通过本框架：端点/容量、链路/交换图、路由与资源账本、静态停用、严格配置及记录保存/回读；独立静态查询不依赖完整Node/runtime/simulator。收尾优化保持schema与计量口径。当前已完成[chipmodel CH1–CH4](chipmodel/docs/foundation_usage.md)，LinearTileBackend把已有计划转换为显式访问，沿用专业模型与通用记录边界；CH5 CIM也已通过[完整局部实验](chipmodel/docs/cim_bench.md)接入，工作负载整数参考独立于硬件，质量/资源界/策略时间分开记录；CH6已通过[能力对照](chipmodel/docs/compute_capabilities.md)保留专业语义和单因素记录；CH7外存、CH8组合和[CH9物理证据](chipmodel/docs/physical_evidence.md)也已接入，剩余研究证据缺口见[任务计划](chipmodel/docs/development_plan.md)。外部后端与AI执行按后续证据门槛接入。以下保留已有线性路径的后续接入事项。
 
-1. 在现有 GEMM/MatVec 上扩展 Linear 前向/反向/更新，定义梯度、权重版本、临时数据和完整工作量，保持独立参考。
-2. 用短算子链检验跨算子的驻留与生命周期；继续支持独立参数和预制计划，不提前固定全图 IR。
-3. 接入带来源与覆盖范围的条件成本查询，沿用有限候选比较和产物重分析，保留失败样本与未知成本。
+1. Linear/ReLU/MSE/SGD短链已完成；[workloads首包](workloads/docs/foundation_usage.md)进一步提供Attention、逻辑KV、数据来源与完整实验记录，保持独立参考和硬件无关语义。
+2. [W4/W5](workloads/docs/mapping_and_quality.md)已接入Attention矩阵/非矩阵工作、驻留/KV区域以及真实RBF分类质量和NumPy独立对照；[完整验收](workloads/docs/completion.md)覆盖W0–W6。后续按任务需求接入context切分、真实LLM或更精细执行，不提前固定全图IR。
+3. CH9已接入带来源与覆盖范围的条件成本查询；随后按真实任务和映射动作补匹配数据，沿用有限候选比较和产物重分析，保留失败样本与未知成本。
 4. 用一个成熟外部工具建立交叉对照，按研究主张补充独立校准；重型依赖放可选 adapter/独立环境，公共契约保持标准库。
 5. 在具体争用问题出现后，冻结提交/完成/可见性协议，再实现或接入 runtime/simulator；按任务需要扩展单层训练/推理、节点与集群。
 

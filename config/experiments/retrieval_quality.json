@@ -1,0 +1,67 @@
+{
+  "backing_capacity_bytes": 8000000,
+  "max_file_bytes": 1000000,
+  "max_macs": 1000000,
+  "max_samples": 10000,
+  "max_score_pairs": 100000,
+  "maximum_accuracy_drop": 0.05,
+  "minimum_accuracy": 0.8,
+  "query_tile": 8,
+  "scale_candidates": [
+    0.25,
+    1.0,
+    4.0
+  ],
+  "schema_version": "retrieval-quality/v1",
+  "scratch_capacity_bytes": 8000000,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "source": {
+    "attribution": "R. A. Fisher (1936), Iris. UCI Machine Learning Repository. DOI: 10.24432/C56C76. Original donor Michael Marshall, July 1988.",
+    "class_names": [
+      "Iris-setosa",
+      "Iris-versicolor",
+      "Iris-virginica"
+    ],
+    "dataset_id": "uci-iris-original/sha256-v1",
+    "feature_names": [
+      "sepal_length_cm",
+      "sepal_width_cm",
+      "petal_length_cm",
+      "petal_width_cm"
+    ],
+    "has_header": false,
+    "limitations": "150 plants, 4 measurements in cm, 3 balanced species. Source documents discrepancies in rows 35 and 38 versus Fisher; retained unchanged. Small historical classification fixture, not language-model or service representativeness.",
+    "relative_path": "iris/iris.data",
+    "sha256": "6f608b71a7317216319b4d27b4d9bc84e6abd734eda7872b71a458569e2656c0",
+    "source_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data",
+    "usage_terms": "CC BY 4.0, as declared at https://archive.ics.uci.edu/dataset/53/iris (retrieved 2026-11-23); https://creativecommons.org/licenses/by/4.0/legalcode . Original source bytes redistributed unchanged."
+  },
+  "train_per_class": 30,
+  "validation_per_class": 10,
+  "variants": [
+    {
+      "expected_quality": true,
+      "key_decimals": null,
+      "name": "baseline"
+    },
+    {
+      "expected_quality": true,
+      "key_decimals": 1,
+      "name": "keys_round_1"
+    },
+    {
+      "expected_quality": true,
+      "key_decimals": 12,
+      "name": "keys_round_12"
+    },
+    {
+      "expected_quality": false,
+      "key_decimals": -2,
+      "name": "keys_coarse_control"
+    }
+  ]
+}

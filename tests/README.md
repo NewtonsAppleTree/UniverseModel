@@ -1,5 +1,9 @@
 # 验证归属
 
+W4–W6新增24项：compiler 3项Attention区域/搬运测试，workloads 7项真实数据/无泄漏/质量边界测试，integration 14项独立数值/映射/真实任务/NumPy/完整27例验收测试。来源、固定划分、配对条件及适用域见[完成报告](../workloads/docs/completion.md)。
+
+workloads首包新增27项：[Attention语义/独立数值参考](workloads/test_attention.py)10项、[KV前缀/分块与身份](workloads/test_kv_cache.py)4项、[本地数据与有限profiles](workloads/test_profiles.py)6项、[完整实验/失败/回放](integration/test_workload_experiment.py)7项。覆盖手算、60组独立float算法、GQA复制等价、极值与状态边界；证据口径见[指南](../workloads/docs/foundation_usage.md)。
+
 基础收尾新增[数值边界测试](chipmodel/test_numerical_boundaries.py)与[统一验收测试](integration/test_chipmodel_acceptance.py)：线路大计数、热收敛、CIM有理乘加/下溢、严格序列，以及完整预期失败/哈希/只读回放。全仓库七组回归与104案例验收互补，见[完成报告](../chipmodel/docs/completion.md)。
 
 CH9新增[成本接口测试](costmodel/test_costs.py)、[物理模型测试](chipmodel/test_physical.py)和[物理集成测试](integration/test_physical_experiment.py)，覆盖固定来源再现、条件/未知成本、唯一计量、观测窗口、50组高精度热参考、CH8读写/线路量和完整保存回读。成本组独立运行 `python -m unittest discover -s tests/costmodel -p "test_*.py" -v`；其余沿用chipmodel/integration组。来源再现不代替器件校准，见[CH9指南](../chipmodel/docs/physical_evidence.md)。

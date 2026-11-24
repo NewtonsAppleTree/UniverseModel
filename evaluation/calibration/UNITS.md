@@ -6,7 +6,19 @@
 
 这是功能交叉验证，位于 calibration 目录但没有校准目标性能、面积或能耗。关键参数是浮点舍入/容差、形状、激活零点、loss reduction、SGD 设置以及工具版本。无独立物理量；外部框架可能采用不同求和或更新运算顺序，因此按显式容差比较。所有预测、loss、dW/dX 和新权重参与比较；运行证据见[集成测试](../../tests/integration/test_training_experiment.py)。
 
+## NumPy Attention/RBF独立对照
+
+`numpy_attention.py`延迟加载NumPy，提供batched matmul/GQA/causal softmax与独立直接RBF距离两条表达。返回float64功能输出，实际版本/Python/platform由numpy_environment保存；局部errstate拒绝overflow/invalid/divide并允许exp下溢，不改变调用方环境。无硬件时延或校准主张；依赖可选，显式要求却不可用时由runner留失败。接口、原始数据及范围见[W5指南](../../workloads/docs/mapping_and_quality.md)与[集成测试](../../tests/integration/test_retrieval_experiment.py)。
+
 <!-- model-fields:start -->
+
+### [numpy_attention.py](numpy_attention.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `numpy_environment()` | Capture the actual library/environment without treating BLAS host time as target hardware performance. |
+| `numpy_attention(spec: AttentionSpec, inputs: AttentionInputs)` | Batched NumPy matmul/softmax uses explicit GQA expansion and absolute causal positions. |
+| `numpy_rbf(queries: tuple, keys: tuple, labels: tuple[int, ...], classes: int, scale: float)` | Independent RBF distance expression bypasses Q/K polynomial construction and the compiler's interpreter. |
 
 ### [pytorch_training.py](pytorch_training.py)
 

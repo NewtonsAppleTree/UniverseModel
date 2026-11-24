@@ -12,7 +12,17 @@
 
 `apply_sgd` 可独立调用，检查 dW/dX 形状、梯度源版本及源状态内容哈希，再做 W_next=W−lr·dW，返回 version+1；lr=0 也推进逻辑步，原对象不变。所有中间输出有限，溢出拒绝。数值与状态反例见[训练编译测试](../../tests/test_training.py)。
 
+## Attention计划功能执行
+
+`attention.py`使用float64独立乘加、math.exp稳定softmax和AV，按合法计划实际执行expanded副本及spill读写，屏蔽key不参与数学运算。先校验输入/计划/两份容量，再检查max_macs与max_elements宿主预算，最后返回O；非有限中间值失败。功能解释不提供目标时间，数值舍入独立于Fraction/Decimal参考；query_tile只改变分块，不改同一行归约次序。手算、18组随机形状×4策略、超限与格式差异见[集成测试](../../../tests/integration/test_attention_mapping_experiment.py)和[指南](../../../workloads/docs/mapping_and_quality.md)。
+
 <!-- model-fields:start -->
+
+### [attention.py](attention.py)
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `execute_attention_plan(spec: AttentionSpec, inputs: AttentionInputs, plan: AttentionPlan, *, scratch_capacity_bytes: int, backing_capacity_bytes: int, max_macs: int=1000000, max_elements: int=1000000)` | Execute visible QK, stable scalar softmax and AV; policies control actual copies and intermediate persistence. |
 
 ### [linear.py](linear.py)
 

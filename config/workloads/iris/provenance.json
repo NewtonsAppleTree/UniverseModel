@@ -1,0 +1,17 @@
+{
+  "retrieved_utc": "2026-11-23",
+  "source_urls": {
+    "iris.data": "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data",
+    "iris.names": "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.names",
+    "iris-metadata.json": "https://archive.ics.uci.edu/api/dataset?id=53"
+  },
+  "sha256": {
+    "iris-metadata.json": "0387b83840adbdefd10030c96e9e2ba80dc0419b6494efa7745d69bc927b9f15",
+    "iris.data": "6f608b71a7317216319b4d27b4d9bc84e6abd734eda7872b71a458569e2656c0",
+    "iris.names": "71a09fb3ee237614cdb9c09d06e8ae1f610ce2a274c0d77272fea8a233e5eea3"
+  },
+  "license_page_url": "https://archive.ics.uci.edu/dataset/53/iris",
+  "license_page_sha256": "2e70bbba7a42a1a695a7c84b6428dd433fc2bdaf3edb2149f64116d4ecc40679",
+  "license": "CC BY 4.0",
+  "changes": "none; original data/name/metadata bytes preserved"
+}
