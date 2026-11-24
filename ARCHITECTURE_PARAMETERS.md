@@ -16,6 +16,7 @@
 | SRAM/cache/DDR/HBM/Flash 怎样选组织 | [存储](#5-存储层次与介质) | [memory](chipmodel/memory/UNITS.md)、[控制器](chipmodel/memory/controllers/UNITS.md) |
 | 数据怎样跨单元、die、节点移动 | [互连与搬运](#6-互连数据搬运与同步) | [interconnect](chipmodel/interconnect/UNITS.md)、[systemmodel](systemmodel/docs/design.md)、[clustermodel](clustermodel/docs/design.md) |
 | 频率、功耗、面积与热是否支持方案 | [物理条件与成本](#7-时钟电源封装热与成本) | [packaging](chipmodel/packaging/UNITS.md)、[costmodel](costmodel/docs/design.md) |
+| 未来RTL接口怎样与现有模型对应 | 位宽/逐步溢出、L/II、时钟/复位、有限容量与接纳/呈现/取走口径 | [RTL参数导航](rtl/UNITS.md)、[接口草案](rtl/docs/interfaces.md)；当前仅文档 |
 
 选择顺序：目标指标 → 任务和数据 → 资源与连接 → 相关参数 → 公式/局部模型 → 敏感性与来源核查。某个参数只有改变可观察结果或可行性约束时，才需要进入本次模型。
 
@@ -506,6 +507,20 @@ CH9已实现[精确成本查询](costmodel/UNITS.md)、[物理资源账本](chip
 - **查可执行范围**：[STATUS](docs/STATUS.md)；技术候选和参考公式不作为实现完成的证明。
 
 新增参数时先说明它改变的结果、单位、资源所有者、依赖和证据；规则见 [AGENTS.md](AGENTS.md)。若发现定义冲突，接口语义以公共契约与代码为准，先修正对应维护源，再同步本清单的参考关系。
+
+## RTL接口与模型映射（文档草案）
+
+当前只有[RTL设计文档](rtl/README.md)，下列是未来接口/验证所需参数关系，不是已新增的Python配置字段或已实现电路；详细定义维护于[接口](rtl/docs/interfaces.md)和[模型映射](rtl/docs/model_mapping.md)。
+
+| 参数角色与量 | 单位 | 关系与适用条件 |
+| --- | --- | --- |
+| 设：操作数/累加位宽、归约长度K | bit、MAC/点积 | 零初值K个有符号整数乘积求和，A_BITS+B_BITS+ceil(log2 K)是保守充分累加位宽；K≥1；偏置/初始值/逐步溢出另定义 |
+| 设：时钟/复位profile、频率f | 标识、Hz | 基础草案单域/上升沿/同步高有效reset；目标f不证明物理可达；不同reset/CDC语义需适配 |
+| 观：接纳i、首次呈现j、取走k | cycle/domain | 基础寄存接口j>i、k≥j；呈现延迟j−i、响应延迟k−i，固定f时除以f换为second；缺失事件保持未知 |
+| 设/观：在途上限、接纳/终态/取消数 | request | 接纳数=已取走ok+已取走error+已取消+在途；窗口初始在途另计，复位不回滚已提交的存储副作用 |
+| 设/观：FIFO容量/占用、数据拍宽度W | entry、bit、B | 每拍一个entry时q_next=q+入队−出队；字节存储拍W为8的倍数、beat_bytes=W/8；entry、byte与请求不可混算 |
+
+来源为显式数字语义与数学范围推导，没有RTL仿真或物理标定。L/II继续遵守第3节的工作粒度与供数前提；只有接口起止时刻和item一致，才可与实际周期对照。
 
 ## systemmodel S0/S1静态节点边界
 

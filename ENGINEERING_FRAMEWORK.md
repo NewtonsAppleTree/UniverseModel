@@ -126,3 +126,9 @@ python -m unittest discover -s tests/integration -p "test_*.py" -v
 5. 在具体争用问题出现后，冻结提交/完成/可见性协议，再实现或接入 runtime/simulator；按任务需要扩展单层训练/推理、节点与集群。
 
 每一步都交付可独立调用的函数与证据。候选模块保留设计入口；只有具备实际行为、公式与验收条件时才增加代码类。
+
+## 8 RTL文档阶段与未来外部后端
+
+[rtl/](rtl/README.md)当前是独立文档入口，只维护边界、接口、模型映射、验证要求和Unit模板；不注册新Python模块，不修改现有依赖DAG、公共schema或打包范围。实际RTL代码、工具调用和CI流程均未启动。
+
+未来由具名evaluation适配器组织参考与外部执行，chipmodel保持独立功能/分析调用；一个资源的动态状态只由选定后端推进，测得服务与同范围摘要互斥计量。记录复用已有ExperimentSpec/Metric/RunRecord，按实际证据选择mode/kind，不新增名为rtl的隐式模式。HDL、驱动、约束和库的来源须额外完整采集；当前Python源码快照不证明未来HDL来源完整。细节见[模型映射](rtl/docs/model_mapping.md)和[验证规范](rtl/docs/verification.md)。

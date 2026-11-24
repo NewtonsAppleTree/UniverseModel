@@ -55,6 +55,7 @@ docs/
 | 芯片和 AI 训练/推理怎样系统化建模 | [chipmodel 系统级设计](../chipmodel/docs/system_model_design.md)、[各子模块参数入口](../chipmodel/UNITS.md) |
 | 怎样只运行 ADC 并修改参数 | [ADC 模型与用法](../chipmodel/docs/adc_model.md)：字段注释、公式、输入输出、理想时序与数值边界 |
 | 怎样设计指令 是否需要 RTL | [指令与仿真精度](architecture/instruction_and_fidelity.md) |
+| 未来Verilog/SystemVerilog怎样接入 | [RTL文档入口](../rtl/README.md)、[握手/复位/生命周期规范](../rtl/docs/interfaces.md)、[单元规格模板](../rtl/docs/unit_spec_template.md)；当前仅文档、无RTL实现 |
 | 模块边界和代码依赖 | [架构设计](architecture/design.md)、[关系图](architecture/diagrams.md)、[模块清单](architecture/modules.json) |
 | 模块交换什么信息 | [公共契约](interfaces/contracts.md)、[数据生命周期](interfaces/resource_lifecycle.md) |
 | 张量维度、ROI、切块与规约如何设计 | [张量区域契约](interfaces/tensor_regions.md)、[编译器切块设计](../compiler/docs/tiling_and_reduction.md)、[layout_roi 审阅统计](reference/layout_roi_review.md) |

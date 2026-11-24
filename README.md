@@ -12,6 +12,8 @@ UniverseModel 以 AI 部署、训练与推理加速为核心研究主线，支�
 
 架构建模范围从独立组件延伸到芯片与集群，支持规划 CPU、GPU、NPU、CIM、3D CIM、双裸片、HBM/HBF、异构节点和多机多卡。`chipmodel` 放软件模型，当前不包含 RTL。
 
+未来Verilog/SystemVerilog接入从[rtl文档入口](rtl/README.md)开始：已建立模块边界、接口生命周期、Python模型映射、验证要求和Unit规格模板。**当前仅文档，RTL实现Unit为0**；不含HDL或构建/仿真流程，现有13个Python模块依赖与打包范围保持不变。
+
 实现进度、可运行入口与验证证据统一见[实现状态](docs/STATUS.md)。设计文档描述目标行为，不能作为能力已经实现的证明。
 
 已完成 [clustermodel](clustermodel/README.md) 的基础开发、横向覆盖和收尾优化，范围与验证见[交接报告](clustermodel/docs/completion.md)。**当前chipmodel已完成CH1–CH4首包**：资源契约与精度修复、SRAM访问/容量、搬运路径账本、数字Tile同预算对照与敏感性，见[实现用法与证据](chipmodel/docs/foundation_usage.md)。**CH5完整CIM局部台架也已完成**：电导编码、DAC/阵列/TIA/ADC/累加、共享读出与有限保持、资源/精度对照，见[CIM指南](chipmodel/docs/cim_bench.md)。[CH6计算能力与瓶颈解释](chipmodel/docs/compute_capabilities.md)已落地CPU阶段、GPU驻留/启动、NPU格式/尾批与供数消融；[CH7外存与缓存接入](chipmodel/docs/memory_access.md)已完成DRAM地址/profile与搬运、缓存LRU轨迹及NAND页缓冲/输出对照；[CH8 Tile/Die/Package组合](chipmodel/docs/assembly.md)已完成共享清单、多job计量、跨Die路径和同指标摘要；[CH9物理条件与成本证据](chipmodel/docs/physical_evidence.md)已完成精确来源查询、资源/面积/能量账本和外部功率热轨迹；器件校准与联合物理可行性按[开发计划](chipmodel/docs/development_plan.md)继续补证据。

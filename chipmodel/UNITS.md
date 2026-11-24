@@ -2,6 +2,8 @@
 
 CH1–CH10基础覆盖与统一验收见[完成报告](docs/completion.md)。
 
+未来数字实现的Unit映射与周期/数值边界见[RTL规范](../rtl/UNITS.md)。当前rtl目录仅文档，MAC/FIFO/SRAM等均为候选；不改变本目录的实际Unit清单、接口或精度状态。
+
 从[系统级设计](docs/system_model_design.md)和[第一性原理](../docs/architecture/first_principles.md)进入。模型先回答功能、数据位置、资源约束、因果与物理条件，再定义参数。全仓库规则见 [AGENTS.md](../AGENTS.md)，本模块规则见 [AGENTS.md](AGENTS.md)。
 
 设计时先用[顶层参数清单](../ARCHITECTURE_PARAMETERS.md)筛选相关物理量和关系；本页及子目录的生成表维护实际代码字段与接口，两者不重复维护配置定义。
