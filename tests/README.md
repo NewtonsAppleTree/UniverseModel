@@ -65,3 +65,5 @@ python -m unittest discover -s compiler/tests -p "test_*.py" -v
 ```text
 .build/torch-crosscheck/Scripts/python.exe -m unittest discover -s tests/integration -p "test_training_experiment.py" -v
 ```
+
+系统模型新增`python -m unittest discover -s tests/systemmodel -p "test_*.py" -v`，包含板卡/节点、共享所有权、域/端口/权限与30组独立穷举路径；公共契约在tests/contracts，保存回读在test_system_experiment.py。每个discover组使用独立进程。

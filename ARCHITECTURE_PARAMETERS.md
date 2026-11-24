@@ -506,3 +506,7 @@ CH9已实现[精确成本查询](costmodel/UNITS.md)、[物理资源账本](chip
 - **查可执行范围**：[STATUS](docs/STATUS.md)；技术候选和参考公式不作为实现完成的证明。
 
 新增参数时先说明它改变的结果、单位、资源所有者、依赖和证据；规则见 [AGENTS.md](AGENTS.md)。若发现定义冲突，接口语义以公共契约与代码为准，先修正对应维护源，再同步本清单的参考关系。
+
+## systemmodel S0/S1静态节点边界
+
+地址域address_bits[bit]规定0≤address、length_bytes>0、address+length_bytes≤2**address_bits，不等价于物理容量/驻留。节点port明确egress/ingress、协议/profile、copy/read/write权限；wire/crossing的权限是两端能力子集，terminal不能转发。BandwidthConstraint引用唯一resource_id与实际parent owner；摘要与内部模型互斥，路径constraint_visits保留实际访问次数，不能据此把共享容量按卡数相加。max_hops[link]是宿主路径查询预算，最少跳数不等于最快路径。参数来源/实现与当前未知成本见[系统UNITS](systemmodel/UNITS.md)。

@@ -1,0 +1,1482 @@
+{
+  "cases": [
+    {
+      "expected_status": "failed",
+      "name": "address_overlap",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 4160,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "alias",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 8192,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.alias"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 8192,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.alias",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "expired",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 3,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "exposed_padding",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 192,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "lifetime_reuse",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "weights.later",
+            "backing_id": "dram0",
+            "begin_phase": 3,
+            "end_phase": 4,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.later",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.later.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 3,
+        "region_id": "weights.later.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "local",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "physical_overlap",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 128
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "placement_only",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": null
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "remote",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram1",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc1.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "replicated_copy",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          },
+          {
+            "allocation_id": "weights.second",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 512
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "rounded_capacity",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 896
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "span_overflow",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 161,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "stale_memory",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "0000000000000000000000000000000000000000000000000000000000000000",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "unreachable",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu1.out"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "write_denied",
+      "plan": {
+        "allocations": [
+          {
+            "allocation_id": "activation.copy",
+            "backing_id": "dram0",
+            "begin_phase": 1,
+            "end_phase": 3,
+            "object_id": "activation",
+            "offset_bytes": 256
+          },
+          {
+            "allocation_id": "weights.copy",
+            "backing_id": "dram0",
+            "begin_phase": 0,
+            "end_phase": 3,
+            "object_id": "weights",
+            "offset_bytes": 0
+          }
+        ],
+        "memory_identity": "b9b1fbfa27b14fcb5139534650caa110cf693f173c4d71f5aa6901d86af8884c",
+        "objects": [
+          {
+            "object_id": "activation",
+            "size_bytes": 96,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "object_id": "weights",
+            "size_bytes": 160,
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "regions": [
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "activation.copy",
+            "base_address": 12288,
+            "length_bytes": 96,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read",
+              "write"
+            ],
+            "region_id": "activation.view"
+          },
+          {
+            "access_port_id": "mc0.in",
+            "allocation_id": "weights.copy",
+            "base_address": 4096,
+            "length_bytes": 160,
+            "object_offset_bytes": 0,
+            "permissions": [
+              "read"
+            ],
+            "region_id": "weights.view"
+          }
+        ],
+        "schema_version": "system-memory-plan/v1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      "request": {
+        "address": 4096,
+        "length_bytes": 160,
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "write",
+        "phase": 1,
+        "region_id": "weights.view",
+        "source_port_id": "cpu0.out"
+      }
+    }
+  ],
+  "memory": {
+    "backings": [
+      {
+        "access_port_ids": [
+          "mc0.in"
+        ],
+        "allocation_granule_bytes": 64,
+        "capacity_bytes": 1024,
+        "resource_id": "dram0",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      {
+        "access_port_ids": [
+          "mc1.in"
+        ],
+        "allocation_granule_bytes": 64,
+        "capacity_bytes": 1024,
+        "resource_id": "dram1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      }
+    ],
+    "coverage": [
+      "Synthetic 1024 B pools and 64 B reservation granule, not a calibrated memory device",
+      "Exact membership; no NUMA distance, coherence, contents, refresh or translation model"
+    ],
+    "node": {
+      "boards": [],
+      "schema_version": "system-node/v1",
+      "standalone_device_ids": [
+        "cpu0",
+        "cpu1"
+      ],
+      "topology": {
+        "constraints": [],
+        "coverage": [
+          "Static request permissions only; no data-response path or timing"
+        ],
+        "domains": [
+          {
+            "address_bits": 32,
+            "domain_id": "cpu0.address",
+            "owner_id": "cpu0",
+            "schema_version": "system-address-domain/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "address_bits": 32,
+            "domain_id": "cpu1.address",
+            "owner_id": "cpu1",
+            "schema_version": "system-address-domain/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "address_bits": 32,
+            "domain_id": "mc0.address",
+            "owner_id": "mc0",
+            "schema_version": "system-address-domain/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "address_bits": 32,
+            "domain_id": "mc1.address",
+            "owner_id": "mc1",
+            "schema_version": "system-address-domain/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "forwardings": [
+          {
+            "constraint_ids": [],
+            "egress_port_id": "fabric.mc0",
+            "forwarding_id": "cpu0_mc0",
+            "ingress_port_id": "fabric.cpu0",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "egress_port_id": "fabric.mc1",
+            "forwarding_id": "cpu0_mc1",
+            "ingress_port_id": "fabric.cpu0",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "egress_port_id": "fabric.mc1",
+            "forwarding_id": "cpu1_mc1",
+            "ingress_port_id": "fabric.cpu1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "links": [
+          {
+            "constraint_ids": [],
+            "link_id": "cpu0_fabric",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_port_id": "cpu0.out",
+            "source_ref": "manual:synthetic-memory-fixture/v1",
+            "target_port_id": "fabric.cpu0"
+          },
+          {
+            "constraint_ids": [],
+            "link_id": "cpu1_fabric",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_port_id": "cpu1.out",
+            "source_ref": "manual:synthetic-memory-fixture/v1",
+            "target_port_id": "fabric.cpu1"
+          },
+          {
+            "constraint_ids": [],
+            "link_id": "fabric_mc0",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_port_id": "fabric.mc0",
+            "source_ref": "manual:synthetic-memory-fixture/v1",
+            "target_port_id": "mc0.in"
+          },
+          {
+            "constraint_ids": [],
+            "link_id": "fabric_mc1",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "source_port_id": "fabric.mc1",
+            "source_ref": "manual:synthetic-memory-fixture/v1",
+            "target_port_id": "mc1.in"
+          }
+        ],
+        "ports": [
+          {
+            "constraint_ids": [],
+            "direction": "egress",
+            "domain_id": "cpu0.address",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "cpu0",
+            "port_id": "cpu0.out",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "egress",
+            "domain_id": "cpu1.address",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "cpu1",
+            "port_id": "cpu1.out",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "ingress",
+            "domain_id": null,
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "fabric",
+            "port_id": "fabric.cpu0",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "ingress",
+            "domain_id": null,
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "fabric",
+            "port_id": "fabric.cpu1",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "egress",
+            "domain_id": null,
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "fabric",
+            "port_id": "fabric.mc0",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "egress",
+            "domain_id": null,
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "fabric",
+            "port_id": "fabric.mc1",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "ingress",
+            "domain_id": "mc0.address",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "mc0",
+            "port_id": "mc0.in",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          },
+          {
+            "constraint_ids": [],
+            "direction": "ingress",
+            "domain_id": "mc1.address",
+            "operations": [
+              "read",
+              "write"
+            ],
+            "owner_id": "mc1",
+            "port_id": "mc1.in",
+            "protocol": "synthetic-memory-request/v1",
+            "schema_version": "system-port/v1",
+            "source_ref": "manual:synthetic-memory-fixture/v1"
+          }
+        ],
+        "resources": [
+          {
+            "instance_id": "cpu0",
+            "model_id": "manual:cpu0",
+            "parent_id": "node",
+            "ports": []
+          },
+          {
+            "instance_id": "cpu1",
+            "model_id": "manual:cpu1",
+            "parent_id": "node",
+            "ports": []
+          },
+          {
+            "instance_id": "dram0",
+            "model_id": "declared-dram/v1",
+            "parent_id": "mc0",
+            "ports": []
+          },
+          {
+            "instance_id": "dram1",
+            "model_id": "declared-dram/v1",
+            "parent_id": "mc1",
+            "ports": []
+          },
+          {
+            "instance_id": "fabric",
+            "model_id": "manual:fabric",
+            "parent_id": "node",
+            "ports": []
+          },
+          {
+            "instance_id": "mc0",
+            "model_id": "manual:mc0",
+            "parent_id": "node",
+            "ports": []
+          },
+          {
+            "instance_id": "mc1",
+            "model_id": "manual:mc1",
+            "parent_id": "node",
+            "ports": []
+          },
+          {
+            "instance_id": "node",
+            "model_id": null,
+            "parent_id": null,
+            "ports": []
+          }
+        ],
+        "schema_version": "system-topology/v1",
+        "scope_id": "node",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      }
+    },
+    "numa_domains": [
+      {
+        "member_ids": [
+          "cpu0",
+          "dram0"
+        ],
+        "numa_id": "numa0",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      },
+      {
+        "member_ids": [
+          "cpu1",
+          "dram1"
+        ],
+        "numa_id": "numa1",
+        "source_ref": "manual:synthetic-memory-fixture/v1"
+      }
+    ],
+    "schema_version": "system-memory/v1",
+    "source_ref": "manual:synthetic-memory-fixture/v1"
+  },
+  "schema_version": "system-memory-study/v1"
+}

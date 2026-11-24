@@ -1,0 +1,532 @@
+{
+  "cases": [
+    {
+      "expected_status": "failed",
+      "name": "hop_limit_failed",
+      "request": {
+        "link_ids": null,
+        "max_hops": 1,
+        "operation": "copy",
+        "source_port_id": "host.out",
+        "target_port_id": "gpu0.in"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "host_to_gpu0",
+      "request": {
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "copy",
+        "source_port_id": "host.out",
+        "target_port_id": "gpu0.in"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "host_to_gpu1",
+      "request": {
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "copy",
+        "source_port_id": "host.out",
+        "target_port_id": "gpu1.in"
+      }
+    },
+    {
+      "expected_status": "succeeded",
+      "name": "peer_declared",
+      "request": {
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "copy",
+        "source_port_id": "gpu0.out",
+        "target_port_id": "gpu1.in"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "peer_reverse_denied",
+      "request": {
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "copy",
+        "source_port_id": "gpu1.out",
+        "target_port_id": "gpu0.in"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "read_denied",
+      "request": {
+        "link_ids": null,
+        "max_hops": 256,
+        "operation": "read",
+        "source_port_id": "host.out",
+        "target_port_id": "gpu0.in"
+      }
+    },
+    {
+      "expected_status": "failed",
+      "name": "wrong_explicit_path",
+      "request": {
+        "link_ids": [
+          "host_to_rc",
+          "rc_to_gpu0"
+        ],
+        "max_hops": 256,
+        "operation": "copy",
+        "source_port_id": "host.out",
+        "target_port_id": "gpu1.in"
+      }
+    }
+  ],
+  "node": {
+    "boards": [
+      {
+        "board_id": "card0",
+        "device_ids": [
+          "gpu0"
+        ],
+        "schema_version": "system-board/v1",
+        "source_ref": "manual:system-connectivity-fixture/v1"
+      },
+      {
+        "board_id": "card1",
+        "device_ids": [
+          "gpu1"
+        ],
+        "schema_version": "system-board/v1",
+        "source_ref": "manual:system-connectivity-fixture/v1"
+      }
+    ],
+    "schema_version": "system-node/v1",
+    "standalone_device_ids": [
+      "host"
+    ],
+    "topology": {
+      "constraints": [
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 8000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Assumed fluid payload ceiling only; no PCIe packet/service calibration",
+            "Both directions share one aggregate constraint"
+          ],
+          "frame_format_id": null,
+          "owner_id": "node0",
+          "resource_id": "gpu0_bus",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 8000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Assumed fluid payload ceiling only; no PCIe packet/service calibration",
+            "Both directions share one aggregate constraint"
+          ],
+          "frame_format_id": null,
+          "owner_id": "node0",
+          "resource_id": "gpu1_bus",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "byte_basis": "payload",
+          "capacity_Bps": 16000000000.0,
+          "capacity_kind": "declared_ceiling",
+          "coverage": [
+            "Assumed fluid payload ceiling only; no PCIe packet/service calibration",
+            "Both directions share one aggregate constraint"
+          ],
+          "frame_format_id": null,
+          "owner_id": "node0",
+          "resource_id": "host_bus",
+          "schema_version": "network-bandwidth/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        }
+      ],
+      "coverage": [
+        "Static terminal permissions and explicit root-complex forwarding",
+        "Uncalibrated fixture, not a real PCIe generation or measured device",
+        "No memory allocation, staging, coherence, queues, timing or energy"
+      ],
+      "domains": [
+        {
+          "address_bits": 48,
+          "domain_id": "gpu0.address",
+          "owner_id": "gpu0",
+          "schema_version": "system-address-domain/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "address_bits": 48,
+          "domain_id": "gpu1.address",
+          "owner_id": "gpu1",
+          "schema_version": "system-address-domain/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "address_bits": 48,
+          "domain_id": "host.address",
+          "owner_id": "host",
+          "schema_version": "system-address-domain/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        }
+      ],
+      "forwardings": [
+        {
+          "constraint_ids": [],
+          "egress_port_id": "rc.gpu1.out",
+          "forwarding_id": "gpu0_via_rc_to_gpu1",
+          "ingress_port_id": "rc.gpu0.in",
+          "operations": [
+            "copy"
+          ],
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "egress_port_id": "rc.host.out",
+          "forwarding_id": "gpu0_via_rc_to_host",
+          "ingress_port_id": "rc.gpu0.in",
+          "operations": [
+            "copy"
+          ],
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "egress_port_id": "rc.host.out",
+          "forwarding_id": "gpu1_via_rc_to_host",
+          "ingress_port_id": "rc.gpu1.in",
+          "operations": [
+            "copy"
+          ],
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "egress_port_id": "rc.gpu0.out",
+          "forwarding_id": "host_via_rc_to_gpu0",
+          "ingress_port_id": "rc.host.in",
+          "operations": [
+            "copy"
+          ],
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "egress_port_id": "rc.gpu1.out",
+          "forwarding_id": "host_via_rc_to_gpu1",
+          "ingress_port_id": "rc.host.in",
+          "operations": [
+            "copy"
+          ],
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        }
+      ],
+      "links": [
+        {
+          "constraint_ids": [
+            "gpu0_bus"
+          ],
+          "link_id": "gpu0_to_rc",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "gpu0.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "rc.gpu0.in"
+        },
+        {
+          "constraint_ids": [
+            "gpu1_bus"
+          ],
+          "link_id": "gpu1_to_rc",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "gpu1.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "rc.gpu1.in"
+        },
+        {
+          "constraint_ids": [
+            "host_bus"
+          ],
+          "link_id": "host_to_rc",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "host.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "rc.host.in"
+        },
+        {
+          "constraint_ids": [
+            "gpu0_bus"
+          ],
+          "link_id": "rc_to_gpu0",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "rc.gpu0.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "gpu0.in"
+        },
+        {
+          "constraint_ids": [
+            "gpu1_bus"
+          ],
+          "link_id": "rc_to_gpu1",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "rc.gpu1.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "gpu1.in"
+        },
+        {
+          "constraint_ids": [
+            "host_bus"
+          ],
+          "link_id": "rc_to_host",
+          "operations": [
+            "copy"
+          ],
+          "source_port_id": "rc.host.out",
+          "source_ref": "manual:system-connectivity-fixture/v1",
+          "target_port_id": "host.in"
+        }
+      ],
+      "ports": [
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": "gpu0.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "gpu0",
+          "port_id": "gpu0.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": "gpu0.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "gpu0",
+          "port_id": "gpu0.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": "gpu1.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "gpu1",
+          "port_id": "gpu1.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": "gpu1.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "gpu1",
+          "port_id": "gpu1.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": "host.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "host",
+          "port_id": "host.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": "host.address",
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "host",
+          "port_id": "host.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.gpu0.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.gpu0.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.gpu1.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.gpu1.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "ingress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.host.in",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        },
+        {
+          "constraint_ids": [],
+          "direction": "egress",
+          "domain_id": null,
+          "operations": [
+            "copy"
+          ],
+          "owner_id": "rc",
+          "port_id": "rc.host.out",
+          "protocol": "fixture-pcie-copy/v1",
+          "schema_version": "system-port/v1",
+          "source_ref": "manual:system-connectivity-fixture/v1"
+        }
+      ],
+      "resources": [
+        {
+          "instance_id": "card0",
+          "model_id": null,
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "card1",
+          "model_id": null,
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "gpu0",
+          "model_id": "accelerator-boundary/v1",
+          "parent_id": "card0",
+          "ports": []
+        },
+        {
+          "instance_id": "gpu0_bus",
+          "model_id": "payload-service/v1",
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "gpu1",
+          "model_id": "accelerator-boundary/v1",
+          "parent_id": "card1",
+          "ports": []
+        },
+        {
+          "instance_id": "gpu1_bus",
+          "model_id": "payload-service/v1",
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "host",
+          "model_id": "host-boundary/v1",
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "host_bus",
+          "model_id": "payload-service/v1",
+          "parent_id": "node0",
+          "ports": []
+        },
+        {
+          "instance_id": "node0",
+          "model_id": null,
+          "parent_id": null,
+          "ports": []
+        },
+        {
+          "instance_id": "rc",
+          "model_id": "forwarding-boundary/v1",
+          "parent_id": "node0",
+          "ports": []
+        }
+      ],
+      "schema_version": "system-topology/v1",
+      "scope_id": "node0",
+      "source_ref": "manual:system-connectivity-fixture/v1"
+    }
+  },
+  "schema_version": "system-connectivity/v1"
+}

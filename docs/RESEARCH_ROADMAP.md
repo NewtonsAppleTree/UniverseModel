@@ -103,7 +103,7 @@ A/B/C 保持硬件映射与算子基线调查，E/F 补充当前优先的软件�
 | 基础已完成 | chipmodel | CH1–CH10基础已完成，见[验收报告](../chipmodel/docs/completion.md) | 已有功能/分析/局部静态策略；动态执行与器件校准按课题进入 |
 | P0 复用 | configuration / artifacts | 复用严格配置、运行记录、本地 bundle；仅补实验必需字段 | 不因调研工具多而提前建设通用插件系统、数据库或配置解释器 |
 | P1 | runtime / simulator | 在需要排队/争用时冻结提交、接纳、完成、可见性与释放协议 | 一种策略、一个共享资源、可手算事件例；也可先驱动成熟外部模拟器 |
-| P1 | systemmodel | 节点资源引用、设备容量与主机/设备路径 | 层级或异构实验需要时加入；所有共享资源只能有一个所有者 |
+| 当前逐包开发 | systemmodel | S0/S1静态资源、板卡/节点、地址域/端口与权限路径已完成；下一包S2内存/容量/NUMA | [任务规划](../systemmodel/docs/development_plan.md)；共享资源唯一归属，服务与执行按后续证据接入 |
 | 本轮已完成 | clustermodel | 固定P2P基础及多层拓扑/路径候选/静态停用/需求总览 | [完成报告](../clustermodel/docs/completion.md)记录优化与验收；队列、策略或校准由后续课题触发 |
 | P2 | ui | 参数/结果表格和已有 trace 浏览 | 基础接口与指标稳定后；优先复用 Perfetto 等现成查看器 |
 

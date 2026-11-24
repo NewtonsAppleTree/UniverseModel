@@ -108,3 +108,5 @@ python -m example.retrieval_demo
 Markdown 是正文维护源；Word 阅读版集中在 docs/exports，参数与异构手册在 docs/reference，历史审视在 docs/archive。阅读与构建入口统一见[文档索引](docs/README.md)。
 
 近期工作按[研究开发路线](docs/RESEARCH_ROADMAP.md)推进：在小型 AI 线性算子实验基础上扩展训练最小语义，并完成外部基线复现与校准。[开源项目调研](docs/reference/open_source_landscape.md)记录引用与选型依据，[候选全量清单](docs/reference/open_source_comparison.md)按模块横向比较 GitHub 热度、维护状态与能力边界，收录与接入优先级分开；已实现能力和当前缺口见[实现状态](docs/STATUS.md)，模型阶段门槛见[验证规范](docs/architecture/validation.md)。
+
+2026-11-24：systemmodel已开始逐包开发，S0/S1节点资源与权限路径见[首包指南](systemmodel/docs/foundation_usage.md)，后续顺序见[计划](systemmodel/docs/development_plan.md)。

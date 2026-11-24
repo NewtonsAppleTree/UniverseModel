@@ -26,3 +26,5 @@
 | workloads | 带来源/字节哈希的本地任务数据夹具 |
 
 配置应引用模板、实例及成本版本，避免复制互相矛盾的参数。覆盖顺序、派生量和约束见 [configuration 设计](../configuration/docs/design.md)。示意结构放在 example/specs，不能把它当成已可执行配置。
+
+`experiments/system_connectivity.json`：S0/S1主机/双卡静态路径，3成功与4预期失败。16/8 GB/s为手工payload条件声明，当前不计算节点性能；见[指南](../systemmodel/docs/foundation_usage.md)。

@@ -1,4 +1,6 @@
-# hardware：公共网络资源边界
+# hardware：公共网络与节点边界
+
+[system.py](system.py)新增标准库AddressDomainSpec/SystemPortSpec：地址宽度[bit]只界定整数byte span，不表示物理容量；方向、domain、copy/read/write权限、来源及共享引用显式且不可变。拓扑负责owner/引用/转发校验，协议名不隐含权限或一致性；独立address.validate_span不依赖硬件。范围与验证见[系统首包](../../systemmodel/docs/foundation_usage.md)和[契约测试](../../tests/contracts/test_system.py)。
 
 [network.py](network.py) 提供C1的NetworkEndpointSpec与BandwidthConstraint。它们仅依赖标准库，负责不可变身份、来源、单位、取值和结构校验，不拥有NIC/网络状态或物理成本。其他硬件公共schema继续按实际需求加入；状态见 [STATUS](../../docs/STATUS.md)。
 
@@ -44,5 +46,31 @@ NetworkEndpointSpec绑定node、endpoint与物理port身份；非空tx/rx引用�
 | `string_tuple(name: str, values: tuple[str, ...], *, unique: bool=False, allow_empty: bool=False)` | Own an immutable sequence of identities/statements and optionally reject duplicates or emptiness. |
 | `BandwidthConstraint` | A unique resource supplies C [B/s] in a declared byte representation; references do not add capacity. |
 | `NetworkEndpointSpec` | Read-only external NIC boundary; tx/rx reference owner-defined capacities and contain no queue state. |
+
+### [system.py](system.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `AddressDomainSpec` | `domain_id` | `str` | 1（标识/枚举） | Unique address-space identity in one topology. |
+| `AddressDomainSpec` | `owner_id` | `str` | 1（标识/枚举） | Resource instance owning this address namespace. |
+| `AddressDomainSpec` | `address_bits` | `int` | bit | Unsigned byte-address width [bit], 1..64; valid addresses are [0,2**address_bits). |
+| `AddressDomainSpec` | `source_ref` | `str` | 1（标识/枚举） | Source/profile or explicit modeling assumption. |
+| `AddressDomainSpec` | `schema_version` | `Literal['system-address-domain/v1']` | —（结构/对象） | Namespace only; no allocation/coherence claim. |
+| `SystemPortSpec` | `port_id` | `str` | 1（标识/枚举） | Unique directed port identity; ingress/egress halves are separate declarations. |
+| `SystemPortSpec` | `owner_id` | `str` | 1（标识/枚举） | Owning resource instance; does not imply forwarding between its ports. |
+| `SystemPortSpec` | `direction` | `Literal['ingress', 'egress']` | —（结构/对象） | Direction of the modeled path relative to the owner. |
+| `SystemPortSpec` | `protocol` | `str` | 1（标识/枚举） | Explicit protocol/profile identity; peers and forwarding ports must agree. |
+| `SystemPortSpec` | `operations` | `tuple[AccessOperation, ...]` | —（结构/对象） | Allowed static operations; no implicit RDMA/P2P/coherence. |
+| `SystemPortSpec` | `source_ref` | `str` | 1（标识/枚举） | Capability provenance or explicit assumption. |
+| `SystemPortSpec` | `domain_id` | `str \| None` | 1（标识/枚举） | Terminal address namespace; None denotes a transit-only port. |
+| `SystemPortSpec` | `constraint_ids` | `tuple[str, ...]` | 1（标识/枚举） | Shared resource references charged once at this port visit; no copied capacity. |
+| `SystemPortSpec` | `schema_version` | `Literal['system-port/v1']` | —（结构/对象） | Static direction/permission boundary. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `access_operations(values: tuple[AccessOperation, ...])` | Freeze a nonempty set of supported operations; protocol names never grant additional permissions. |
+| `AddressDomainSpec` | An address domain names an integer address space, not physical memory capacity or residency. |
+| `AddressDomainSpec.validate_span(self, address: int, length_bytes: int)` | Check a nonempty half-open byte span; this proves address validity, not allocated backing or access permission. |
+| `SystemPortSpec` | Separate directed ports make attachment, terminal address ownership and permissions explicit. |
 
 <!-- model-fields:end -->

@@ -1,5 +1,21 @@
 # 实现状态
 
+## 2026-11-24 systemmodel S0/S1节点边界与拓扑首包完成
+
+依据项目使命启动[systemmodel S0–S7规划](../systemmodel/docs/development_plan.md)，已完成S0公共边界、S1板卡/节点与静态权限路径，以及对应工程验收。独立用法、假设和七例见[首包指南](../systemmodel/docs/foundation_usage.md)。S2内存/NUMA、S3 PCIe/DMA服务、S4 CXL、S5 NIC、S6 AI实验仍为后续开发包，完整设计目标未当作已实现能力。
+
+新增标准库AddressDomainSpec/SystemPortSpec，区分地址命名空间与物理容量，明确方向、copy/read/write权限和来源。systemmodel复用chipmodel ResourceNode与公共BandwidthConstraint；SystemTopology校验唯一scope、无环归属、协议/权限子集、共享资源、摘要/内部计量互斥。连接图可有环，转发必须显式声明且terminal不可中转。BoardSpec可对局部板卡或整节点独立校验，NodeSpec组合互斥board和standalone设备；model_id只作声明引用，不自动执行或证明芯片能力。
+
+find_path支持确定性最少link跳数或指定simple path，保留完整topology身份、地址域、link/crossing和每次constraint引用。max_hops是宿主查询预算。主机/双卡夹具中，host到两张卡均为2 links，引用同一host_bus与各自支路；只声明gpu0→gpu1 P2P。反向P2P、未授权read、跳数不足、错误显式路径构成4个预期失败。16e9/8e9 payload B/s为手工条件容量，未校准PCIe，不据此报告性能。3成功与4失败全部进入run bundle，target_execution_time/target_energy为None及原因。
+
+新增22项测试：contracts 2、systemmodel 14、integration 6，含30组有环小图与独立路径排列穷举、静态模型/域/引用/协议/权限反例、查询纯性、完整名单与篡改回读。全回归447项中445通过、2项可选PyTorch因环境未安装跳过；分组contracts 8、clustermodel 72、costmodel 7、chipmodel 141、systemmodel 14、workloads 47、compiler 20、integration 138。模型规则覆盖73个目录，结构通过13模块、109份模块Python、184份Markdown和4份DOCX来源哈希，空白检查通过。CI新增systemmodel测试和system_demo保存/回读；本地通过不表示远端CI已执行。
+
+本地证据在`.build/systemmodel-foundation-20261124`：before/source、全部测试日志、study/、summary、study_audit、validation和wheel核对。来源覆盖197份Python/config/pyproject文件，源码身份为`abc349fcc0c28fac982719fd94e583831aa1b2ed+python-config-sha256:60308e888ca9ff229f1e6ddc4f9427f49fbbb52ce2ebb4b1dd4653074ad0d2b9`。基线中的源码/config原始字节全部保持，新增11份源码/配置/测试文件，Git索引未改变；文档和CI同步更新。
+
+wheel为`.build/systemmodel-foundation-wheels/UniverseModel-0.1.0-py3-none-any.whl`，SHA256 `8351ff2e1c73be8543577d0962969fb601186ce9544231ee2969168019538166`。106份打包Python完整名单与工作区字节一致，python -I仅从解包目录导入27份实际项目模块，标准库环境完成七例执行、原记录及新记录回读并与工作区一致；公共契约先独立导入，未加载硬件。配置/示例继续由仓库提供。
+
+下一包是**S2：内存区域、backing容量、静态预留与NUMA放置**。本包只判断声明路径合法性，不证明已搬运/可见、不测任务质量、不预测整节点时延或能量；回读验证已存路径，不重新搜索或证明它的最少跳数。
+
 ## 2026-11-23 workloads完成审计与数值/回读修复
 
 W0–W6既定任务已经完成，本次按使命复核后补齐真实边界缺陷，详情见[收尾审计](../workloads/docs/completion_audit.md)。9个均匀key、同类one-hot V的合法Attention输出出现`1.0000000000000002`，此前被概率有效域拒绝；现在概率端点/行和使用明确1e-9容差，原始观测与argmax不变，log-loss限制在显式floor与1之间，避免负loss。越界/行和错误及独立数值不合格仍被检出。

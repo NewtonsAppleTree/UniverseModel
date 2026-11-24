@@ -1,5 +1,7 @@
 # runner：独立调用与有限线性映射比较
 
+`system.py`新增NodeStudy/NodeCase：固定完整node清单，逐case保存实际PathRequest、静态路径或失败。目标时延/能量未知；回读不搜索/执行，只检查保存路径在同一拓扑上的合法性、资源引用、指标、完整名单与来源。属于静态证据重分析，不证明最少跳数、真实设备能力或任务质量。示例与专业参数见[系统首包](../../../systemmodel/docs/foundation_usage.md)。
+
 `attention_evidence.py`只消费保存的任务/计划/观测，验证行所有权、资源守恒与边界，并用保存参考输出重新计算数值比较；不拥有硬件或执行状态。mapping/retrieval新implementation为v2，必存reference_output，NumPy另存两条实际输出。历史v1仅执行能由原证据支持的检查；配置/bundle仍为v1。retrieval还验证选参计数、训练标签/类配额、Attention语义和预测变化；指标与未知成本不能互相矛盾。详见[审计](../../../workloads/docs/completion_audit.md)。
 
 `workload.py`接入AttentionSuite/Case：先准备并保存实际Q/K/V，再调用独立参考和逻辑计数；准备失败保留清单/错误，参考失败保留实际输入。完整名单、来源、预算、假设和内容参与记录；succeeded不表示真实AI质量通过。目标时间/能量为None+原因，host_elapsed_s仅覆盖通用callback/收集。write_study/read_study沿用不可覆盖bundle并验证名单/身份/输出结构，回读不执行参考或访问原dataset。公式、关键宿主预算、顺序和证据见[workloads指南](../../../workloads/docs/foundation_usage.md)与[集成测试](../../../tests/integration/test_workload_experiment.py)。
@@ -318,6 +320,26 @@ CH9的[physical.py](physical.py)连接PhysicalModel/PhysicalWork、CostTable和�
 | 类型 / 接口 | 用途、公式与边界 |
 | --- | --- |
 | `run_experiment(spec: ExperimentSpec, configuration: P, inputs: I, execute: Callable[[P, I], tuple[R, tuple[Metric, ...]]])` | Snapshot explicit inputs, invoke a fresh copied boundary, and record success/failure without hidden stages. |
+
+### [system.py](system.py)
+
+| Unit / 数据对象 | 参数 / 属性 | Python 类型 | 单位 | 专业含义 / 关系 |
+| --- | --- | --- | --- | --- |
+| `NodeCase` | `name` | `str` | 1（标识/枚举） | Unique case identity in this finite study. |
+| `NodeCase` | `request` | `PathRequest` | —（结构/对象） | Source/target operation and explicit or searched route. |
+| `NodeCase` | `expected_status` | `Literal['succeeded', 'failed']` | —（结构/对象） | Expected execution outcome, independently checked after recording. |
+| `NodeStudy` | `node` | `NodeSpec` | —（结构/对象） | Fixed complete node ownership, model references, capabilities and connectivity. |
+| `NodeStudy` | `cases` | `tuple[NodeCase, ...]` | —（结构/对象） | Complete finite success/failure roster. |
+| `NodeStudy` | `schema_version` | `Literal['system-connectivity/v1']` | —（结构/对象） | Static node-path study. |
+
+| 类型 / 接口 | 用途、公式与边界 |
+| --- | --- |
+| `NodeCase` | Each case asks one operation/path question; expected failure is a reviewed fixture condition, not suppressed evidence. |
+| `NodeStudy` | All cases share one sourced node; studies compare access feasibility, not measured hardware performance. |
+| `run_study(study: NodeStudy, *, source_revision: str='unrecorded')` | Each request creates an independent terminal record with the full node/case roster and immutable input snapshot. |
+| `summarize_records(records: tuple[RunRecord, ...])` | Recheck saved route legality and roster consistency without search, hardware analysis or target execution. |
+| `write_study(records: tuple[RunRecord, ...], directory: str \| Path)` | Commit the complete checked study once; existing evidence directories are never overwritten. |
+| `read_study(directory: str \| Path)` | Rebuild route observations from saved structure alone; no execution callback or path search is needed. |
 
 ### [tile_mapping.py](tile_mapping.py)
 

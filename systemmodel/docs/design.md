@@ -1,5 +1,7 @@
 # systemmodel：板卡、主机与节点
 
+实现状态：S0/S1静态归属/域/端口/拓扑与权限查询已落地，见[首包指南](foundation_usage.md)和[开发计划](development_plan.md)。下文是完整设计目标；动态队列、服务、容量/地址映射和性能仍不能由拓扑查询推导为已实现。
+
 ## 核心与边界
 
 最重要的是计算设备通过什么实际路径获得数据。systemmodel 依赖 contracts、chipmodel、costmodel，组合 Board/Card/Node，维护主机内存、NUMA、PCIe/CXL/DMA/NIC 等节点级资源。芯片内部状态仍由 chipmodel 拥有；系统不复制一套设备状态。

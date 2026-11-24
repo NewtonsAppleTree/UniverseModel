@@ -18,6 +18,7 @@ jobs:
       - run: python -m unittest discover -s tests/clustermodel -p "test_*.py" -v
       - run: python -m unittest discover -s tests/costmodel -p "test_*.py" -v
       - run: python -m unittest discover -s tests/chipmodel -p "test_*.py" -v
+      - run: python -m unittest discover -s tests/systemmodel -p "test_*.py" -v
       - run: python -m unittest discover -s tests/workloads -p "test_*.py" -v
       - run: python -m unittest discover -s compiler/tests -p "test_*.py" -v
       - run: python -m unittest discover -s tests/integration -p "test_*.py" -v
@@ -31,6 +32,8 @@ jobs:
       - run: python -m example.cluster_demo --read .build/cluster-foundation
       - run: python -m example.cluster_demo --config config/experiments/cluster_leaf_spine.json --output .build/cluster-breadth
       - run: python -m example.cluster_demo --read .build/cluster-breadth --overview
+      - run: python -m example.system_demo --output .build/system-connectivity
+      - run: python -m example.system_demo --read .build/system-connectivity
       - run: python -m example.linear_demo --output .build/linear-study
       - run: python -m example.linear_demo --read .build/linear-study
       - run: python tools/validate_chipmodel.py --output .build/chipmodel-acceptance

@@ -52,7 +52,7 @@ flowchart LR
 | configuration | producer 参数定义、JSON、显式覆盖 | 冻结有效参数 | 只拥有草稿与解释记录 | 先复用严格 dataclass 解析；模板/来源链/迁移按需求加入 |
 | costmodel | 结构、动作量、PVT 条件、来源 profile | 条件延迟/能量/面积与覆盖说明 | 特征化数据，不复制硬件队列 | CH9已实现结构/PVT/动作精确查表及来源/误差接口，缺点返回明确未知；插值和器件校准待证据 |
 | chipmodel | Params、映射后的操作/数据、边界条件 | 功能输出、资源工作量、局部估算 | 本组件资源与数值状态 | [CH1–CH4已接入](chipmodel/docs/foundation_usage.md)：契约/下界、SRAM、搬运账本、数字Tile；[CH5 CIM已接入](chipmodel/docs/cim_bench.md)；[CH6能力对照已接入](chipmodel/docs/compute_capabilities.md)；CH7外存/缓存、CH8组合及[CH9物理证据](chipmodel/docs/physical_evidence.md)已接入 |
-| systemmodel | 芯片能力、主机/板卡资源、I/O 路径 | 节点能力、可用容量、路径约束 | 板卡/主机共享资源 | 先定义 Board/Node 描述与静态引用/容量检查 |
+| systemmodel | 芯片能力、主机/板卡资源、I/O 路径 | 节点能力、可用容量、路径约束 | 板卡/主机共享资源 | S0/S1已实现Board/Node归属、地址域/端口与显式权限路径；下一步S2内存区域/容量与NUMA放置 |
 | clustermodel | 节点能力、链路、拓扑与参与组 | 集群图、路由/割集约束 | 跨节点网络资源 | 固定P2P及leaf-spine/路径候选/静态停用/总览基础与优化已完成；事件及节点内摘要按课题扩展 |
 | workloads | shape、语义轴、dtype、输入/种子 | Workload 描述、独立参考/工作量 | 任务数据与参考，不拥有硬件 | 已有 GEMM/MatVec；下一步 Linear 前向/反向/更新及短链 |
 | compiler | workload + 公共硬件能力 + 成本查询 | 合法映射、ROI、buffer/partial/操作计划 | 编译 IR 与计划 | 已有线性计划/校验/容量/解释；后续按图生命周期和外部比较扩展 |
